@@ -1,0 +1,461 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Berg Athos: Interaktiver Pilger-Leitfaden</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,700;1,300&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Chosen Palette: Warm Byzantium (Parchment, Stone, Imperial Red, Deep Sea Blue) -->
+    <!-- Application Structure Plan: The SPA uses a functional dashboard layout with thematic tabs (Übersicht, Rhythmus, Architektur, Askese & Ernährung, Pilger-Weg). This non-linear structure allows users to explore the dense, multi-faceted information of the report according to their specific interests—whether practical preparation, historical context, or spiritual understanding—without reading sequentially. A sidebar navigation (top nav on mobile) facilitates quick switching. Each section acts as a focused lens on a core aspect of the Athonite experience. -->
+    <!-- Visualization & Content Choices: 
+         1. Daily Rhythm -> Goal: Inform/Change -> Interactive Timeline (HTML/JS) -> Shows the unique Byzantine time and continuous cycle, breaking down complex text into clickable events.
+         2. Fasting Rhythm -> Goal: Compare -> Doughnut Chart (Chart.js) -> Visually demonstrates the extreme ratio of fasting days to normal days, highlighting the physical rigor of the diet.
+         3. Monastery Architecture -> Goal: Organize -> Interactive CSS Grid Diagram (HTML/Tailwind/JS) -> Replaces SVG with structural HTML to map out a fortress layout (Pyrgos, Katholikon) supporting the defense narrative.
+         4. Content blocks -> Contextual Text Updates (JS) -> Prevents overwhelming the user with text walls. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        body { font-family: 'Open Sans', sans-serif; background-color: #fcfbf9; color: #292524; }
+        h1, h2, h3, h4, .font-serif { font-family: 'Merriweather', serif; }
+        
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container { height: 350px; }
+        }
+
+        .nav-link.active {
+            background-color: #7f1d1d;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .timeline-item.active {
+            border-left-color: #7f1d1d;
+            background-color: #f5f5f4;
+        }
+
+        .arch-element { transition: all 0.2s ease-in-out; }
+        .arch-element:hover { filter: brightness(0.9); transform: scale(0.98); }
+        .arch-element.active { outline: 4px solid #7f1d1d; outline-offset: -4px; }
+    </style>
+    <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
+    <script src="../js/nav-injector.js" defer></script>
+</head>
+<body class="flex flex-col md:flex-row min-h-screen">
+
+    <nav class="w-full md:w-64 bg-stone-900 text-stone-300 flex-shrink-0 md:min-h-screen flex flex-col shadow-xl z-20">
+        <div class="p-6 border-b border-stone-700 bg-stone-950">
+            <h1 class="text-2xl font-serif text-amber-500 font-bold tracking-wider">AGION OROS</h1>
+            <p class="text-xs text-stone-400 mt-1 uppercase tracking-widest">Die byzantinische Ewigkeit</p>
+        </div>
+        <div class="flex flex-row md:flex-col overflow-x-auto md:overflow-visible py-4 md:py-6 gap-2 px-4">
+            <button onclick="navigate('overview')" id="nav-overview" class="nav-link active text-left px-4 py-3 rounded-md transition-colors whitespace-nowrap md:whitespace-normal">Das Wesen des Berges</button>
+            <button onclick="navigate('rhythm')" id="nav-rhythm" class="nav-link text-left px-4 py-3 rounded-md transition-colors whitespace-nowrap md:whitespace-normal">Der innere Rhythmus</button>
+            <button onclick="navigate('architecture')" id="nav-architecture" class="nav-link text-left px-4 py-3 rounded-md transition-colors whitespace-nowrap md:whitespace-normal">Stein & Verteidigung</button>
+            <button onclick="navigate('diet')" id="nav-diet" class="nav-link text-left px-4 py-3 rounded-md transition-colors whitespace-nowrap md:whitespace-normal">Askese & Ernährung</button>
+            <button onclick="navigate('pilgrim')" id="nav-pilgrim" class="nav-link text-left px-4 py-3 rounded-md transition-colors whitespace-nowrap md:whitespace-normal">Der Weg des Pilgers</button>
+        </div>
+    </nav>
+
+    <main class="flex-grow p-6 md:p-12 overflow-y-auto w-full">
+        <div class="max-w-5xl mx-auto">
+
+            <section id="sec-overview" class="block animate-fade-in">
+                <header class="mb-10 border-b-2 border-stone-200 pb-6">
+                    <h2 class="text-4xl font-serif text-stone-800 mb-4">Das Wesen des Berg Athos</h2>
+                    <p class="text-lg text-stone-600 leading-relaxed">
+                        In dieser Sektion erforschen wir die fundamentalen Prinzipien, die den Berg Athos seit über einem Jahrtausend definieren. Sie dient als Einleitung, um die geopolitische, mythische und gesetzliche Isolation (Avaton) dieses autonomen Mönchsstaates zu begreifen. Die hier präsentierten Zahlen und Fakten bilden das Fundament für das Verständnis dieser lebendigen byzantinischen Zeitkapsel, bevor wir tiefer in den Alltag eintauchen.
+                    </p>
+                </header>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-stone-100 flex flex-col items-center text-center">
+                        <div class="text-4xl mb-3 text-amber-700">&#9878;</div>
+                        <h3 class="font-bold text-xl mb-2">Die Föderation</h3>
+                        <p class="text-stone-600 text-sm">20 souveräne Großklöster sowie unzählige Skiten und Eremitagen bilden die Heilige Gemeinschaft unter dem *Typikon* von 972 n. Chr.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-stone-100 flex flex-col items-center text-center">
+                        <div class="text-4xl mb-3 text-amber-700">&#128683;</div>
+                        <h3 class="font-bold text-xl mb-2">Das Avaton</h3>
+                        <p class="text-stone-600 text-sm">Das unumstößliche Gesetz aus dem Jahr 1046, das Frauen und weiblichen Tieren den Zutritt verwehrt – zum Schutz vor weltlicher Versuchung und als Garten der Muttergottes.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-stone-100 flex flex-col items-center text-center">
+                        <div class="text-4xl mb-3 text-amber-700">&#127964;</div>
+                        <h3 class="font-bold text-xl mb-2">Gipfel & Natur</h3>
+                        <p class="text-stone-600 text-sm">Der 2.033 Meter hohe weiße Marmorgipfel thront über einem der letzten unberührten Urwälder Europas, intakt gehalten durch jahrhundertelange Isolation.</p>
+                    </div>
+                </div>
+
+                <div class="bg-stone-100 p-8 rounded-xl border-l-4 border-amber-700">
+                    <h3 class="text-2xl font-serif mb-4">Ein lebendiges Relikt</h3>
+                    <p class="mb-4">Der Berg Athos ist keine Musealisierung der Vergangenheit. In seinen dicken Mauern schlagen das theologische Herz und die imperiale Würde des längst untergegangenen Byzantinischen Reiches ohne einen einzigen Tag Unterbrechung weiter. Hier weht die gelbe Flagge mit dem doppelköpfigen Adler, und die Diplomatie der Mönche rettete diese christliche Enklave selbst durch jahrhundertelange osmanische Herrschaft.</p>
+                    <p>Rund 2.000 Mönche aus aller Welt leben hier das Prinzip des <strong>Ora et Labora</strong> (Bete und Arbeite) in absoluter Armut, vollkommener Keuschheit und absolutem Gehorsam. Wer hier eintritt, stirbt symbolisch für die Welt, um ein neues Leben zu beginnen.</p>
+                </div>
+            </section>
+
+            <section id="sec-rhythm" class="hidden animate-fade-in">
+                <header class="mb-10 border-b-2 border-stone-200 pb-6">
+                    <h2 class="text-4xl font-serif text-stone-800 mb-4">Der innere Rhythmus & Die Nacht</h2>
+                    <p class="text-lg text-stone-600 leading-relaxed">
+                        Diese Sektion visualisiert das paradoxe Zeitverständnis der Halbinsel. Die Mönche folgen der byzantinischen Zeitrechnung und brechen mit dem weltlichen 24-Stunden-Takt. Hier erforschen Sie interaktiv, wie der Tag bei Sonnenuntergang beginnt und wie der psychologische Kampf gegen den "Mittagsdämon" (Acedia) durch extreme Rhythmisierung und strenge Regeln für Technologie gewonnen wird. Klicken Sie sich durch den byzantinischen Tageszyklus.
+                    </p>
+                </header>
+
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <div class="w-full lg:w-1/3">
+                        <h3 class="font-bold text-xl mb-4 text-stone-800 border-b pb-2">Byzantinischer Zyklus</h3>
+                        <div class="flex flex-col border-l-4 border-stone-300">
+                            <button onclick="updateTimeline('sunset')" id="time-sunset" class="timeline-item active text-left pl-4 py-3 border-b border-stone-200 hover:bg-stone-100 transition-colors">
+                                <span class="font-bold text-amber-800 block">12:00 (Sonnenuntergang)</span>
+                                <span class="text-sm">Der neue Tag beginnt</span>
+                            </button>
+                            <button onclick="updateTimeline('night')" id="time-night" class="timeline-item text-left pl-4 py-3 border-b border-stone-200 hover:bg-stone-100 transition-colors">
+                                <span class="font-bold text-stone-800 block">ca. 02:00 Uhr</span>
+                                <span class="text-sm">Das Wecken (Talanton)</span>
+                            </button>
+                            <button onclick="updateTimeline('liturgy')" id="time-liturgy" class="timeline-item text-left pl-4 py-3 border-b border-stone-200 hover:bg-stone-100 transition-colors">
+                                <span class="font-bold text-stone-800 block">03:00 - 08:00 Uhr</span>
+                                <span class="text-sm">Liturgie & Katholikon</span>
+                            </button>
+                            <button onclick="updateTimeline('work')" id="time-work" class="timeline-item text-left pl-4 py-3 border-b border-stone-200 hover:bg-stone-100 transition-colors">
+                                <span class="font-bold text-stone-800 block">Vormittag</span>
+                                <span class="text-sm">Diakonien (Arbeit)</span>
+                            </button>
+                            <button onclick="updateTimeline('noon')" id="time-noon" class="timeline-item text-left pl-4 py-3 border-b border-stone-200 hover:bg-stone-100 transition-colors">
+                                <span class="font-bold text-stone-800 block">Mittagshitze</span>
+                                <span class="text-sm">Kampf der Acedia</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="w-full lg:w-2/3 bg-white p-8 rounded-xl shadow-lg border border-stone-200 min-h-[400px] flex flex-col justify-center" id="timeline-content">
+                        <div class="text-center mb-6 text-6xl text-amber-700">&#127769;</div>
+                        <h3 class="text-2xl font-serif font-bold mb-4 text-center">Das theologische Zifferblatt</h3>
+                        <p class="text-stone-700 leading-relaxed text-center">Der Tag beginnt auf dem Athos nicht um Mitternacht, sondern organisch mit dem Sonnenuntergang. Dies entspringt der Genesis: "Und es ward Abend und es ward Morgen: ein Tag." Die mechanischen Uhren in den Türmen werden wöchentlich manuell nachjustiert, damit die Zeiger genau dann 12:00 Uhr anzeigen, wenn die Sonne in der Ägäis versinkt.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sec-architecture" class="hidden animate-fade-in">
+                <header class="mb-10 border-b-2 border-stone-200 pb-6">
+                    <h2 class="text-4xl font-serif text-stone-800 mb-4">Steinerne Festungen</h2>
+                    <p class="text-lg text-stone-600 leading-relaxed">
+                        Dieser Abschnitt dekonstruiert die Architektur der athonitischen Klöster. Jahrhundertelange Bedrohungen durch Piraten und Invasoren formten diese Bauten zu in sich geschlossenen Wehranlagen. Die interaktive Strukturkarte unten veranschaulicht die Anatomie eines zönobitischen Klosters. Klicken Sie auf die architektonischen Zonen, um deren Verteidigungszweck und liturgische Bedeutung zu verstehen.
+                    </p>
+                </header>
+
+                <div class="bg-stone-100 p-6 rounded-xl mb-8 border border-stone-300">
+                    <p class="mb-4 text-stone-700">Die topografische Platznot und die ständige Gefahr führten zu Präzisions-Ingenieurwesen. Ein extremes Beispiel ist das Kloster <strong>Simonos Petra</strong>, das auf einer 300 Meter hohen, senkrechten Felsnadel thront, mit Balkonen, die scheinbar der Schwerkraft spotten. Geheime Fluchtwege und in den Fels gehauene Zisternen sicherten das Überleben bei monatelangen Belagerungen.</p>
+                </div>
+
+                <div class="flex flex-col lg:flex-row gap-6 items-start">
+                    <div class="w-full lg:w-1/2">
+                        <div class="grid grid-cols-4 gap-2 bg-stone-300 p-4 rounded-lg shadow-inner border-4 border-stone-800 relative">
+                            <div class="col-span-4 arch-element bg-stone-700 text-stone-200 text-center py-3 cursor-pointer font-bold rounded-sm border-2 border-stone-800 active" id="arch-mauer" onclick="updateArchitecture('mauer')">Ringmauer & Balkone (Sachnisia)</div>
+                            <div class="col-span-1 arch-element bg-stone-800 text-white flex items-center justify-center cursor-pointer font-bold rounded-sm border-2 border-stone-900 min-h-[150px]" id="arch-tor" onclick="updateArchitecture('tor')">Torhaus</div>
+                            <div class="col-span-2 bg-stone-200 flex items-center justify-center flex-col gap-2 p-2 border-2 border-stone-400 rounded-sm">
+                                <div class="w-full arch-element bg-red-900 text-white text-center py-4 cursor-pointer font-bold rounded-sm shadow-md" id="arch-katholikon" onclick="updateArchitecture('katholikon')">Katholikon (Kirche)</div>
+                                <div class="w-16 h-16 rounded-full arch-element bg-blue-200 border-4 border-stone-400 text-center flex items-center justify-center cursor-pointer text-xs font-bold" id="arch-phiale" onclick="updateArchitecture('phiale')">Phiale</div>
+                            </div>
+                            <div class="col-span-1 arch-element bg-stone-600 text-white flex items-center justify-center cursor-pointer font-bold rounded-sm border-2 border-stone-800 min-h-[150px]" id="arch-pyrgos" onclick="updateArchitecture('pyrgos')">Pyrgos</div>
+                            <div class="col-span-4 bg-stone-400 text-stone-800 text-center py-2 text-sm italic rounded-sm">Innerer Hof (Eng und abweisend)</div>
+                        </div>
+                        <p class="text-xs text-center mt-2 text-stone-500 uppercase tracking-widest">Interaktiver Kloster-Grundriss</p>
+                    </div>
+                    <div class="w-full lg:w-1/2 bg-white p-6 rounded-lg shadow-md border-t-4 border-amber-700 min-h-[250px]" id="arch-description">
+                        <h3 class="text-xl font-bold mb-3 text-stone-800">Außenmauern & Sachnisia</h3>
+                        <p class="text-stone-600">In den massiven, meterdicken unteren Stockwerken gibt es überhaupt keine Fenster, nur schmale Schießscharten. Erst in schwindelerregender Höhe öffnen sich die Mauern, wo die charakteristischen hölzernen Balkone (*Sachnisia*) pittoresk und mutig über den Abgrund hängen, fernab von feindlichen Leitern.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sec-diet" class="hidden animate-fade-in">
+                <header class="mb-10 border-b-2 border-stone-200 pb-6">
+                    <h2 class="text-4xl font-serif text-stone-800 mb-4">Askese, Wirtschaft & Ernährung</h2>
+                    <p class="text-lg text-stone-600 leading-relaxed">
+                        Die mönchische Ernährung ist weltberühmt, doch ihre Grundlage ist nicht kulinarischer Genuss, sondern rigorose theologische Disziplin. In dieser Sektion visualisieren wir den extremen Rhythmus von Fasten und Fest. Zudem wird das klösterliche Wirtschaftssystem beleuchtet, das auf harter Landarbeit und klugem Austausch basiert, um die Pflicht der *Philoxenia* (Gastfreundschaft) aufrechtzuerhalten.
+                    </p>
+                </header>
+
+                <div class="flex flex-col lg:flex-row gap-10 mb-12 items-center">
+                    <div class="w-full lg:w-1/2">
+                        <div class="chart-container">
+                            <canvas id="fastingChart"></canvas>
+                        </div>
+                        <p class="text-center text-sm text-stone-500 mt-2">Visuelle Verteilung eines athonitischen Kalenderjahres.</p>
+                    </div>
+                    <div class="w-full lg:w-1/2">
+                        <h3 class="text-2xl font-serif mb-4 text-stone-800">Nahrung als Fortsetzung der Liturgie</h3>
+                        <p class="text-stone-700 mb-4">Essen ist ein fortgesetzter Gottesdienst. In der riesigen <em>Trapeza</em> (Speisesaal) wird absolut schweigend gegessen, während ein Mönch aus Heiligenviten vorliest. Das Mahl dauert oft nur 15-20 Minuten und endet abrupt mit dem Signal des Abtes.</p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <span class="text-amber-700 mr-2 font-bold">&#10003;</span>
+                                <span class="text-sm text-stone-600"><strong>Kein rotes Fleisch:</strong> Säugetiere werden aus asketischen Gründen niemals konsumiert.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-amber-700 mr-2 font-bold">&#10003;</span>
+                                <span class="text-sm text-stone-600"><strong>Strikte Fastentage (ca. 200/Jahr):</strong> Kein Öl, kein Wein, kein Fisch, keine Milchprodukte. Essen wird nur in Wasser gekocht.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-amber-700 mr-2 font-bold">&#10003;</span>
+                                <span class="text-sm text-stone-600"><strong>Haltbarmachung:</strong> Fische in großen Fässern mit Meersalz (*Pasto*) und luftgetrocknetes Gemüse sichern das Überleben im Winter.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bg-stone-800 text-stone-200 p-8 rounded-xl shadow-lg relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 text-9xl text-stone-700 opacity-20">&#127858;</div>
+                    <h3 class="text-2xl font-serif mb-2 text-amber-500 relative z-10">Der theologische Klassiker: Fasolada</h3>
+                    <p class="italic text-sm text-stone-400 mb-6 relative z-10">Die athonitische Bohnensuppe verkörpert mönchische Demut und liefert Kraft für harte physische Arbeit.</p>
+                    
+                    <button onclick="toggleRecipe()" class="bg-amber-700 hover:bg-amber-600 text-white px-6 py-2 rounded transition-colors relative z-10 font-bold">Rezept einblenden / ausblenden</button>
+                    
+                    <div id="recipe-content" class="hidden mt-6 space-y-4 text-sm relative z-10 border-t border-stone-600 pt-4">
+                        <p><strong>1. Einweichen:</strong> 500g weiße Gigantes-Bohnen über Nacht wässern. Am nächsten Tag sprudelnd aufkochen, Wasser abgießen (entfernt Bitterstoffe).</p>
+                        <p><strong>2. Der theologische Schritt:</strong> Mit 2L Wasser, Zwiebeln, Karotten, Sellerie weichkochen (45-60 Min). <span class="text-amber-400 font-bold">WICHTIG: In dieser Phase absolut kein Salz oder Öl zugeben, sonst bleiben die Bohnen steinhart!</span></p>
+                        <p><strong>3. Aromatisierung:</strong> Wenn die Bohnen butterweich sind: 150-200ml bestes Kloster-Olivenöl (außer an strikten Fastentagen), 1 EL Tomatenmark, Lorbeer, viel Berg-Oregano, Meersalz, Pfeffer und scharfes Boukovo (Chili).</p>
+                        <p><strong>4. Emulsion:</strong> Weitere 20 Min sprudelnd offen kochen. Die Bohnenstärke und das späte Öl verbinden sich zu einer cremigen, dicken Emulsion ohne künstliche Bindemittel. Mit frischem Zitronensaft abschmecken.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sec-pilgrim" class="hidden animate-fade-in">
+                <header class="mb-10 border-b-2 border-stone-200 pb-6">
+                    <h2 class="text-4xl font-serif text-stone-800 mb-4">Der Weg des Pilgers & Natur</h2>
+                    <p class="text-lg text-stone-600 leading-relaxed">
+                        Eine Pilgerreise auf den Berg Athos erfordert Demut, Geduld (*Ypomoni*) und genaue Vorbereitung. Dieser Bereich liefert essenzielle Hinweise zur byzantinischen Bürokratie, zur absolut strikten Verhaltens- und Kleiderordnung sowie zur Vorbereitung auf das extreme Naturerlebnis. Der Berg ist kein Wanderurlaub, sondern eine Konfrontation mit der inneren Stille und der wilden, ungebändigten Schöpfung.
+                    </p>
+                </header>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                    <div class="bg-white p-6 border-l-4 border-stone-800 shadow-md">
+                        <h3 class="font-bold text-xl mb-3">Checkliste & Bürokratie</h3>
+                        <ul class="space-y-4">
+                            <li class="flex flex-col">
+                                <span class="font-bold text-stone-800 border-b pb-1 mb-1">Diamonitirion (Passierschein)</span>
+                                <span class="text-sm text-stone-600">Streng limitiert (100 Orthodoxe / 10 Nicht-Orthodoxe pro Tag). Monate im Voraus in Thessaloniki zu beantragen. Prüfung vor Schiffsantritt.</span>
+                            </li>
+                            <li class="flex flex-col">
+                                <span class="font-bold text-stone-800 border-b pb-1 mb-1">Bargeld-Wirtschaft</span>
+                                <span class="text-sm text-stone-600">Keine Kartenautomaten. Euro in kleinen Scheinen für Schiffe, Busse, Klosterläden und unauffällige Spenden (10-20€/Nacht) für die Philoxenia.</span>
+                            </li>
+                            <li class="flex flex-col">
+                                <span class="font-bold text-stone-800 border-b pb-1 mb-1">Ausrüstung für Juni</span>
+                                <span class="text-sm text-stone-600">Harte Vibram-Sohlen, Sonnenhut, Rotlicht-Stirnlampe (für die dunkle Kirche). Gepäck unter 10kg halten.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white p-6 border-l-4 border-stone-800 shadow-md">
+                        <h3 class="font-bold text-xl mb-3">Die Etikette der Stille</h3>
+                        <ul class="space-y-4">
+                            <li class="flex flex-col">
+                                <span class="font-bold text-red-800 border-b pb-1 mb-1">Kleiderordnung (Absolut)</span>
+                                <span class="text-sm text-stone-600">Immer lange Hosen und langärmelige Hemden in den Klöstern, auch bei 35°C. Keine Tarnkleidung.</span>
+                            </li>
+                            <li class="flex flex-col">
+                                <span class="font-bold text-stone-800 border-b pb-1 mb-1">Fotografie-Verbot</span>
+                                <span class="text-sm text-stone-600">Striktes Verbot in Kirchen, Speisesälen und von Mönchen ohne Erlaubnis. Keine Drohnen. "Keine Selfies vor Gott."</span>
+                            </li>
+                            <li class="flex flex-col">
+                                <span class="font-bold text-stone-800 border-b pb-1 mb-1">Syn-hesychia</span>
+                                <span class="text-sm text-stone-600">Gemeinsames Schweigen. Kein Smalltalk. Interaktion entsteht oft erst, wenn das westliche Bedürfnis nach Diskussion verstummt.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bg-stone-200 p-8 rounded-xl relative">
+                    <h3 class="text-2xl font-serif mb-4 text-stone-800">Die unberührte Natur (Heilige Ökologie)</h3>
+                    <p class="mb-4 text-stone-700">Dank des Avatons (keine weidenden Herden) bewahrt der Athos einen der letzten Urwälder Europas. Die Mönche agieren als <em>Oikonomos</em> (Priester der Schöpfung) und nutzen die Pflanzen pragmatisch in ihrer <strong>Kloster-Apotheke</strong> (Johanniskrautöl, Propolis-Tinkturen, Kastanienharzsalben).</p>
+                    <div class="grid grid-cols-3 gap-4 text-center mt-6">
+                        <div class="bg-white p-3 rounded shadow">
+                            <div class="text-2xl mb-1">&#128023;</div>
+                            <div class="text-sm font-bold">Fauna</div>
+                            <div class="text-xs text-stone-500">Zahme Wildschweine, heulende Schakale & seltene Mönchsrobben.</div>
+                        </div>
+                        <div class="bg-white p-3 rounded shadow">
+                            <div class="text-2xl mb-1">&#129413;</div>
+                            <div class="text-sm font-bold">Vögel</div>
+                            <div class="text-xs text-stone-500">Steinadler am Gipfel, Eleonorenfalken & Nachtigallen.</div>
+                        </div>
+                        <div class="bg-white p-3 rounded shadow">
+                            <div class="text-2xl mb-1">&#127744;</div>
+                            <div class="text-sm font-bold">Wetter</div>
+                            <div class="text-xs text-stone-500">Im Juni extreme Hitze (Fels-Speicher) und plötzliche "Meltemi" Winde.</div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+        </div>
+    </main>
+
+    <script>
+        // Data for Dynamic Updates
+        const timelineData = {
+            sunset: {
+                icon: "&#127769;",
+                title: "Das theologische Zifferblatt",
+                text: "Der Tag beginnt auf dem Athos nicht um Mitternacht, sondern organisch mit dem Sonnenuntergang. Dies entspringt der Genesis: 'Und es ward Abend und es ward Morgen: ein Tag.' Die mechanischen Uhren in den Türmen werden wöchentlich manuell nachjustiert, damit die Zeiger genau dann 12:00 Uhr anzeigen, wenn die Sonne in der Ägäis versinkt."
+            },
+            night: {
+                icon: "&#128276;",
+                title: "Das Wecken & Der Kanonas",
+                text: "Zwischen 1:00 und 3:00 Uhr nachts ertönt das Talanton (Holzbrett). Vor dem Gottesdienst betet jeder Mönch isoliert in seiner dunklen Zelle das Jesusgebet am Komboskini und verrichtet zermürbende Metanoien (tiefe Verbeugungen), um den Verstand in das Herz hinabsteigen zu lassen (Hesychasmus)."
+            },
+            liturgy: {
+                icon: "&#128168;",
+                title: "Liturgie im Katholikon",
+                text: "Das Katholikon wird nur von flackerndem Bienenwachs und Silberlampen erhellt, die Luft ist schwer von Myrrhe und Weihrauch. Der stundenlange byzantinische Wechselgesang der Chöre geht in die Eucharistie über. Bei einer Agrypnia (Allnachtwache) dauert dies 12-15 Stunden ununterbrochen."
+            },
+            work: {
+                icon: "&#128736;",
+                title: "Diakonien (Arbeit) & Arsenades",
+                text: "Nach der ermüdenden Liturgie folgt harte Arbeit (Diakonima) in absolutem Gehorsam. Vom Bibliothekar bis zum Maultiertreiber. Eine besonders raue Rolle spielen die Arsenades (Seemönche), die fernab der Kirche am stürmischen Hafenhaus schwere Lasten entladen und Netze flicken."
+            },
+            noon: {
+                icon: "&#9728;",
+                title: "Der Mittagsdämon (Acedia)",
+                text: "Die plötzliche Stille provoziert den 'Mittagsdämon'. Eine spirituelle Trägheit und tiefe Langeweile schlägt in der heißen, monotonen Mittagszeit zu. Technologie (Smartphones, Internet) ist strengstens verboten, da sie eine billige Dopamin-Flucht vor der heilsamen Konfrontation mit sich selbst bieten würde."
+            }
+        };
+
+        const archData = {
+            mauer: {
+                title: "Außenmauern & Sachnisia",
+                text: "In den massiven, meterdicken unteren Stockwerken gibt es überhaupt keine Fenster, nur schmale Schießscharten. Erst in schwindelerregender Höhe öffnen sich die Mauern, wo die charakteristischen hölzernen Balkone (*Sachnisia*) pittoresk und mutig über den Abgrund hängen, fernab von feindlichen Leitern."
+            },
+            tor: {
+                title: "Das Torhaus (Pylon)",
+                text: "Es gibt meist nur einen winzigen, tiefen Zugang, der bei Sonnenuntergang eisern verschlossen wird. Der Tunnel ist scharf abgewinkelt, um Rammböcken die Wucht zu nehmen. In der Gewölbedecke verbirgt sich oft die Pechnase (Zematistra), durch die kochendes Wasser oder Öl auf Belagerer gegossen wurde."
+            },
+            katholikon: {
+                title: "Katholikon & Hof",
+                text: "Die tiefrote Hauptkirche steht in der Mitte des oft düsteren, extrem engen Hofes. Architektonisch eine Kreuzkuppelkirche mit seitlichen Ausbuchtungen für die stehenden byzantinischen Chöre. Eingemauerte leere Tonkrüge in den Kuppeln sorgen für eine schwebende, perfekte Akustik."
+            },
+            phiale: {
+                title: "Die Phiale",
+                text: "Direkt vor dem Westeingang der Kirche befindet sich ein prachtvoller byzantinischer Marmorbrunnen unter einem bemalten Kuppeldach. Hier wird traditionell am Fest der Theophanie das Wasser feierlich geweiht."
+            },
+            pyrgos: {
+                title: "Der Wehrturm (Pyrgos)",
+                text: "Der massive 'Keep'. Fiel die Mauer, zogen sich die Mönche über hölzerne Zugbrücken mit den heiligsten Ikonen und Manuskripten hierhin zurück. Die Türme besaßen eigene Zisternen und Kapellen, um die Liturgie selbst bei monatelangen Belagerungen aufrechterhalten zu können."
+            }
+        };
+
+        // Navigation Logic
+        function navigate(pageId) {
+            document.querySelectorAll('section').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById('sec-' + pageId).classList.remove('hidden');
+            document.getElementById('nav-' + pageId).classList.add('active');
+
+            if (pageId === 'diet' && !window.chartInitialized) {
+                initChart();
+                window.chartInitialized = true;
+            }
+        }
+
+        // Timeline Update
+        function updateTimeline(key) {
+            document.querySelectorAll('.timeline-item').forEach(el => el.classList.remove('active'));
+            document.getElementById('time-' + key).classList.add('active');
+
+            const contentBlock = document.getElementById('timeline-content');
+            contentBlock.style.opacity = 0;
+            setTimeout(() => {
+                contentBlock.innerHTML = `
+                    <div class="text-center mb-6 text-6xl">${timelineData[key].icon}</div>
+                    <h3 class="text-2xl font-serif font-bold mb-4 text-center">${timelineData[key].title}</h3>
+                    <p class="text-stone-700 leading-relaxed text-center">${timelineData[key].text}</p>
+                `;
+                contentBlock.style.opacity = 1;
+                contentBlock.style.transition = 'opacity 0.3s ease-in-out';
+            }, 150);
+        }
+
+        // Architecture Update
+        function updateArchitecture(key) {
+            document.querySelectorAll('.arch-element').forEach(el => el.classList.remove('active'));
+            document.getElementById('arch-' + key).classList.add('active');
+
+            const descBlock = document.getElementById('arch-description');
+            descBlock.style.opacity = 0;
+            setTimeout(() => {
+                descBlock.innerHTML = `
+                    <h3 class="text-xl font-bold mb-3 text-stone-800">${archData[key].title}</h3>
+                    <p class="text-stone-600 leading-relaxed">${archData[key].text}</p>
+                `;
+                descBlock.style.opacity = 1;
+                descBlock.style.transition = 'opacity 0.3s ease-in-out';
+            }, 150);
+        }
+
+        // Toggle Recipe
+        function toggleRecipe() {
+            const recipe = document.getElementById('recipe-content');
+            if (recipe.classList.contains('hidden')) {
+                recipe.classList.remove('hidden');
+            } else {
+                recipe.classList.add('hidden');
+            }
+        }
+
+        // Chart Initialization (Chart.js)
+        function initChart() {
+            const ctx = document.getElementById('fastingChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Strikte Fastentage (Wasser, Kein Öl/Fleisch/Milch)', 'Normale Tage (Öl, Käse, Wein)', 'Festtage (Fisch)'],
+                    datasets: [{
+                        data: [200, 150, 15], 
+                        backgroundColor: [
+                            '#44403c', 
+                            '#b45309', 
+                            '#1d4ed8'  
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '60%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { family: "'Open Sans', sans-serif" },
+                                color: '#44403c'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ' ' + context.label + ': ~' + context.raw + ' Tage';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

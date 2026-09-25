@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Heiliger Berg Athos | Die autonome Mönchsrepublik & Klöster</title>
+  
+  <!-- PWA & Mobile Metadaten -->
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#c5a059">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Berg Athos">
+  
+  <!-- Favicons & Icons -->
+  <link rel="icon" type="image/svg+xml" href="./assets/icons/favicon.svg">
+  <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.svg">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="./css/portal.css">
+</head>
+<body>
+
+  <!-- Obere Navigationsleiste -->
+  <nav class="top-bar">
+    <a href="./index.html" class="brand">
+      <img src="./assets/icons/favicon.svg" alt="Athos Kreuz & Berg Wappen">
+      <span class="brand-text">Berg Athos</span>
+    </a>
+    
+    <div class="top-actions">
+      <!-- PWA Status / Offline Badge -->
+      <div class="status-badge" id="statusBadge" title="Status der Offline-Verfügbarkeit">
+        <span class="status-dot"></span>
+        <span id="statusText">Offline-bereit</span>
+      </div>
+      
+      <!-- PWA Install Button -->
+      <button class="install-btn" id="installBtn" aria-label="Web-App auf dem Gerät installieren">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        App installieren
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Header -->
+  <header class="hero">
+    <img src="./assets/icons/favicon.svg" alt="Byzantinisches Kreuz" class="hero-cross">
+    <h1>Heiliger Berg Athos</h1>
+    <p class="tagline">Ἅγιον Ὄρος • Der Garten der Gottesmutter</p>
+    <p class="description">
+      Zentrales Portal zur über 1000-jährigen Geschichte, Architektur, sakralen Kunst und geistigen Tradition 
+      der autonomen orthodoxen Mönchsrepublik auf der Chalkidiki-Halbinsel.
+    </p>
+
+    <!-- Suchleiste & Filterzentrum -->
+    <div class="search-container">
+      <div class="search-input-wrapper">
+        <span class="search-icon">🔍</span>
+        <input 
+          type="search" 
+          id="searchInput" 
+          class="search-input" 
+          placeholder="Suche nach Kloster, Rang, Gründer, Jahrhundert oder Region..."
+          autocomplete="off"
+        >
+        <button class="clear-search-btn" id="clearSearch" aria-label="Suche leeren">✕</button>
+      </div>
+
+      <!-- Filter Buttons / Kategorien -->
+      <div class="filter-tabs">
+        <button class="filter-btn active" data-filter="all">Alle Einträge</button>
+        <button class="filter-btn" data-filter="kloster">Hauptklöster</button>
+        <button class="filter-btn" data-filter="suedwest">Südwestküste</button>
+        <button class="filter-btn" data-filter="kultur">Geschichte & Kultur</button>
+        <button class="filter-btn" data-filter="pilger">Pilger-Leitfäden</button>
+        <button class="filter-btn" data-filter="medien">Medien & Audio</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Ergebnis-Zähler -->
+  <div class="results-summary">
+    <span>Gefundene Einträge: <strong id="visibleCount">14</strong> von <span id="totalCount">14</span></span>
+    <span>PWA Web-App • Offline-fähig</span>
+  </div>
+
+  <!-- Hauptbereich: Raster der Klöster & Spezialthemen -->
+  <main class="main-content">
+    <div class="cards-grid" id="cardsGrid">
+
+      <!-- Simonos Petras -->
+      <article 
+        class="athos-card" 
+        data-category="kloster suedwest" 
+        data-region="Südwestküste"
+        data-title="Kloster Simonos Petras Simonopetra"
+        data-summary="Spektakuläre Felsenburg auf einer 330 Meter hohen Klippe über dem Meer, gegründet im 13. Jahrhundert vom Heiligen Simon."
+        data-keywords="13 Simonopetra Felsen Klippe Johannes Theologe 1257 Westküste"
+      >
+        <div class="card-header-banner">
+          <span class="rank-badge">Rang #13</span>
+          <span class="region-tag">🌊 Südwestküste</span>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title">Simonos Petras</h2>
+          <small class="card-greek-title">Μονή Σίμωνος Πέτρας</small>
+          <div class="card-facts">
+            <span>⏳ Gegründet: ~1257</span>
+            <span>⛪ Hl. Simon & Johannes der Theologe</span>
+          </div>
+          <p class="card-summary">
+            Das architektonisch kühnste Kloster auf Athos: Mehrstöckige Holzbalkone und steile Steinmauern thronen 
+            wie ein tibetischer Palast auf einem monolithischen Felssporn über dem Ägäischen Meer.
+          </p>
+          <div class="card-footer">
+            <span class="meta">Architektur & Dossier</span>
+            <a href="./pages/simonos-petras.html" class="card-btn">Dossier öffnen →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Dionysiou -->
+      <article 
+        class="athos-card" 
+        data-category="kloster suedwest" 
+        data-region="Südwestküste"
+        data-title="Kloster Dionysiou"
+        data-summary="Wehrhafte Felsenfestung gewidmet Johannes dem Täufer, erbaut auf einem schroffen Kliff mit berühmten Wandmalereien."
+        data-keywords="5 Dionysiou Festung Klippe Johannes Täufer 1375 Alexios III Trapezunt"
+      >
+        <div class="card-header-banner">
+          <span class="rank-badge">Rang #5</span>
+          <span class="region-tag">🌊 Südwestküste</span>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title">Dionysiou</h2>
+          <small class="card-greek-title">Μονή Διονυσίου</small>
+          <div class="card-facts">
+            <span>⏳ Gegründet: 1375</span>
+            <span>⛪ Enthauptung Johannes des Täufers</span>
+          </div>
+          <p class="card-summary">
+            Eindrucksvolle Festung auf einem 80 Meter hohen Felsen über einer wilden Bucht. Berühmt für ihre 
+            apokalyptischen Kretischen Fresken, kostbare Handschriften und die Förderung durch Kaiser Alexios III.
+          </p>
+          <div class="card-footer">
+            <span class="meta">Geschichte & Fresken</span>
+            <a href="./pages/dionysiou.html" class="card-btn">Dossier öffnen →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Grigoriu -->
+      <article 
+        class="athos-card" 
+        data-category="kloster suedwest" 
+        data-region="Südwestküste"
+        data-title="Kloster Grigoriu Gregoriou"
+        data-summary="Direkt an den Wellenbrechern des Meeres erbautes Kloster, gewidmet dem Heiligen Nikolaus von Myra."
+        data-keywords="17 Grigoriu Gregoriou Nikolaus Meer Küste 14. Jahrhundert"
+      >
+        <div class="card-header-banner">
+          <span class="rank-badge">Rang #17</span>
+          <span class="region-tag">🌊 Südwestküste</span>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title">Grigoriu</h2>
+          <small class="card-greek-title">Μονή Οσίου Γρηγορίου</small>
+          <div class="card-facts">
+            <span>⏳ Gegründet: 14. Jh.</span>
+            <span>⛪ Heiliger Nikolaus</span>
+          </div>
+          <p class="card-summary">
+            Harmonisch an der Wasserlinie der felsigen Küste gelegen. Bekannt für seine lebendige monastische 
+            Liturgie, missionarische Ausstrahlung und die Ikone der Muttergottes Galaktotrophousa.
+          </p>
+          <div class="card-footer">
+            <span class="meta">Monastisches Leben</span>
+            <a href="./pages/grigoriu.html" class="card-btn">Dossier öffnen →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Hilandar -->
+      <article 
+        class="athos-card" 
+        data-category="kloster kultur" 
+        data-region="Nordost / Binnenland"
+        data-title="Kloster Hilandar Serbisch"
+        data-summary="Das serbisch-orthodoxe geistliche Zentrum auf dem Athos, gestiftet vom Fürsten Stefan Nemanja und dem Hl. Sava."
+        data-keywords="4 Hilandar Chilandar Serbisch Nemanja Sava 1198 Dreihändige Gottesmutter"
+      >
+        <div class="card-header-banner">
+          <span class="rank-badge">Rang #4</span>
+          <span class="region-tag">🌲 Binnenland / Nordost</span>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title">Hilandar</h2>
+          <small class="card-greek-title">Μονή Χιλανδαρίου • Манастир Хиландар</small>
+          <div class="card-facts">
+            <span>⏳ Gegründet: 1198</span>
+            <span>⛪ Darstellung der Gottesmutter</span>
+          </div>
+          <p class="card-summary">
+            Das spirituelle Herz Serbiens mit reicher Schatzkammer, der weltberühmten wundertätigen Ikone der 
+            Dreihändigen Gottesmutter (Bogorodica Trojeručica) und jahrhundertealter Buchmalkunst.
+          </p>
+          <div class="card-footer">
+            <span class="meta">Kulturerbe & Serbien</span>
+            <a href="./pages/hilandar.html" class="card-btn">Dossier öffnen →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Rossikon / St. Panteleimon -->
+      <article 
+        class="athos-card" 
+        data-category="kloster kultur suedwest" 
+        data-region="Südwestküste"
+        data-title="Kloster Rossikon Sankt Panteleimon Russisch"
+        data-summary="Das monumentale russische Kloster mit grünen Zwiebelkuppeln und der zweitgrößten Glocke der Welt."
+        data-keywords="19 Rossikon Panteleimon Russisch Zwiebelturm Glocke 1169 Tsarenreich"
+      >
+        <div class="card-header-banner">
+          <span class="rank-badge">Rang #19</span>
+          <span class="region-tag">🌊 Südwestküste</span>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title">St. Panteleimon (Rossikon)</h2>
+          <small class="card-greek-title">Μονή Αγίου Παντελεήμονος • Россикон</small>
+          <div class="card-facts">
+            <span>⏳ Ursprung: 11. Jh. / 1812</span>
+            <span>⛪ Hl. Großmärtyrer Panteleimon</span>
+          </div>
+          <p class="card-summary">
+            Eindrucksvolle Palastarchitektur direkt an der Küste. Eine autonome Stadt im Kleinen, die einst 
+            über 2.000 Mönche beherbergte, mit majestätischen Glockengeläuten und byzantinisch-russischer Ästhetik.
+          </p>
+          <div class="card-footer">
+            <span class="meta">Russische Dimension</span>
+            <a href="./pages/rossikon.html" class="card-btn">Dossier öffnen →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Agios Pavlos -->
+      <article 
+        class="athos-card" 
+        data-category="kloster suedwest" 
+        data-region="Südwestküste"
+        data-title="Kloster Agios Pavlos Heiliger Paulus"
+        data-summary="Mächtiges Bollwerk in einer Schlucht unmittelbar am Fuße der steil aufragenden Marmorspitze des Athos."
+        data-keywords="18 Agios Pavlos Paulus Gaben der Weisen Gipfel 10. Jahrhundert"
+      >
+        <div class="card-header-banner">
+          <span class="rank-badge">Rang #18</span>
+          <span class="region-tag">⛰️ Fuße des Berges</span>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title">Agios Pavlos</h2>
+          <small class="card-greek-title">Μονή Αγίου Παύλου</small>
+          <div class="card-facts">
+            <span>⏳ Gegründet: 10. Jh.</span>
+            <span>⛪ Darstellung des Herrn</span>
+          </div>
+          <p class="card-summary">
+            Dramatisch in eine tiefe Schlucht gebaut, unterhalb der 2.033 m hohen Athos-Spitze. Hier werden die 
+            Gaben der Weisen aus dem Morgenland (Gold, Weihrauch und Myrrhe) als kostbare Reliquien gehütet.
+          </p>
+          <div class="card-footer">
+            <span class="meta">Geschichte & Abt</span>
+            <a href="./pages/agios-pavlos.html" class="card-btn">Dossier öffnen →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Skete Andreas -->
+      <article 
+        class="athos-card" 
+        data-category="kloster kultur" 
+        data-region="Binnenland / Karyes"
+        data-title="Skete des Heiligen Andreas Serai Karyes"
+        data-summary="Monumentale Skete nahe der Hauptstadt Karyes mit der zweitgrößten orthodoxen Kathedrale nach der Hagia Sophia."
+        data-keywords="Skete Andreas Karyes Kathedrale Serai Monumental"
+      >
+        <div class="card-header-banner">
+          <span class="rank-badge theme-badge">Skete (Karyes)</span>
+          <span class="region-tag">🏛️ Zentrum Karyes</span>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title">Skete des Hl. Andreas</h2>
+          <small class="card-greek-title">Σκήτη Αγίου Ανδρέα (Σεράι)</small>
+          <div class="card-facts">
+            <span>⏳ Gegründet: 1849</span>
+            <span>⛪ Apostel Andreas</span>
+          </div>
+          <p class="card-summary">
+            Das sogenannte "Serai" besticht durch seinen gewaltigen Kirchenbau, der von weitem sichtbar ist. 
+            Untersteht dem Kloster Vatopedi und repräsentiert die Blütezeit des 19. Jahrhunderts.
+          </p>
+          <div class="card-footer">
+            <span class="meta">Architektur & Rang</span>
+            <a href="./pages/skete-andreas.html" class="card-btn">Dossier öffnen →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Großes Kompendium aller Klöster -->
+      <article 
+        class="athos-card" 
+        data-category="kloster kultur" 
+        data-region="Gesamter Athos"
+        data-title="Großes Kompendium der 20 Klöster Rangordnung"
+        data-summary="Detaillierte Übersicht über alle 20 souveränen Hauptklöster in ihrer protokollarischen Hierarchie von Megisti Lavra bis Konstamonitou."
+        data-keywords="Kompendium alle 20 Klöster Rangordnung Hierarchie Lavra Vatopedi Iviron"
+      >
+        <div class="card-header-banner">
+          <span class="rank-badge theme-badge">Gesamtübersicht</span>
+          <span class="region-tag">📜 Die 20 Klöster</span>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title">Das Klöster-Kompendium</h2>
+          <small class="card-greek-title">Ἡ Ἱερὰ Κοινότης • Die Heilige Gemeinschaft</small>
+          <div class="card-facts">
+            <span>🏛️ 20 Souveräne Klöster</span>
+            <span>⚖️ Typikon & Autonomie</span>
+          </div>
+          <p class="card-summary">
+            Umfassende tabellarische und historische Einordnung aller zwanzig Klöster, ihrer Patronate, 
+            Gründungszeiten, Feste und ihrer Rolle in der Athos-Verfassung.
+          </p>
+          <div class="card-footer">
+            <span class="meta">Nachschlagewerk</span>
+            <a href="./pages/kloester-kompendium.html" class="card-btn">Kompendium öffnen →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Byzanz & Griechischer Einfluss -->
+      <article 
+        class="athos-card" 
+        data-category="kultur" 
+        data-region="Historisch"
+        data-title="Byzanz und der griechische Einfluss Chrysobullen Kaiser"
+        data-summary="Die Wiege des organisierten athonitischen Mönchtums unter Kaiser Nikephoros Phokas und dem Hl. Athanasios."
+        data-keywords="Byzanz Griechisch Kaiser Phokas Lavra Goldene Bulle Geschichte"
+      >
+        <div class="card-header-banner">
+          <span class="rank-badge theme-badge">Historie & Byzanz</span>
+          <span class="region-tag">👑 Kaiserreich</span>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title">Byzantinisches Erbe</h2>
+          <small class="card-greek-title">Βυζαντινή Κληρονομιά</small>
+          <div class="card-facts">
+            <span>📜 Chrysobullen & Siegel</span>
+            <span>🏛️ Konstantinopel</span>
+          </div>
+          <p class="card-summary">
+            Wie die byzantinischen Basileis dem Heiligen Berg seine einzigartigen Privilegien verliehen 
+            und die theologische Blüte des Hesychasmus (Gregor Palamas) den Athos prägte.
+          </p>
+          <div class="card-footer">
+            <span class="meta">Theologie & Dynastie</span>
+            <a href="./pages/byzanz-griechischer-einfluss.html" class="card-btn">Abhandlung lesen →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Russischer Einfluss Dossier -->
+      <article 
+        class="athos-card" 
+        data-category="kultur" 
+        data-region="Historisch"
+        data-title="Russischer Einfluss auf den Heiligen Berg Zaren Diplomatie"
+        data-summary="Spannungsfeld zwischen Diplomatie, Glaubenseifer, Zarenfinanzierung und der Suche nach spiritueller Führung."
+        data-keywords="Russland Tsaren Panteleimon Diplomatie Onomatodoxie Kultur"
+      >
+        <div class="card-header-banner">
+          <span class="rank-badge theme-badge">Kultur & Geopolitik</span>
+          <span class="region-tag">🇷🇺 Slawisches Erbe</span>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title">Russischer Einfluss</h2>
+          <small class="card-greek-title">Русское присутствие на Афоне</small>
+          <div class="card-facts">
+            <span>🏛️ 19. & 20. Jahrhundert</span>
+            <span>🕯️ Siluan vom Athos</span>
+          </div>
+          <p class="card-summary">
+            Die historische Rolle russischer Pilgerströme, kaiserlicher Förderungen sowie theologische 
+            Debatten um das Imjaslavie (Verehrung des göttlichen Namens) bis in die Neuzeit.
+          </p>
+          <div class="card-footer">
+            <span class="meta">Historische Analyse</span>
+            <a href="./pages/rossikon-russischer-einfluss.html" class="card-btn">Dossier öffnen →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Bulgarischer & Moldawischer Einfluss -->
+      <article 
+        class="athos-card" 
+        data-category="kultur" 
+        data-region="Historisch"
+        data-title="Bulgarischer und Moldawischer Einfluss Zografou Fürstentümer"
+        data-summary="Das Kloster Zografou und die großzügigen Stiftungen der moldawischen und walachischen Woiwoden."
+        data-keywords="Bulgarien Moldawien Walachei Zografou Georg Stefan der Große"
+      >
+        <div class="card-header-banner">
+          <span class="rank-badge theme-badge">Balkan & Donaufürstentümer</span>
+          <span class="region-tag">🇧🇬 Zografou & Moldau</span>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title">Bulgarien & Moldawien</h2>
+          <small class="card-greek-title">Манастир Зограф • Zografou</small>
+          <div class="card-facts">
+            <span>⛪ Hl. Georg der Maler</span>
+            <span>🛡️ Stefan der Große</span>
+          </div>
+          <p class="card-summary">
+            Die Rettung und Erneuerung vieler Athos-Klöster durch moldauische Fürsten nach dem Fall von Byzanz, 
+            sowie das literarische Wirken des Mönchs Paisij von Hilandar.
+          </p>
+          <div class="card-footer">
+            <span class="meta">Stiftungen & Dokumente</span>
+            <a href="./pages/zografou-bulgarisch-moldawisch.html" class="card-btn">Dossier öffnen →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Geografie & Halbinsel Athos -->
+      <article 
+        class="athos-card" 
+        data-category="pilger" 
+        data-region="Geografie"
+        data-title="Geografie und Halbinsel Athos Topografie Wege Natur"
+        data-summary="Naturräume, alpine Steilküsten, dichte Kastanienwälder, Klimagegebenheiten und Orientierung auf der 50 km langen Halbinsel."
+        data-keywords="Geografie Halbinsel Natur Chalkidiki Berg Wandern Wege Daphni Karyes"
+      >
+        <div class="card-header-banner">
+          <span class="rank-badge pilgrim-badge">Geografie & Routen</span>
+          <span class="region-tag">🧭 50 km Landzunge</span>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title">Halbinsel Athos</h2>
+          <small class="card-greek-title">Γεωγραφία & Τοπίο</small>
+          <div class="card-facts">
+            <span>🏔️ 2.033 m Gipfelhöhe</span>
+            <span>⛵ Hafen Daphni</span>
+          </div>
+          <p class="card-summary">
+            Topografischer Leitfaden über den östlichsten Finger der Chalkidiki: Steilwände am Athos-Massiv, 
+            Kastanienwälder im Norden, antike Pfade und Schiffsanleger (Arsanades).
+          </p>
+          <div class="card-footer">
+            <span class="meta">Landschaft & Wege</span>
+            <a href="./pages/athos-halbinsel.html" class="card-btn">Geografie erkunden →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Interaktiver Pilgerleitfaden -->
+      <article 
+        class="athos-card" 
+        data-category="pilger" 
+        data-region="Pilgerreise"
+        data-title="Interaktiver Pilgerleitfaden Diamonitirion Regeln Anreise"
+        data-summary="Praktischer Ratgeber für Pilger: Genehmigungsverfahren, Diamonitirion-Visum, Fährzeiten, Verhalten und Übernachtung in Klöstern."
+        data-keywords="Leitfaden Pilger Diamonitirion Visum Ouranoupoli Fähre Regeln Gastfreundschaft"
+      >
+        <div class="card-header-banner">
+          <span class="rank-badge pilgrim-badge">Pilgerführer</span>
+          <span class="region-tag">📋 Vorbereitung</span>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title">Pilger-Leitfaden</h2>
+          <small class="card-greek-title">Ὁδηγὸς Προσκυνητοῦ</small>
+          <div class="card-facts">
+            <span>📜 Diamonitirion Visum</span>
+            <span>🚢 Fähre Ouranoupoli</span>
+          </div>
+          <p class="card-summary">
+            Alle wesentlichen Informationen für die Reisevorbereitung: Beantragung des Pilgervisums, 
+            Verhalten im Katholikon, monastische Zeitrechnung (byzantinische Uhrzeit) und Übernachtung.
+          </p>
+          <div class="card-footer">
+            <span class="meta">Praxis & Vorbereitung</span>
+            <a href="./pages/interaktiver-leitfaden.html" class="card-btn">Leitfaden öffnen →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Podcast & Meditation -->
+      <article 
+        class="athos-card" 
+        data-category="medien" 
+        data-region="Multimedia"
+        data-title="Podcast Athos Audio Pilgerreise Meditation Glocken"
+        data-summary="Audio-Episoden, Glockengeläut, byzantinische Mönchsgesänge und akustische Impressionen der Halbinsel der Stille."
+        data-keywords="Podcast Audio MP3 Gesang Glocken Meditation Grigoriou"
+      >
+        <div class="card-header-banner">
+          <span class="rank-badge" style="background: linear-gradient(135deg, #ec4899, #be185d); color: #fff;">Audio & Podcast</span>
+          <span class="region-tag">🎙️ Klänge & Stimmen</span>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title">Athos Podcast</h2>
+          <small class="card-greek-title">Φωνὲς τοῦ Ἁγίου Ὄρους</small>
+          <div class="card-facts">
+            <span>🎧 Audio-Episoden</span>
+            <span>🔔 Semantron & Glocken</span>
+          </div>
+          <p class="card-summary">
+            Höre in die akustische Welt des Heiligen Berges hinein: Das Schlagen des hölzernen Semantron 
+            (Talanto) vor Mitternacht, byzantinische Hymnen und Betrachtungen zum Leben in der Ewigkeit.
+          </p>
+          <div class="card-footer">
+            <span class="meta">Audiobeiträge</span>
+            <a href="./pages/podcast-athos.html" class="card-btn">Podcast hören →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Leere Suchergebnis-Anzeige -->
+      <div class="empty-state" id="emptyState">
+        <h3>Kein Kloster oder Thema gefunden</h3>
+        <p>Probiere einen anderen Suchbegriff (z. B. "Simon", "Küste", "Byzanz" oder "Visum").</p>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Fußzeile -->
+  <footer>
+    <p class="footer-quote">
+      „Der Berg Athos ist kein Museum der Vergangenheit, sondern eine lebendige Arche der Ewigkeit mitten in unserer Zeit.“
+    </p>
+    <div class="footer-meta">
+      <p>Berg Athos Informations-Portal & PWA • Autonome Mönchsrepublik Chalkidiki</p>
+      <p style="margin-top: 0.5rem; opacity: 0.7; font-size: 0.85rem;">
+        Konzipiert als autarke Progressive Web App (PWA) – direkt lauffähig & offline nutzbar auf Pilgerpfaden.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Controller Script -->
+  <script src="./js/portal.js"></script>
+</body>
+</html>

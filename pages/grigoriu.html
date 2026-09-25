@@ -1,0 +1,545 @@
+﻿<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interaktives Dossier: Kloster Grigoriu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Chart Container Styling according to strict requirements */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        /* Custom timeline line */
+        .timeline-track {
+            position: relative;
+        }
+        .timeline-track::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background-color: #d6d3d1; /* stone-300 */
+            transform: translateY(-50%);
+            z-index: 0;
+        }
+        /* Hide scrollbar for tab container */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* Details marker styling */
+        details > summary {
+            list-style: none;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+    </style>
+    <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
+    <script src="../js/nav-injector.js" defer></script>
+</head>
+<body class="bg-stone-50 text-stone-800 font-serif leading-relaxed antialiased">
+
+    <!-- Chosen Palette: Warm Monastic Neutrals. Backgrounds in stone-50/100 to simulate parchment/stone. Text in stone-800 for readability. Accents in amber-700 (orthodox gold) and red-900 (byzantine red). -->
+    
+    <!-- Application Structure Plan: 
+         1. Hero Section: Establishes the subject with strong typography and atmosphere.
+         2. Dashboard (Eckdaten): Quick, scannable facts (founded, rank, monks) using a grid.
+         3. Context Chart: Interactive Chart.js bar chart placing Grigoriu in the demographic context of other Athos monasteries.
+         4. Interactive Timeline: A horizontal, click-driven timeline allowing users to explore historical epochs at their own pace without scrolling endlessly.
+         5. Cultural Deep Dive (Tabs): Groups qualitative data (Architecture, Library, Relics) into tabs to avoid information overload and encourage active discovery.
+         6. FAQ: Expandable accordion for common questions.
+         Rationale: This structure moves the user logically from high-level orientation down into specific, interactive historical and cultural details, maximizing engagement. -->
+    
+    <!-- Visualization & Content Choices: 
+         - Stats Grid: Goal = Inform quickly. Method = CSS Grid. Interaction = Hover elevation. Justification = Best for discrete key metrics.
+         - Population Comparison: Goal = Compare. Method = Horizontal Bar Chart (Chart.js Canvas). Interaction = Tooltips. Justification = Clearly shows hierarchical and demographic standing against peers (NO SVG).
+         - History: Goal = Change/Process. Method = JS-driven Horizontal Timeline. Interaction = Click nodes to update content area. Justification = Condenses a long history into a focused, user-controlled interactive component.
+         - Culture: Goal = Organize. Method = JS Tabs. Interaction = Click to toggle visibility. Justification = Separates distinct qualitative topics cleanly. -->
+    
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-stone-100/95 backdrop-blur-sm border-b border-stone-300 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="text-xl font-bold text-red-900 tracking-wider flex items-center gap-2">
+                    🏛️ <span class="uppercase">Grigoriu</span>
+                </div>
+                <div class="hidden md:flex space-x-6 font-sans text-sm font-semibold text-stone-600">
+                    <a href="#uebersicht" class="hover:text-amber-700 transition-colors">ÜBERSICHT</a>
+                    <a href="#kontext" class="hover:text-amber-700 transition-colors">KONTEXT</a>
+                    <a href="#geschichte" class="hover:text-amber-700 transition-colors">GESCHICHTE</a>
+                    <a href="#kultur" class="hover:text-amber-700 transition-colors">KULTUR</a>
+                    <a href="#faq" class="hover:text-amber-700 transition-colors">FAQ</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main itemscope itemtype="https://schema.org/Place">
+        
+        <!-- Hero Section -->
+        <header class="bg-stone-900 text-stone-50 pt-24 pb-20 px-4 border-b-8 border-amber-700 text-center relative overflow-hidden">
+            <div class="max-w-4xl mx-auto relative z-10">
+                <span class="text-amber-500 text-6xl block mb-6 drop-shadow-lg">☦️</span>
+                <h1 class="text-5xl md:text-7xl font-bold mb-4 tracking-tight" itemprop="name">Kloster Grigoriu</h1>
+                <h2 class="text-xl md:text-3xl font-light text-stone-400 italic mb-8">Μονή Οσίου Γρηγορίου</h2>
+                <p class="text-lg md:text-xl max-w-3xl mx-auto text-stone-300 leading-relaxed font-sans" itemprop="description">
+                    Ein historisches orthodoxes Heiligtum an der Südwestküste der Mönchsrepublik Athos. Kühn auf Klippen über der Ägäis erbaut, verbindet es Jahrhunderte byzantinischer Geschichte mit lebendiger Spiritualität und afrikanischer Missionsarbeit.
+                </p>
+                <div class="mt-10">
+                    <a href="#uebersicht" class="inline-block bg-amber-700 hover:bg-amber-600 text-stone-50 font-sans font-bold py-3 px-8 rounded-full transition-colors shadow-lg">
+                        Dossier erkunden ↓
+                    </a>
+                </div>
+            </div>
+            <!-- Decorative background elements (Unicode) -->
+            <div class="absolute top-10 left-10 text-[10rem] text-stone-800 opacity-50 select-none pointer-events-none">⛰️</div>
+            <div class="absolute bottom-10 right-10 text-[10rem] text-stone-800 opacity-50 select-none pointer-events-none">🌊</div>
+        </header>
+
+        <!-- Übersicht / Dashboard -->
+        <section id="uebersicht" class="py-20 px-4 max-w-6xl mx-auto">
+            <div class="mb-12 text-center">
+                <h3 class="text-3xl font-bold text-stone-900 mb-4">Auf einen Blick</h3>
+                <p class="text-stone-600 max-w-2xl mx-auto font-sans text-lg">
+                    Dieser Bereich dient der schnellen Orientierung. Er präsentiert die zentralen demografischen und historischen Kennzahlen des Klosters in einem interaktiven Raster, um einen sofortigen Überblick über die Dimensionen von Grigoriu zu geben.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 font-sans">
+                <!-- Card 1 -->
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-stone-200 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 text-center group">
+                    <div class="text-5xl mb-4 group-hover:scale-110 transition-transform">📜</div>
+                    <div class="text-sm text-stone-400 uppercase tracking-widest font-bold mb-1">Gegründet</div>
+                    <div class="text-3xl font-bold text-stone-800">14. Jhd.</div>
+                    <div class="text-sm text-stone-500 mt-2">ca. 1310 - 1345</div>
+                </div>
+                <!-- Card 2 -->
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-stone-200 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 text-center group">
+                    <div class="text-5xl mb-4 group-hover:scale-110 transition-transform">🏅</div>
+                    <div class="text-sm text-stone-400 uppercase tracking-widest font-bold mb-1">Hierarchie</div>
+                    <div class="text-3xl font-bold text-stone-800">Rang 17</div>
+                    <div class="text-sm text-stone-500 mt-2">von 20 Athos-Klöstern</div>
+                </div>
+                <!-- Card 3 -->
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-stone-200 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 text-center group">
+                    <div class="text-5xl mb-4 group-hover:scale-110 transition-transform">👥</div>
+                    <div class="text-sm text-stone-400 uppercase tracking-widest font-bold mb-1">Bruderschaft</div>
+                    <div class="text-3xl font-bold text-stone-800">~ 70</div>
+                    <div class="text-sm text-stone-500 mt-2">Mönche (aktuell)</div>
+                </div>
+                <!-- Card 4 -->
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-stone-200 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 text-center group">
+                    <div class="text-5xl mb-4 group-hover:scale-110 transition-transform">⚓</div>
+                    <div class="text-sm text-stone-400 uppercase tracking-widest font-bold mb-1">Patrozinium</div>
+                    <div class="text-3xl font-bold text-stone-800 text-balance">Hl. Nikolaus</div>
+                    <div class="text-sm text-stone-500 mt-2">Gedenktag: 6. Dez.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Kontext Chart Section -->
+        <section id="kontext" class="bg-stone-200 py-20 px-4 border-y border-stone-300">
+            <div class="max-w-5xl mx-auto">
+                <div class="mb-12 text-center">
+                    <h3 class="text-3xl font-bold text-stone-900 mb-4">Demografischer Kontext auf Athos</h3>
+                    <p class="text-stone-700 max-w-3xl mx-auto font-sans text-lg">
+                        Dieses interaktive Diagramm visualisiert die geschätzte Anzahl der Mönche in verschiedenen Athonitischen Klöstern. Es dient dazu, Grigoriu (in Rot hervorgehoben) im Verhältnis zu den größten und kleineren Institutionen der Mönchsrepublik zu vergleichen. Fahren Sie mit der Maus über die Balken für genaue Zahlen.
+                    </p>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-md border border-stone-200">
+                    <div class="chart-container">
+                        <canvas id="populationChart"></canvas>
+                    </div>
+                    <p class="text-center text-sm text-stone-500 mt-4 font-sans italic">Daten basieren auf zeitgenössischen Schätzungen zur Einordnung.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Timeline Section -->
+        <section id="geschichte" class="py-20 px-4 max-w-5xl mx-auto">
+            <div class="mb-12 text-center">
+                <h3 class="text-3xl font-bold text-stone-900 mb-4">Interaktive Chronik</h3>
+                <p class="text-stone-600 max-w-3xl mx-auto font-sans text-lg">
+                    Erkunden Sie die historischen Meilensteine des Klosters. Klicken Sie auf die Epochen im Zeitstrahl, um detaillierte Informationen über Gründungen, Zerstörungen und Wiederaufbauphasen zu laden.
+                </p>
+            </div>
+
+            <!-- Timeline Controls -->
+            <div class="mb-12 relative px-8">
+                <div class="timeline-track flex justify-between items-center relative z-10 font-sans">
+                    <!-- Dots generated by JS -->
+                    <div id="timeline-dots" class="flex justify-between w-full relative z-10"></div>
+                </div>
+            </div>
+
+            <!-- Timeline Content Display -->
+            <div id="timeline-content-display" class="bg-white p-8 md:p-12 rounded-2xl shadow-lg border border-stone-200 transition-opacity duration-300 ease-in-out min-h-[250px] flex flex-col justify-center">
+                <div class="text-amber-700 font-bold tracking-widest uppercase mb-2 text-sm font-sans" id="tl-year">14. Jahrhundert</div>
+                <h4 class="text-3xl font-bold text-stone-900 mb-4" id="tl-title">Gründung durch Gregor den Hesychasten</h4>
+                <p class="text-stone-700 text-lg leading-relaxed" id="tl-text">
+                    Das Kloster wurde in der ersten Hälfte des 14. Jahrhunderts vom Heiligen Gregor (Gregorios) gegründet, einem Vertreter des Hesychasmus (spirituelle Ruhe und stilles Gebet). Es wurde auf Felsen direkt am Meer errichtet, was die isolierte und kontemplative Lebensweise der ersten Mönche unterstützte.
+                </p>
+            </div>
+        </section>
+
+        <!-- Cultural Details (Tabs) -->
+        <section id="kultur" class="bg-stone-900 text-stone-50 py-20 px-4">
+            <div class="max-w-5xl mx-auto">
+                <div class="mb-12 text-center">
+                    <h3 class="text-3xl font-bold text-amber-500 mb-4">Architektur, Wissen & Reliquien</h3>
+                    <p class="text-stone-300 max-w-3xl mx-auto font-sans text-lg">
+                        Dieser Abschnitt organisiert die reichhaltigen kulturellen Schätze von Grigoriu. Nutzen Sie die Navigationstasten, um zwischen architektonischen Besonderheiten, dem historischen Buchbestand der Bibliothek und den verehrten Heiligtümern zu wechseln.
+                    </p>
+                </div>
+
+                <div class="font-sans">
+                    <!-- Tab Navigation -->
+                    <div class="flex flex-wrap justify-center gap-4 mb-10">
+                        <button class="tab-btn active px-8 py-3 rounded-full bg-amber-700 text-white font-bold transition-all shadow-lg shadow-amber-900/50 hover:bg-amber-600 ring-2 ring-amber-500 ring-offset-2 ring-offset-stone-900" data-target="architektur">🏰 Architektur</button>
+                        <button class="tab-btn px-8 py-3 rounded-full bg-stone-800 text-stone-300 transition-all hover:bg-stone-700 border border-stone-700" data-target="bibliothek">📖 Bibliothek</button>
+                        <button class="tab-btn px-8 py-3 rounded-full bg-stone-800 text-stone-300 transition-all hover:bg-stone-700 border border-stone-700" data-target="reliquien">✨ Reliquien</button>
+                    </div>
+
+                    <!-- Tab Contents -->
+                    <div id="architektur" class="tab-content bg-stone-800 p-8 md:p-12 rounded-2xl border border-stone-700 shadow-2xl transition-opacity duration-300">
+                        <div class="grid md:grid-cols-2 gap-10 items-center">
+                            <div>
+                                <h4 class="text-3xl font-serif text-amber-400 mb-6">Bauen am Abgrund</h4>
+                                <p class="text-stone-300 mb-6 text-lg leading-relaxed">
+                                    Im Gegensatz zu vielen im Landesinneren gelegenen Klöstern musste sich die Architektur von Grigoriu der extremen Topografie anpassen. Es ist ein Musterbeispiel athonitischer Felsenbauweise.
+                                </p>
+                                <ul class="space-y-4">
+                                    <li class="flex items-start gap-3">
+                                        <span class="text-amber-500 text-xl mt-1">▪</span>
+                                        <p class="text-stone-300"><strong>Die Ochsia (Balkone):</strong> Hölzerne Konstruktionen, die waghalsig über die Klippen und das Meer hinausragen, um den begrenzten Wohnraum zu erweitern.</p>
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <span class="text-amber-500 text-xl mt-1">▪</span>
+                                        <p class="text-stone-300"><strong>Das Katholikon:</strong> Die dem Hl. Nikolaus geweihte Hauptkirche wurde nach dem Brand von 1761 im traditionellen Trikonchos-Stil (drei Konchen) neu errichtet und 1779 reich mit Fresken bemalt.</p>
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <span class="text-amber-500 text-xl mt-1">▪</span>
+                                        <p class="text-stone-300"><strong>Festungscharakter:</strong> Hohe Steinmauern zur Seeseite schützten das Kloster historisch vor Piratenüberfällen.</p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="flex justify-center items-center bg-stone-900/50 rounded-xl p-10 border border-stone-700/50 h-full">
+                                <div class="text-[10rem] drop-shadow-2xl">🌊🏰</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="bibliothek" class="tab-content hidden bg-stone-800 p-8 md:p-12 rounded-2xl border border-stone-700 shadow-2xl transition-opacity duration-300">
+                        <div class="grid md:grid-cols-2 gap-10 items-center">
+                            <div>
+                                <h4 class="text-3xl font-serif text-amber-400 mb-6">Bewahrer des Wissens</h4>
+                                <p class="text-stone-300 mb-8 text-lg leading-relaxed">
+                                    Trotz verheerender Brände in der Vergangenheit (insbesondere 1761), die einen Großteil des ursprünglichen Archivs vernichteten, konnte die Bruderschaft im Laufe der Jahrhunderte eine beachtliche Sammlung liturgischer und historischer Werke rekonstruieren und bewahren.
+                                </p>
+                                <div class="grid grid-cols-2 gap-6">
+                                    <div class="bg-stone-900 p-6 rounded-xl border border-stone-700 text-center">
+                                        <div class="text-4xl font-bold text-amber-500 mb-2">297</div>
+                                        <div class="text-xs text-stone-400 uppercase tracking-widest font-bold">Handschriften & Manuskripte</div>
+                                    </div>
+                                    <div class="bg-stone-900 p-6 rounded-xl border border-stone-700 text-center">
+                                        <div class="text-4xl font-bold text-amber-500 mb-2">~ 6k</div>
+                                        <div class="text-xs text-stone-400 uppercase tracking-widest font-bold">Gedruckte historische Bände</div>
+                                    </div>
+                                </div>
+                                <p class="text-sm text-stone-400 mt-6 italic">
+                                    Das wertvollste Stück ist das sogenannte "Grigoriu-Evangelium", ein kunstvoll illustriertes byzantinisches Manuskript.
+                                </p>
+                            </div>
+                            <div class="flex justify-center items-center bg-stone-900/50 rounded-xl p-10 border border-stone-700/50 h-full">
+                                <div class="text-[10rem] drop-shadow-2xl">📚🕯️</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="reliquien" class="tab-content hidden bg-stone-800 p-8 md:p-12 rounded-2xl border border-stone-700 shadow-2xl transition-opacity duration-300">
+                        <div class="grid md:grid-cols-2 gap-10 items-center">
+                            <div>
+                                <h4 class="text-3xl font-serif text-amber-400 mb-6">Zentrum der Pilgerschaft</h4>
+                                <p class="text-stone-300 mb-6 text-lg leading-relaxed">
+                                    Für orthodoxe Gläubige sind Reliquien eine direkte physische Verbindung zum Göttlichen. Das Kloster Grigoriu beherbergt in aufwendig gearbeiteten Silber- und Goldschreinen einige bedeutende Heiligtümer.
+                                </p>
+                                <ul class="space-y-4">
+                                    <li class="bg-stone-900 p-4 rounded-lg border border-stone-700">
+                                        <strong class="text-amber-500 block mb-1">Hl. Anastasia von Rom</strong>
+                                        <span class="text-stone-300 text-sm">Das Kloster bewahrt bedeutende Teile ihrer Reliquien; sie wird neben dem Hl. Nikolaus als wichtige Beschützerin der Bruderschaft verehrt.</span>
+                                    </li>
+                                    <li class="bg-stone-900 p-4 rounded-lg border border-stone-700">
+                                        <strong class="text-amber-500 block mb-1">Kreuzholzpartikel</strong>
+                                        <span class="text-stone-300 text-sm">Ein kostbares Fragment, das der Tradition nach vom Wahren Kreuz Christi stammt.</span>
+                                    </li>
+                                    <li class="bg-stone-900 p-4 rounded-lg border border-stone-700">
+                                        <strong class="text-amber-500 block mb-1">Die Unversilberten (Kosmas & Damian)</strong>
+                                        <span class="text-stone-300 text-sm">Reliquienteile dieser Heiligen, die als himmlische Ärzte und Heiler angerufen werden.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="flex justify-center items-center bg-stone-900/50 rounded-xl p-10 border border-stone-700/50 h-full">
+                                <div class="text-[10rem] drop-shadow-2xl">👑✨</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="py-20 px-4 bg-stone-100">
+            <div class="max-w-3xl mx-auto">
+                <div class="mb-12 text-center">
+                    <h3 class="text-3xl font-bold text-stone-900 mb-4">Häufig Gestellte Fragen</h3>
+                    <p class="text-stone-600 font-sans text-lg">
+                        Praktische Informationen und theologische Kontexte, gegliedert in ausklappbare Bereiche, um schnell die gesuchten Antworten zu finden.
+                    </p>
+                </div>
+
+                <div class="space-y-4 font-sans">
+                    
+                    <details class="group bg-white rounded-xl shadow-sm border border-stone-200 overflow-hidden cursor-pointer" open>
+                        <summary class="flex justify-between items-center font-bold p-6 text-stone-800 hover:bg-stone-50 transition-colors">
+                            <span class="text-lg">1. Wie kann man das Kloster besuchen?</span>
+                            <span class="transition-transform duration-300 group-open:rotate-180 text-amber-700 text-xl font-bold">▼</span>
+                        </summary>
+                        <div class="p-6 pt-0 text-stone-600 leading-relaxed text-base border-t border-stone-100 mt-2">
+                            <p class="mt-4">Ein Besuch ist nur für Männer möglich, da auf der gesamten Halbinsel Athos das <strong>Avaton</strong> (Zutrittsverbot für Frauen) gilt. Zudem handelt es sich nicht um eine touristische Anlage. Besucher müssen vorab ein offizielles Pilgervisum (Diamonitirion) beim Pilgerbüro in Thessaloniki beantragen und ihren Besuch beim Kloster direkt anmelden. Gäste nehmen an den Gottesdiensten und Mahlzeiten der Mönche teil.</p>
+                        </div>
+                    </details>
+
+                    <details class="group bg-white rounded-xl shadow-sm border border-stone-200 overflow-hidden cursor-pointer">
+                        <summary class="flex justify-between items-center font-bold p-6 text-stone-800 hover:bg-stone-50 transition-colors">
+                            <span class="text-lg">2. Welche Besonderheit zeichnet Grigoriu in der Moderne aus?</span>
+                            <span class="transition-transform duration-300 group-open:rotate-180 text-amber-700 text-xl font-bold">▼</span>
+                        </summary>
+                        <div class="p-6 pt-0 text-stone-600 leading-relaxed text-base border-t border-stone-100 mt-2">
+                            <p class="mt-4">Während viele Athos-Klöster rein kontemplativ ausgerichtet sind, hat Grigoriu unter dem späten Abt Georgios Kapsanis (Abt von 1974 bis 2014) eine starke <strong>äußere Mission</strong> entwickelt. Die Mönche engagieren sich intensiv in Afrika, insbesondere in der Demokratischen Republik Kongo, beim Bau von orthodoxen Kirchen, Schulen und Krankenstationen sowie in der Seelsorge.</p>
+                        </div>
+                    </details>
+
+                    <details class="group bg-white rounded-xl shadow-sm border border-stone-200 overflow-hidden cursor-pointer">
+                        <summary class="flex justify-between items-center font-bold p-6 text-stone-800 hover:bg-stone-50 transition-colors">
+                            <span class="text-lg">3. Warum ist das Kloster dem Hl. Nikolaus geweiht?</span>
+                            <span class="transition-transform duration-300 group-open:rotate-180 text-amber-700 text-xl font-bold">▼</span>
+                        </summary>
+                        <div class="p-6 pt-0 text-stone-600 leading-relaxed text-base border-t border-stone-100 mt-2">
+                            <p class="mt-4">Der Heilige Nikolaus ist in der orthodoxen Kirche der Schutzpatron der Seeleute. Da das Kloster Grigoriu direkt auf den Klippen der Ägäis erbaut wurde und in der Vergangenheit fast ausschließlich über den gefährlichen Seeweg erreichbar war und versorgt werden musste, war die Wahl dieses Schutzpatrons für die maritime Sicherheit der Mönche von existenzieller Bedeutung.</p>
+                        </div>
+                    </details>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-stone-900 text-stone-400 py-10 text-center font-sans text-sm border-t border-stone-800">
+        <p class="mb-2 uppercase tracking-widest font-bold">Dossier: Kloster Grigoriu</p>
+        <p>Erstellt als interaktive Single-Page-Application. Datenstand: Historisch aggregiert.</p>
+    </footer>
+
+    <!-- Interactive Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- 1. Chart.js Implementation (Context Section) ---
+            const chartCtx = document.getElementById('populationChart').getContext('2d');
+            
+            // Data array to populate chart
+            const chartDataValues = [
+                { name: 'Megisti Lavra (Rang 1)', pop: 50, color: '#d6d3d1' }, // stone-300
+                { name: 'Vatopedi (Rang 2)', pop: 120, color: '#d6d3d1' },
+                { name: 'Simonopetra (Rang 13)', pop: 60, color: '#d6d3d1' },
+                { name: 'Kloster Grigoriu (Rang 17)', pop: 70, color: '#b45309' }, // amber-700 (Highlight)
+                { name: 'Konstamonitou (Rang 20)', pop: 40, color: '#d6d3d1' }
+            ];
+
+            new Chart(chartCtx, {
+                type: 'bar',
+                data: {
+                    labels: chartDataValues.map(d => d.name),
+                    datasets: [{
+                        label: 'Anzahl der Mönche (Schätzung)',
+                        data: chartDataValues.map(d => d.pop),
+                        backgroundColor: chartDataValues.map(d => d.color),
+                        borderRadius: 6,
+                        borderSkipped: false,
+                        barPercentage: 0.6,
+                        hoverBackgroundColor: chartDataValues.map(d => d.color === '#b45309' ? '#92400e' : '#a8a29e')
+                    }]
+                },
+                options: {
+                    indexAxis: 'y', // Horizontal bar chart
+                    responsive: true,
+                    maintainAspectRatio: false, // Essential for CSS container control
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(28, 25, 23, 0.9)', // stone-900
+                            titleFont: { family: 'sans-serif', size: 14, weight: 'bold' },
+                            bodyFont: { family: 'sans-serif', size: 14 },
+                            padding: 12,
+                            cornerRadius: 8,
+                            displayColors: false,
+                            callbacks: {
+                                label: (context) => `Ca. ${context.parsed.x} Mönche`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: '#f5f5f4', drawBorder: false }, // stone-100
+                            ticks: { font: { family: 'sans-serif' }, color: '#57534e' },
+                            title: {
+                                display: true,
+                                text: 'Geschätzte Anzahl der Mönche',
+                                color: '#78716c',
+                                font: { family: 'sans-serif', size: 13, weight: 'bold' }
+                            }
+                        },
+                        y: {
+                            grid: { display: false, drawBorder: false },
+                            ticks: {
+                                font: { family: 'sans-serif', weight: 'bold', size: 12 },
+                                color: '#292524'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // --- 2. Interactive Timeline Logic ---
+            const timelineData = [
+                {
+                    year: "14. Jhd.",
+                    title: "Gründung durch Gregor",
+                    text: "Das Kloster wurde in der ersten Hälfte des 14. Jahrhunderts vom Heiligen Gregor (Gregorios) gegründet, einem Vertreter des Hesychasmus (spirituelle Ruhe und stilles Gebet). Es wurde auf Felsen direkt am Meer errichtet, was die isolierte und kontemplative Lebensweise der ersten Mönche unterstützte."
+                },
+                {
+                    year: "1497",
+                    title: "Ausbau unter Stefan dem Großen",
+                    text: "Nach wirtschaftlich schweren Zeiten erlebte das Kloster eine Blüte, als der Woiwode von Moldawien, Stefan der Große, weitreichende Bauarbeiten finanzierte. Diese osteuropäische Schirmherrschaft war über Jahrhunderte überlebenswichtig für viele Athos-Klöster."
+                },
+                {
+                    year: "1761",
+                    title: "Der Große Brand",
+                    text: "Eine verheerende Feuerkatastrophe zerstörte große Teile des Klosters, einschließlich vieler früher Dokumente und Manuskripte in der Bibliothek. Dies stellt eine tiefe Zäsur in der Geschichte von Grigoriu dar."
+                },
+                {
+                    year: "1768 - 1779",
+                    title: "Wiederaufbau des Katholikons",
+                    text: "Mit massiver finanzieller Hilfe (u.a. von moldawischen Fürsten und dem Abt Joachim) wurde das Kloster wieder aufgebaut. Das heutige Hauptkirchengebäude (Katholikon) wurde 1768 errichtet und 1779 mit herrlichen Fresken ausgemalt, die bis heute erhalten sind."
+                },
+                {
+                    year: "20. Jhd.",
+                    title: "Missionsarbeit in Afrika",
+                    text: "Unter der geistlichen Leitung von Abt Georgios (Kapsanis) begann das Kloster eine bemerkenswerte äußere Mission. Mönche von Grigoriu engagieren sich aktiv im Aufbau orthodoxer Gemeinden, Schulen und medizinischer Einrichtungen im Kongo."
+                }
+            ];
+
+            const dotsContainer = document.getElementById('timeline-dots');
+            const displayYear = document.getElementById('tl-year');
+            const displayTitle = document.getElementById('tl-title');
+            const displayText = document.getElementById('tl-text');
+            const displayBox = document.getElementById('timeline-content-display');
+
+            // Generate dots
+            timelineData.forEach((item, index) => {
+                const btn = document.createElement('button');
+                btn.className = `w-10 h-10 rounded-full border-4 border-white flex items-center justify-center font-sans font-bold text-xs transition-all duration-300 z-10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 hover:scale-110 shadow-md ${index === 0 ? 'bg-amber-600 text-white scale-110 shadow-amber-900/40' : 'bg-stone-300 text-stone-600 hover:bg-stone-400'}`;
+                btn.innerText = index + 1;
+                btn.setAttribute('aria-label', `Gehe zu Epoche: ${item.year}`);
+                
+                btn.addEventListener('click', () => {
+                    // Update Active State on Buttons
+                    Array.from(dotsContainer.children).forEach((child, idx) => {
+                        child.className = `w-10 h-10 rounded-full border-4 border-white flex items-center justify-center font-sans font-bold text-xs transition-all duration-300 z-10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 shadow-md hover:scale-110 ${idx === index ? 'bg-amber-600 text-white scale-110 shadow-amber-900/40' : 'bg-stone-300 text-stone-600 hover:bg-stone-400'}`;
+                    });
+
+                    // Update Content with simple fade effect
+                    displayBox.style.opacity = '0';
+                    setTimeout(() => {
+                        displayYear.innerText = item.year;
+                        displayTitle.innerText = item.title;
+                        displayText.innerText = item.text;
+                        displayBox.style.opacity = '1';
+                    }, 200);
+                });
+
+                dotsContainer.appendChild(btn);
+            });
+
+
+            // --- 3. Tab Navigation Logic (Culture Section) ---
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const targetId = btn.getAttribute('data-target');
+
+                    // Reset all buttons
+                    tabBtns.forEach(b => {
+                        b.className = 'tab-btn px-8 py-3 rounded-full bg-stone-800 text-stone-300 transition-all hover:bg-stone-700 border border-stone-700';
+                    });
+                    
+                    // Activate clicked button
+                    btn.className = 'tab-btn active px-8 py-3 rounded-full bg-amber-700 text-white font-bold transition-all shadow-lg shadow-amber-900/50 hover:bg-amber-600 ring-2 ring-amber-500 ring-offset-2 ring-offset-stone-900';
+
+                    // Hide all contents, show target
+                    tabContents.forEach(content => {
+                        if(content.id === targetId) {
+                            content.classList.remove('hidden');
+                            // Small delay for fade in effect
+                            setTimeout(() => { content.style.opacity = '1'; }, 10);
+                        } else {
+                            content.style.opacity = '0';
+                            setTimeout(() => { content.classList.add('hidden'); }, 300); // Wait for transition
+                        }
+                    });
+                });
+            });
+
+            // --- 4. Accordion Exclusive Open Logic (FAQ) ---
+            const detailsElements = document.querySelectorAll('details');
+            detailsElements.forEach(targetDetail => {
+                targetDetail.addEventListener('click', () => {
+                    detailsElements.forEach(detail => {
+                        if (detail !== targetDetail && targetDetail.hasAttribute('open') === false) {
+                            detail.removeAttribute('open');
+                        }
+                    });
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>

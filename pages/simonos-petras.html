@@ -1,0 +1,600 @@
+﻿<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interaktives Dossier: Kloster Simonos Petras</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Tailwind Config for Custom Palette -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        stone: {
+                            50: '#faf9f8',
+                            100: '#f5f4f1',
+                            200: '#e8e5df',
+                            300: '#d5cfc4',
+                            800: '#44403c',
+                            900: '#292524',
+                        },
+                        amber: {
+                            700: '#b45309',
+                            800: '#92400e',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Segoe UI', 'Roboto', 'Helvetica Neue', 'sans-serif'],
+                        serif: ['Georgia', 'Cambria', 'Times New Roman', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            overflow-x: hidden;
+            background-color: #faf9f8;
+            color: #292524;
+        }
+
+        /* Chart Container Requirements */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+
+        /* Timeline Styles */
+        .timeline-btn {
+            transition: all 0.3s ease;
+        }
+        .timeline-btn.active {
+            background-color: #92400e;
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Tab Styles */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .tab-btn {
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            border-bottom-color: #b45309;
+            color: #b45309;
+            font-weight: 600;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f5f4f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d5cfc4;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a29e;
+        }
+    </style>
+    <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
+    <script src="../js/nav-injector.js" defer></script>
+</head>
+<body class="font-sans antialiased text-stone-800 leading-relaxed">
+
+    <!-- Chosen Palette: Warm Monastic Neutrals (Stone, Parchment, Deep Amber/Gold) -->
+    <!-- Application Structure Plan: 
+         1. Hero/Intro (Definition): Sets the majestic tone.
+         2. History (Interactive Timeline): Allows users to step through the dramatic history of the monastery.
+         3. Facts & Data (Dashboard/Chart): Presents quantitative data (elevation, hierarchy) clearly.
+         4. Cultural Context (Tabbed Interface): Explores architecture, music, and the library without overwhelming the page with text.
+         5. FAQ (Accordions): Quick answers to common questions.
+         Rationale: This structure breaks down an encyclopedic topic into digestible, interactive chunks, making learning about a 13th-century monastery engaging and modern. -->
+    <!-- Visualization & Content Choices: 
+         - Bar Chart (Chart.js): Compares altitude of Simonopetra to other monasteries to visualize its unique "hanging" architecture. Justification: Shows scale better than just text.
+         - Timeline (HTML/JS): Interactive narrative of fires and founding. Justification: History is event-driven; timelines encourage step-by-step reading.
+         - Tabs (HTML/JS): Groups qualitative cultural insights (Choir, Architecture). Justification: Saves space, allows user-driven exploration. 
+         - NO SVG/Mermaid used. Only CSS, Unicode (⛰️, 🎶, etc.), and Canvas. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <div itemscope itemtype="https://schema.org/Place">
+
+        <!-- Navigation -->
+        <nav class="sticky top-0 z-50 bg-stone-50/95 backdrop-blur shadow-sm border-b border-stone-200">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16">
+                    <div class="flex items-center">
+                        <span class="text-xl font-serif font-bold text-stone-900" itemprop="name">Simonos Petras</span>
+                    </div>
+                    <div class="hidden md:flex items-center space-x-8">
+                        <a href="#definition" class="text-stone-600 hover:text-amber-700 transition">Einleitung</a>
+                        <a href="#geschichte" class="text-stone-600 hover:text-amber-700 transition">Geschichte</a>
+                        <a href="#fakten" class="text-stone-600 hover:text-amber-700 transition">Daten & Fakten</a>
+                        <a href="#kultur" class="text-stone-600 hover:text-amber-700 transition">Kontext</a>
+                        <a href="#faq" class="text-stone-600 hover:text-amber-700 transition">FAQ</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero / Definition -->
+        <header id="definition" class="relative bg-stone-900 text-stone-50 py-24 sm:py-32 overflow-hidden">
+            <div class="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-700 via-stone-900 to-stone-900"></div>
+            <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <div class="text-4xl mb-4">⛰️ ⛪</div>
+                <h1 class="text-4xl sm:text-5xl font-serif font-bold tracking-tight mb-6">Das Kloster Simonos Petras</h1>
+                <p class="text-xl sm:text-2xl font-light text-stone-300 mb-8" itemprop="description">
+                    Ein Wunderwerk byzantinischer Architektur, das kühn auf einem 330 Meter hohen Felsen über der Ägäis auf der Halbinsel Berg Athos thront.
+                </p>
+                <div class="inline-flex items-center space-x-2 bg-stone-800 rounded-full px-4 py-2 text-sm text-stone-300 border border-stone-700">
+                    <span itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
+                        <span itemprop="addressLocality">Mönchsrepublik Athos</span>, 
+                        <span itemprop="addressCountry">Griechenland</span>
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-24">
+
+            <!-- Geschichte Section -->
+            <section id="geschichte" class="scroll-mt-24">
+                <div class="mb-10 text-center md:text-left">
+                    <h2 class="text-3xl font-serif font-bold text-stone-900 mb-4">Geschichtlicher Hintergrund</h2>
+                    <p class="text-stone-600 max-w-3xl">
+                        Erkunden Sie die bewegte Geschichte des Klosters. Diese Sektion bietet einen interaktiven Zeitstrahl, der die Visionen, die Gründung und die verheerenden Katastrophen beleuchtet, die diesen heiligen Ort geformt haben. Klicken Sie auf die Jahreszahlen, um mehr zu erfahren.
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-stone-200 p-6 sm:p-10">
+                    <div class="flex flex-col lg:flex-row gap-8">
+                        <!-- Timeline controls -->
+                        <div class="w-full lg:w-1/3 flex lg:flex-col gap-2 overflow-x-auto lg:overflow-visible pb-4 lg:pb-0 border-b lg:border-b-0 lg:border-r border-stone-200 lg:pr-6">
+                            <button class="timeline-btn active flex-shrink-0 text-left px-4 py-3 rounded-lg bg-stone-100 font-medium" data-year="13">
+                                13. Jahrhundert
+                            </button>
+                            <button class="timeline-btn flex-shrink-0 text-left px-4 py-3 rounded-lg hover:bg-stone-100 font-medium" data-year="1580">
+                                Jahr 1580
+                            </button>
+                            <button class="timeline-btn flex-shrink-0 text-left px-4 py-3 rounded-lg hover:bg-stone-100 font-medium" data-year="1622">
+                                Jahr 1622
+                            </button>
+                            <button class="timeline-btn flex-shrink-0 text-left px-4 py-3 rounded-lg hover:bg-stone-100 font-medium" data-year="1891">
+                                Jahr 1891
+                            </button>
+                            <button class="timeline-btn flex-shrink-0 text-left px-4 py-3 rounded-lg hover:bg-stone-100 font-medium" data-year="heute">
+                                Heute
+                            </button>
+                        </div>
+                        
+                        <!-- Timeline Content -->
+                        <div class="w-full lg:w-2/3 min-h-[200px] flex flex-col justify-center" id="timeline-content">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Fakten Section -->
+            <section id="fakten" class="scroll-mt-24 bg-stone-100 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16">
+                <div class="max-w-6xl mx-auto">
+                    <div class="mb-10 text-center md:text-left">
+                        <h2 class="text-3xl font-serif font-bold text-stone-900 mb-4">Wichtige Daten & Fakten</h2>
+                        <p class="text-stone-600 max-w-3xl">
+                            Diese Übersicht präsentiert die quantitativen und strukturellen Eckpunkte von Simonopetra. Das interaktive Diagramm visualisiert die beeindruckende Höhe des Klosters im Vergleich zum Meeresspiegel und anderen Standorten, um die architektonische Meisterleistung greifbar zu machen.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                        
+                        <!-- Stats Table -->
+                        <div class="bg-white rounded-2xl shadow-sm border border-stone-200 overflow-hidden">
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse">
+                                    <tbody class="divide-y divide-stone-200">
+                                        <tr class="hover:bg-stone-50 transition-colors">
+                                            <th class="py-4 px-6 font-semibold text-stone-900 bg-stone-50/50 w-1/3">Gründer</th>
+                                            <td class="py-4 px-6 text-stone-700">Heiliger Simon der Myroblite</td>
+                                        </tr>
+                                        <tr class="hover:bg-stone-50 transition-colors">
+                                            <th class="py-4 px-6 font-semibold text-stone-900 bg-stone-50/50">Rangordnung</th>
+                                            <td class="py-4 px-6 text-stone-700">13. Platz in der Hierarchie der Athos-Klöster</td>
+                                        </tr>
+                                        <tr class="hover:bg-stone-50 transition-colors">
+                                            <th class="py-4 px-6 font-semibold text-stone-900 bg-stone-50/50">Patrozinium</th>
+                                            <td class="py-4 px-6 text-stone-700">Geburt Christi (25. Dezember)</td>
+                                        </tr>
+                                        <tr class="hover:bg-stone-50 transition-colors">
+                                            <th class="py-4 px-6 font-semibold text-stone-900 bg-stone-50/50">Einwohner</th>
+                                            <td class="py-4 px-6 text-stone-700">Ca. 50-60 Mönche (Stand 21. Jh.)</td>
+                                        </tr>
+                                        <tr class="hover:bg-stone-50 transition-colors">
+                                            <th class="py-4 px-6 font-semibold text-stone-900 bg-stone-50/50">Architektur</th>
+                                            <td class="py-4 px-6 text-stone-700">Siebenstöckiger Bau direkt auf dem Felsgestein</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Chart Container -->
+                        <div class="bg-white rounded-2xl shadow-sm border border-stone-200 p-6 flex flex-col justify-center">
+                            <h3 class="text-center font-serif font-bold text-lg mb-4 text-stone-800">Höhe über dem Meeresspiegel (in Metern)</h3>
+                            <div class="chart-container">
+                                <canvas id="altitudeChart"></canvas>
+                            </div>
+                            <p class="text-sm text-stone-500 text-center mt-4 italic">
+                                Visualisierung der Steilheit: Simonopetra ragt 330m fast senkrecht aus dem Meer empor.
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- Besonderheiten & Kontext Section -->
+            <section id="kultur" class="scroll-mt-24">
+                <div class="mb-10 text-center md:text-left">
+                    <h2 class="text-3xl font-serif font-bold text-stone-900 mb-4">Besonderheiten & Kultureller Kontext</h2>
+                    <p class="text-stone-600 max-w-3xl">
+                        Simonopetra ist mehr als nur ein Gebäude; es ist ein lebendiges Zentrum byzantinischer Kultur. Nutzen Sie die Reiter unten, um zwischen der einzigartigen Architektur, dem weltberühmten Chor und der Bibliothek zu navigieren.
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-stone-200 overflow-hidden">
+                    <!-- Tab Headers -->
+                    <div class="flex border-b border-stone-200 overflow-x-auto">
+                        <button class="tab-btn active px-6 py-4 text-stone-600 hover:text-stone-900 whitespace-nowrap focus:outline-none" data-tab="architektur">
+                            🏰 Die Architektur
+                        </button>
+                        <button class="tab-btn px-6 py-4 text-stone-600 hover:text-stone-900 whitespace-nowrap focus:outline-none" data-tab="chor">
+                            🎶 Der Chor
+                        </button>
+                        <button class="tab-btn px-6 py-4 text-stone-600 hover:text-stone-900 whitespace-nowrap focus:outline-none" data-tab="bibliothek">
+                            📜 Die Bibliothek
+                        </button>
+                    </div>
+
+                    <!-- Tab Contents -->
+                    <div class="p-6 sm:p-10">
+                        <!-- Architektur -->
+                        <div id="architektur" class="tab-content active">
+                            <h3 class="text-2xl font-serif font-bold text-amber-800 mb-4">Ein architektonisches Wunder</h3>
+                            <div class="flex flex-col md:flex-row gap-6 items-start">
+                                <div class="text-4xl text-stone-300 md:mt-2">🏗️</div>
+                                <div class="prose prose-stone max-w-none text-stone-700">
+                                    <p class="mb-4">
+                                        Das Kloster gilt als Meisterwerk des mittelalterlichen und frühneuzeitlichen Ingenieurwesens. Es erhebt sich sieben Stockwerke hoch auf einem steil abfallenden Granitfelsen.
+                                    </p>
+                                    <p class="mb-4">
+                                        Die massiven Steinmauern im unteren Bereich gehen nach oben hin in ausladende, oft aus Holz gefertigte Balkone (sogenannte <em>Ochsner</em>) über. Diese Konstruktion vermittelt den Eindruck, als würde das Gebäude über dem Abgrund schweben.
+                                    </p>
+                                    <ul class="list-disc pl-5 space-y-2">
+                                        <li>Fundament direkt in den Felsen gehauen.</li>
+                                        <li>Mehrere Anbauten mussten nach großen Bränden neu strukturiert werden.</li>
+                                        <li>Das Katholikon (Hauptkirche) ist stark in die komplexe Gebäudestruktur integriert, da auf dem schmalen Felsgipfel kein Platz für einen freistehenden Hof war.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chor -->
+                        <div id="chor" class="tab-content">
+                            <h3 class="text-2xl font-serif font-bold text-amber-800 mb-4">Der Chor von Simonopetra</h3>
+                            <div class="flex flex-col md:flex-row gap-6 items-start">
+                                <div class="text-4xl text-stone-300 md:mt-2">🎼</div>
+                                <div class="prose prose-stone max-w-none text-stone-700">
+                                    <p class="mb-4">
+                                        Simonopetra ist weltweit berühmt für seinen Chor, der die Tradition des byzantinischen Gesangs auf höchstem Niveau pflegt. Der Chor hat maßgeblich zur Renaissance der athonitischen Musik in der modernen Welt beigetragen.
+                                    </p>
+                                    <p class="mb-4">
+                                        Unter der Leitung renommierter Kantoren haben die Mönche von Simonopetra zahlreiche CD-Aufnahmen veröffentlicht. Diese Aufnahmen gelten heute als Standardwerke für Liebhaber und Gelehrte byzantinischer Kirchenmusik.
+                                    </p>
+                                    <div class="bg-stone-50 p-4 rounded-lg border border-stone-200 mt-4">
+                                        <p class="text-sm italic text-stone-600">
+                                            "Der byzantinische Gesang ist rein vokal, einstimmig und wird stets ohne instrumentale Begleitung ausgeführt, oft unterstützt von einem 'Ison' (Halteton)."
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bibliothek -->
+                        <div id="bibliothek" class="tab-content">
+                            <h3 class="text-2xl font-serif font-bold text-amber-800 mb-4">Feuer und Wiederaufbau</h3>
+                            <div class="flex flex-col md:flex-row gap-6 items-start">
+                                <div class="text-4xl text-stone-300 md:mt-2">📚</div>
+                                <div class="prose prose-stone max-w-none text-stone-700">
+                                    <p class="mb-4">
+                                        Die Bibliothek von Simonopetra hat ein tragisches Schicksal. Durch die verheerenden Brände (besonders 1580 und 1891) wurden unzählige historische Manuskripte, Dokumente und seltene Bücher vernichtet.
+                                    </p>
+                                    <p>
+                                        Dank intensiver Bemühungen, Spenden und dem unermüdlichen Einsatz der Bruderschaft wurde die Bibliothek im 20. Jahrhundert neu aufgebaut. Heute beherbergt sie wieder eine beachtliche Sammlung moderner und älterer Werke zur Theologie, Geschichte und Musik, wenngleich die byzantinischen Originalschriften des Klosters für immer verloren sind.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAQ Section -->
+            <section id="faq" class="scroll-mt-24">
+                <div class="mb-10 text-center md:text-left">
+                    <h2 class="text-3xl font-serif font-bold text-stone-900 mb-4">Häufig gestellte Fragen (FAQ)</h2>
+                    <p class="text-stone-600 max-w-3xl">
+                        Klicken Sie auf die Fragen, um schnelle, präzise Antworten auf die häufigsten Anliegen bezüglich Besuchen, Geschichte und Kultur des Klosters aufzuklappen.
+                    </p>
+                </div>
+
+                <div class="space-y-4 max-w-4xl mx-auto md:mx-0">
+                    <!-- FAQ 1 -->
+                    <details class="group bg-white rounded-xl shadow-sm border border-stone-200 [&_summary::-webkit-details-marker]:hidden">
+                        <summary class="flex items-center justify-between cursor-pointer p-6 font-medium text-stone-900 focus:outline-none">
+                            <span class="text-lg">Kann man das Kloster Simonos Petras besuchen?</span>
+                            <span class="transition duration-300 group-open:-rotate-180">
+                                ⬇️
+                            </span>
+                        </summary>
+                        <div class="px-6 pb-6 text-stone-600 leading-relaxed border-t border-stone-100 pt-4 mt-2">
+                            Ja, aber unter strengen Auflagen. Wie auf der gesamten Halbinsel Athos haben Frauen keinen Zutritt (Avaton-Regel). Männliche Besucher benötigen ein spezielles Pilgervisum, das sogenannte <em>Diamonitirion</em>, und müssen ihren Aufenthalt beim Kloster im Voraus anmelden, da die Kapazitäten begrenzt sind.
+                        </div>
+                    </details>
+
+                    <!-- FAQ 2 -->
+                    <details class="group bg-white rounded-xl shadow-sm border border-stone-200 [&_summary::-webkit-details-marker]:hidden">
+                        <summary class="flex items-center justify-between cursor-pointer p-6 font-medium text-stone-900 focus:outline-none">
+                            <span class="text-lg">Warum ist das Kloster so oft abgebrannt?</span>
+                            <span class="transition duration-300 group-open:-rotate-180">
+                                ⬇️
+                            </span>
+                        </summary>
+                        <div class="px-6 pb-6 text-stone-600 leading-relaxed border-t border-stone-100 pt-4 mt-2">
+                            Aufgrund seiner exponierten Lage auf dem Felsen schlug häufig der Blitz ein. Zudem bestanden die ausladenden oberen Stockwerke und Balkone aus Holz. In Kombination mit der ständigen Nutzung von offenen Kaminen, Öllampen und Kerzenmassen in den Kirchen war die Brandgefahr extrem hoch.
+                        </div>
+                    </details>
+
+                    <!-- FAQ 3 -->
+                    <details class="group bg-white rounded-xl shadow-sm border border-stone-200 [&_summary::-webkit-details-marker]:hidden">
+                        <summary class="flex items-center justify-between cursor-pointer p-6 font-medium text-stone-900 focus:outline-none">
+                            <span class="text-lg">Was macht Simonopetra musikalisch so besonders?</span>
+                            <span class="transition duration-300 group-open:-rotate-180">
+                                ⬇️
+                            </span>
+                        </summary>
+                        <div class="px-6 pb-6 text-stone-600 leading-relaxed border-t border-stone-100 pt-4 mt-2">
+                            Das Kloster beherbergt einen der besten Chöre für traditionellen byzantinischen Gesang weltweit. Die Mönche haben diese alte, unbegleitete Gesangskunst perfektioniert und durch zahlreiche hochwertige Tonaufnahmen einem globalen Publikum zugänglich gemacht, was zur Rettung und Verbreitung dieser musikalischen Tradition führte.
+                        </div>
+                    </details>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-stone-900 text-stone-400 py-8 border-t border-stone-800 mt-20">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm">
+                <p>&copy; Dossier Generiert - Historische Orte: Kloster Simonos Petras.</p>
+                <p class="mt-2">Erstellt auf Basis von Strukturvorgaben für Informationsarchitektur und modernem Webdesign.</p>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- JavaScript Logic for Interactivity -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- 1. TIMELINE LOGIC ---
+            const timelineData = {
+                '13': {
+                    title: 'Gründung im 13./14. Jahrhundert',
+                    icon: '✨',
+                    text: 'Der Einsiedler Simon (später "der Myroblite" genannt) lebte in einer nahen Höhle. Eines Nachts sah er einen Stern über dem steilen Felsen stehen, was er als göttliches Zeichen deutete, genau dort ein Kloster zu erbauen. Die erste Konstruktion nannte er "Neues Bethlehem".'
+                },
+                '1580': {
+                    title: 'Der erste große Brand (1580)',
+                    icon: '🔥',
+                    text: 'Ein verheerendes Feuer zerstörte einen Großteil des Gebäudes. Unzählige wertvolle Manuskripte und Reliquien fielen den Flammen zum Opfer. Mit finanzieller Hilfe wurde das Kloster in den Folgejahren mühsam wieder aufgebaut.'
+                },
+                '1622': {
+                    title: 'Ein erneuter Rückschlag (1622)',
+                    icon: '🔥',
+                    text: 'Nur wenige Jahrzehnte nach dem Wiederaufbau schlug das Schicksal erneut zu. Ein weiterer Brand verursachte schwere Schäden an der Bausubstanz. Die Mönche mussten erneut von vorn beginnen.'
+                },
+                '1891': {
+                    title: 'Die Katastrophe von 1891',
+                    icon: '💥',
+                    text: 'Ein gewaltiger Brand, der fast das gesamte Kloster vernichtete. Die Bibliothek, das Archiv und die Kanzlei wurden komplett zerstört. Die erhaltenen Gebäude, die wir heute sehen, stammen größtenteils vom Wiederaufbau nach dieser Katastrophe, der durch Spenden aus Russland unterstützt wurde.'
+                },
+                'heute': {
+                    title: 'Simonopetra Heute',
+                    icon: '🕊️',
+                    text: 'In der zweiten Hälfte des 20. Jahrhunderts erlebte das Kloster einen starken Aufschwung durch eine neue Bruderschaft aus den Meteora-Klöstern. Heute ist es ein blühendes spirituelles Zentrum, berühmt für seinen exzellenten Chor und die Bewahrung orthodoxer Traditionen.'
+                }
+            };
+
+            const timelineBtns = document.querySelectorAll('.timeline-btn');
+            const timelineContent = document.getElementById('timeline-content');
+
+            function updateTimeline(year) {
+                const data = timelineData[year];
+                timelineContent.style.opacity = '0';
+                
+                setTimeout(() => {
+                    timelineContent.innerHTML = `
+                        <div class="text-5xl mb-4">${data.icon}</div>
+                        <h3 class="text-2xl font-serif font-bold text-stone-900 mb-3">${data.title}</h3>
+                        <p class="text-stone-600 text-lg leading-relaxed">${data.text}</p>
+                    `;
+                    timelineContent.style.transition = 'opacity 0.4s ease-in-out';
+                    timelineContent.style.opacity = '1';
+                }, 200);
+            }
+
+            timelineBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    // Remove active from all
+                    timelineBtns.forEach(b => {
+                        b.classList.remove('active', 'bg-amber-800', 'text-white');
+                        b.classList.add('hover:bg-stone-100');
+                    });
+                    
+                    // Add active to clicked
+                    const target = e.currentTarget;
+                    target.classList.add('active');
+                    target.classList.remove('hover:bg-stone-100');
+                    
+                    // Update content
+                    updateTimeline(target.dataset.year);
+                });
+            });
+
+            // Initialize timeline
+            updateTimeline('13');
+
+
+            // --- 2. CHART.JS LOGIC ---
+            const ctx = document.getElementById('altitudeChart').getContext('2d');
+            
+            // Custom plugin to draw labels inside/on bars
+            const altitudeChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Meeresspiegel', 'Kloster Iviron (Küste)', 'Docheiariou', 'Simonopetra'],
+                    datasets: [{
+                        label: 'Höhe (Meter)',
+                        data: [0, 5, 30, 330],
+                        backgroundColor: [
+                            '#d5cfc4', // Sea
+                            '#e8e5df', // Low
+                            '#d5cfc4', // Mid
+                            '#92400e'  // Simonopetra (Highlight)
+                        ],
+                        borderColor: '#292524',
+                        borderWidth: 0,
+                        borderRadius: 6,
+                        barPercentage: 0.6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false, // CRITICAL for chart-container max-height to work
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(41, 37, 36, 0.9)',
+                            titleFont: { family: 'Segoe UI', size: 14 },
+                            bodyFont: { family: 'Segoe UI', size: 13 },
+                            padding: 12,
+                            displayColors: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y + ' Meter hoch';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#e8e5df',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                font: { family: 'Segoe UI' },
+                                color: '#44403c'
+                            },
+                            title: {
+                                display: true,
+                                text: 'Meter über Meeresspiegel',
+                                font: { family: 'Segoe UI', style: 'italic' },
+                                color: '#44403c'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: { family: 'Segoe UI', weight: 'bold' },
+                                color: '#292524',
+                                // Wrapping logic via array returning
+                                callback: function(value, index, values) {
+                                    let label = this.getLabelForValue(value);
+                                    if(label.length > 16) {
+                                        return label.match(/.{1,16}(\s|$)/g);
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 1500,
+                        easing: 'easeOutQuart'
+                    }
+                }
+            });
+
+
+            // --- 3. TAB LOGIC ---
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const targetId = e.target.dataset.tab;
+                    
+                    // Remove active class from all buttons and contents
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+
+                    // Add active class to clicked button and corresponding content
+                    e.target.classList.add('active');
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>

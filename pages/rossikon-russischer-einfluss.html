@@ -1,0 +1,609 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Berg Athos – Der russische Einfluss, Kunst & Architektur</title>
+    <style>
+        :root {
+            --bg-primary: #0f141c;
+            --bg-secondary: #182232;
+            --bg-card: #1f2d42;
+            --accent-gold: #d4af37;
+            --accent-gold-light: #f3e5ab;
+            --accent-copper: #c87d55;
+            --text-main: #e8ecf1;
+            --text-muted: #9fb0c7;
+            --border-color: #2e415d;
+            --font-serif: 'Georgia', 'Times New Roman', serif;
+            --font-sans: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Header & Hero */
+        header {
+            background: linear-gradient(180deg, rgba(15,20,28,0.92) 0%, rgba(24,34,50,0.95) 100%), 
+                        radial-gradient(circle at 50% 20%, #2e415d 0%, #0f141c 70%);
+            border-bottom: 2px solid var(--accent-gold);
+            padding: 4rem 1.5rem 3rem;
+            text-align: center;
+            position: relative;
+        }
+
+        header::after {
+            content: "☦";
+            display: block;
+            font-size: 2.2rem;
+            color: var(--accent-gold);
+            margin-top: 1rem;
+            opacity: 0.85;
+        }
+
+        h1 {
+            font-family: var(--font-serif);
+            font-size: 2.6rem;
+            color: var(--accent-gold-light);
+            letter-spacing: 1px;
+            margin-bottom: 0.8rem;
+        }
+
+        .subtitle {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Navigation Bar */
+        nav {
+            position: sticky;
+            top: 0;
+            background: rgba(15, 20, 28, 0.96);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            padding: 0.8rem 1rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            transition: all 0.25s ease;
+        }
+
+        nav a:hover, nav a.active {
+            background: var(--bg-card);
+            color: var(--accent-gold);
+            border-bottom: 2px solid var(--accent-gold);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem;
+        }
+
+        section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 5rem;
+        }
+
+        h2 {
+            font-family: var(--font-serif);
+            font-size: 1.9rem;
+            color: var(--accent-gold);
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            color: var(--accent-gold-light);
+            margin-bottom: 0.8rem;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            color: #d8e2ec;
+        }
+
+        /* Key Metrics Banner */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.2rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-top: 3px solid var(--accent-gold);
+            padding: 1.5rem;
+            text-align: center;
+            border-radius: 6px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-num {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: var(--accent-gold);
+            font-family: var(--font-serif);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 0.3rem;
+        }
+
+        /* Interactive Tabs */
+        .tab-container {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            margin: 1.5rem 0;
+        }
+
+        .tab-buttons {
+            display: flex;
+            background: #121a24;
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 1rem 1.5rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1rem;
+            font-family: var(--font-sans);
+            font-weight: 600;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        .tab-btn.active {
+            color: var(--accent-gold);
+            background: var(--bg-secondary);
+            border-bottom: 3px solid var(--accent-gold);
+        }
+
+        .tab-content {
+            padding: 2rem;
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            margin: 2rem 0;
+            padding-left: 2rem;
+            border-left: 2px solid var(--accent-gold);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            left: -2.45rem;
+            top: 0.2rem;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--accent-gold);
+            border: 3px solid var(--bg-primary);
+        }
+
+        .timeline-year {
+            font-weight: bold;
+            color: var(--accent-gold);
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        /* Cards Grid for Monasteries & Sketes */
+        .places-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .place-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .place-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-gold);
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(212, 175, 55, 0.15);
+            color: var(--accent-gold-light);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            font-size: 0.75rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* Daily Life Interactive Schedule */
+        .schedule-box {
+            background: #131c28;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1.2rem;
+            margin-top: 1rem;
+        }
+
+        .schedule-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.6rem 0;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .schedule-row:last-child {
+            border-bottom: none;
+        }
+
+        .time-col {
+            color: var(--accent-gold);
+            font-weight: 600;
+            width: 140px;
+        }
+
+        /* Interactive Quiz / Fact Filter Widget */
+        .quiz-container {
+            background: linear-gradient(145deg, var(--bg-secondary) 0%, var(--bg-card) 100%);
+            border: 1px solid var(--accent-gold);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .fact-card-display {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            border-radius: 6px;
+            min-height: 120px;
+            margin: 1.2rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 1.1rem;
+            color: var(--accent-gold-light);
+        }
+
+        .btn-action {
+            background: var(--accent-gold);
+            color: #0b0f14;
+            border: none;
+            padding: 0.7rem 1.4rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-action:hover {
+            background: #e6c558;
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            background: #090c10;
+            text-align: center;
+            padding: 2.5rem 1rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .tab-buttons { flex-direction: column; }
+            .schedule-row { flex-direction: column; }
+            .time-col { width: 100%; margin-bottom: 0.2rem; }
+        }
+    </style>
+    <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
+    <script src="../js/nav-injector.js" defer></script>
+</head>
+<body>
+
+    <header>
+        <h1>Der Heilige Berg Athos</h1>
+        <p class="subtitle">Das geistliche Zentrum der Orthodoxie – Der russische Einfluss, monumentale Sakralarchitektur, Ikonenkunst und das mönchische Leben.</p>
+    </header>
+
+    <nav>
+        <a href="#ueberblick">Überblick</a>
+        <a href="#geschichte">Geschichte & Einfluss</a>
+        <a href="#monumente">Klöster & Skiten</a>
+        <a href="#architektur">Architektur & Glocken</a>
+        <a href="#leben">Mönchsalltag</a>
+        <a href="#wissenswertes">Wissens-Box</a>
+    </nav>
+
+    <div class="container">
+
+        <!-- Stat Highlights -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-num">1016</span>
+                <span class="stat-label">Erste urkundliche Erwähnung russischer Mönche (Xylourgou)</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-num">~5.000</span>
+                <span class="stat-label">Russische Mönche um 1910 (Mehrheit auf dem Athos)</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-num">13 Tonnen</span>
+                <span class="stat-label">Gewicht der Großen Bassglocke von St. Panteleimon</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-num">20</span>
+                <span class="stat-label">Souveräne Großklöster in der Mönchsrepublik</span>
+            </div>
+        </div>
+
+        <!-- Sektion 1: Überblick -->
+        <section id="ueberblick">
+            <h2>Die autonome Mönchsrepublik</h2>
+            <p>Der Heilige Berg Athos (Άγιον Όρος, <em>Agion Oros</em>) auf der östlichen Chalkidiki-Halbinsel ist seit über einem Jahrtausend das spirituelle Herz der orthodoxen Christenheit. Unter dem byzantinischen Schutzpatronat und der geistlichen Oberhoheit des Ökumenischen Patriarchats von Konstantinopel bildet er eine autonome theokratische Republik innerhalb Griechenlands.</p>
+            <p>Obwohl die 20 regierenden Klöster formell eine feste Hierarchie bilden, war der Berg historisch ein pan-orthodoxer Schmelztiegel. Neben der griechischen Mehrheit spielten Serben, Bulgaren, Georgier und vor allem <strong>russische Mönche</strong> eine prägende Rolle für die Baugeschichte, Liturgie und Geopolitik der Halbinsel.</p>
+        </section>
+
+        <!-- Sektion 2: Geschichte und russischer Einfluss -->
+        <section id="geschichte">
+            <h2>Der russische Einfluss: Glaube & Geopolitik</h2>
+            <p>Die russische Präsenz auf dem Athos gliedert sich in drei große Epochen – von den ersten Einsiedlern der Kiewer Rus bis hin zum imperialen Ausbau des Zarenreichs und der dramatischen Zäsur durch die Oktoberrevolution.</p>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-year">1016 – Die Kiewer Rus erreicht Athos</div>
+                    <p>In einem Dokument vom Februar 1016 unterzeichnet erstmals der Vorsteher des Klosters <em>Xylourgou</em> („Muttergottes der Holzschnitzer“) auf Slawisch. Auch der Gründer des Kiewer Höhlenklosters, der heilige Antonius von Kiew, empfing hier seine monastische Weihe.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">1169 – Übergabe von St. Panteleimon</div>
+                    <p>Wegen Platzmangels weist die Heilige Synode den russischen Mönchen das verlassene Kloster St. Panteleimon (<em>Nagorny / Palaiomonastero</em> im Landesinneren) zu. Später wird das Kloster an die Meeresküste verlegt.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">1839–1914 – Das Goldene Zeitalter & Zaristische Förderung</div>
+                    <p>Nach Verarmung der Klöster strömen mit Unterstützung der Zarenfamilie Romanow tausende russische Pilger und Novizen nach Griechenland. Zwischen Odessa und dem Hafen Daphni verkehrten regelmäßige Dampfschifflinien. 1875 wird der erste russische Abt in St. Panteleimon inthronisiert. Zar Alexander III. und Großfürsten stifteten gigantische Summen für monumentale Ausbauten.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">1913 – Der „Namensgläubigen“-Streit (Imjaslawie)</div>
+                    <p>Ein interner theologischer Konflikt um die mystische Verehrung des Gottesnamens spaltet die russischen Mönche. Im Juli 1913 greift die zaristische Kriegsmarine ein: Russische Marinesoldaten stürmen Klöster und deportieren über 800 Mönche per Schiff nach Russland.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">1917–1990 – Kommunismus & Niedergang</div>
+                    <p>Nach der Oktoberrevolution stoppen Geldflüsse und Mönchsnachschub völlig. Durch Überalterung und Großbrände sinkt die russische Gemeinschaft in den 1970ern auf eine Handvoll greiser Mönche ab.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">Ab 1991 – Renaissance & Restauration</div>
+                    <p>Nach dem Zerfall der Sowjetunion wird St. Panteleimon mit großem Aufwand restauriert. Zahlreiche neue Mönche aus Russland, der Ukraine und Belarus beleben die slawische Tradition neu.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sektion 3: Interaktive Übersicht der Zentren -->
+        <section id="monumente">
+            <h2>Zentren der russischen Mönche</h2>
+            
+            <div class="tab-container">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" onclick="openTab(event, 'panteleimon')">Kloster St. Panteleimon (Rossikon)</button>
+                    <button class="tab-btn" onclick="openTab(event, 'andreas')">Andreas-Skite (Sarai)</button>
+                    <button class="tab-btn" onclick="openTab(event, 'elias')">Prophet-Elias-Skite</button>
+                    <button class="tab-btn" onclick="openTab(event, 'xylourgou')">Skite Bogoroditsa (Xylourgou)</button>
+                </div>
+
+                <div id="panteleimon" class="tab-content active">
+                    <span class="badge">Hauptkloster (Rossikon)</span>
+                    <h3>Kloster des Heiligen Panteleimon</h3>
+                    <p>Direkt an der Küste zwischen Daphni und Xenophontos gelegen, gleicht das Kloster einer imposanten, mehrstöckigen Stadt mit terrassenförmigen Bauten, die bis zu 5.000 Pilger und Mönche beherbergen konnten.</p>
+                    <p><strong>Besonderheit:</strong> Auffällig sind die smaragdgrünen, vergoldeten Zwiebeltürme nach russischem Vorbild, die sich dramatisch von der byzantinischen Steinarchitektur abheben. Hier befindet sich auch das berühmte Glockengeläut mit der 13-Tonnen-Bassglocke.</p>
+                </div>
+
+                <div id="andreas" class="tab-content">
+                    <span class="badge">Großskite bei Karyes</span>
+                    <h3>St.-Andreas-Skite („Sarai“)</h3>
+                    <p>In unmittelbarer Nähe der Athos-Hauptstadt Karyes errichteten russische Mönche ab 1881 die monumentale Andreas-Kathedrale (Architekt: M. A. Schtschurupow aus St. Petersburg). Die Griechen nannten den Komplex wegen seiner Palastgröße <em>Sarai</em>, was die Russen volksetymologisch als <em>Se Rai</em> („Dies ist das Paradies“) deuteten.</p>
+                    <p>Die 1900 geweihte Hauptkirche gilt als eine der größten Kirchenbauten des gesamten Balkans.</p>
+                </div>
+
+                <div id="elias" class="tab-content">
+                    <span class="badge">Skite von Pantokratoros</span>
+                    <h3>Prophet-Elias-Skite</h3>
+                    <p>Gegründet Mitte des 18. Jahrhunderts vom heiligen Paisij Welitschkowskij, einem Erneuerer des Hesychasmus (Herzensgebet). Die Skite besitzt eine monumentale Kathedrale mit einer prachtvollen, vergoldeten Ikonostase und bot einst hunderten Mönchen Platz.</p>
+                </div>
+
+                <div id="xylourgou" class="tab-content">
+                    <span class="badge">Die Urzelle (11. Jh.)</span>
+                    <h3>Skite der Gottesmutter (Xylourgou)</h3>
+                    <p>Versteckt in den bewaldeten Höhen im Osten der Halbinsel liegt die historische Wiege des russischen Mönchtums auf Athos. Einst als Kloster gegründet, wird sie heute als idyllische Skite unter der Verwaltung von St. Panteleimon geführt.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sektion 4: Architektur, Glocken und Kunst -->
+        <section id="architektur">
+            <h2>Architektur, Ikonenkunst & Glockenklang</h2>
+            <div class="places-grid">
+                <div class="place-card">
+                    <span class="badge">Baukunst & Stil</span>
+                    <h3>Byzantinischer Stein trifft Zarentum</h3>
+                    <p>Während klassische Athos-Klöster durch ockerfarbene Wehrbauten, Holzbalkone und ziegeldurchwirkte Kreuzkuppelkirchen (<em>Katholikon</em>) geprägt sind, brachten die Baumeister des Zarenreichs den historistischen russisch-byzantinischen Monumentalstil nach Griechenland. Mehrstöckige Schlaf- und Spitaltrakte wurden mit Eisenkonstruktionen und glasierten Zwiebelkuppeln kombiniert.</p>
+                </div>
+
+                <div class="place-card">
+                    <span class="badge">Klangtradition</span>
+                    <h3>Die Athos-Glocken (Zvonnitsas)</h3>
+                    <p>Anstelle des traditionellen hölzernen Schlagbretts (<em>Semantron / Talanto</em>) brachten die Russen eine ausgeprägte Glockengießertradition mit. Der Glockenturm von St. Panteleimon beherbergt über 30 Glocken. Deren rhythmischer, mehrstimmiger Schlaghall (<em>Zvon</em>) hallt meilenweit über das Ägäische Meer.</p>
+                </div>
+
+                <div class="place-card">
+                    <span class="badge">Malerei & Ikonographie</span>
+                    <h3>Akademischer Realismus</h3>
+                    <p>Im 19. Jahrhundert etablierte sich in den russischen Skiten ein eigener Malstil: Neben der strengen kretischen und mazedonischen Ikonentradition hielten weichere, akademisch-realistische Porträtstile der Petersburger Kunstakademie Einzug in die Wandfresken und Ikonostasen.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sektion 5: Mönchsalltag -->
+        <section id="leben">
+            <h2>Das Leben der Mönche: Gebet, Fasten & Schweigen</h2>
+            <p>Die Mönche auf dem Berg Athos leben nach dem koinobitischen (gemeinschaftlichen) oder idiorhythmischen (halb-eremitischen) Prinzip. Der Tagesablauf richtet sich streng nach der <strong>byzantinischen Zeitrechnung</strong> (der Tag beginnt bei Sonnenuntergang) und dem <strong>Julianischen Kalender</strong> (13 Tage hinter dem weltlichen Kalender).</p>
+
+            <div class="schedule-box">
+                <h3 style="margin-bottom: 0.8rem; font-size: 1.1rem; color: var(--accent-gold);">Klassischer Tagesrhythmus (nach Ortszeit):</h3>
+                <div class="schedule-row">
+                    <span class="time-col">02:00 – 06:30 Uhr</span>
+                    <span>Nächtliche Liturgie & Vigilien (Matutin, Göttliche Liturgie im Halbdunkel bei Kerzenlicht)</span>
+                </div>
+                <div class="schedule-row">
+                    <span class="time-col">07:00 – 08:00 Uhr</span>
+                    <span>Erste Mahlzeit (Trapeza) im gemeinsamen Refektorium bei Lesung aus Vätertexten</span>
+                </div>
+                <div class="schedule-row">
+                    <span class="time-col">08:30 – 14:00 Uhr</span>
+                    <span>Gehorsamsdienste (<em>Diakonima</em>): Ikonenmalerei, Gartenbau, Holzhandwerk, Gästebetreuung</span>
+                </div>
+                <div class="schedule-row">
+                    <span class="time-col">14:00 – 16:00 Uhr</span>
+                    <span>Ruhezeit und persönliche Zelle (Lesung der Kirchenväter, Ruhe)</span>
+                </div>
+                <div class="schedule-row">
+                    <span class="time-col">16:30 – 18:00 Uhr</span>
+                    <span>Vespergottesdienst, Abendmahlzeit vor Sonnenuntergang</span>
+                </div>
+                <div class="schedule-row">
+                    <span class="time-col">19:00 – 02:00 Uhr</span>
+                    <span>Komplet (Nachtgebet), Schließen der Klostertore, Ruhe & inneres Herzensgebet (Hesychasmus)</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sektion 6: Interaktive Wissens-Box -->
+        <section id="wissenswertes">
+            <h2>Interaktives Athos-Wissen</h2>
+            <div class="quiz-container">
+                <p>Klicken Sie auf den Button, um faszinierende historische Anekdoten und Geheimnisse über den russischen Athos zu entdecken:</p>
+                <div id="factBox" class="fact-card-display">
+                    Klicken Sie unten, um eine Anekdote zu laden!
+                </div>
+                <div style="text-align: center;">
+                    <button class="btn-action" onclick="showNextFact()">Nächstes Faktum anzeigen ➔</button>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>Interaktives Geschichts- und Bildungsmodul zum Berg Athos & dem slawisch-orthodoxen Erbe.</p>
+        <p style="margin-top: 0.5rem; font-size: 0.8rem; color: #61738a;">Gestaltet mit modernem responsiven HTML5 & CSS3 • Stand: 2026</p>
+    </footer>
+
+    <script>
+        // Tab-Funktionalität
+        function openTab(evt, tabName) {
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(tabName).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        // Wissens-Box Fakten-Array
+        const athosFacts = [
+            "🚢 Wöchentliche Dampferlinie: Bis zum Ausbruch des Ersten Weltkriegs betrieb die russische Handelsmarine eine direkte Schifffahrtslinie von Odessa direkt zum Athos-Hafen Daphni für Pilger.",
+            "🔔 Die Riesen-Glocke: Die 13.000 kg schwere Hauptglocke von St. Panteleimon musste mit Flaschenzügen und immenser Manneskraft vom Meeresufer auf den Turm gehievt werden.",
+            "🕊️ Das Avaton-Gesetz: Seit einem Dekret von Kaiser Konstantin Monomachos aus dem Jahr 1046 ist weiblichen Wesen (mit Ausnahme von Katzen für den Mäusefang und Hühnern für Eigelb zur Ikonenmalerei) der Zutritt verboten.",
+            "⚓ Kanonenboot-Einsatz 1913: Wegen der 'Imjaslawie'-Krise entsandte Zar Nikolaus II. das Kriegsschiff 'Donez', um meuternde Mönche mit Wasserspritzen zur Räson zu bringen und zu repatriieren.",
+            "🍞 Versorgung der Pilger: Zur Blütezeit im späten 19. Jahrhundert backte die Klosterbäckerei von Rossikon täglich mehrere Tonnen Brot, um bis zu 30.000 Pilger pro Jahr kostenlos zu verköstigen.",
+            "🎨 Heiliger Siluan der Athonit (1866–1938): Einer der bedeutendsten russischen Mystiker des 20. Jahrhunderts lebte als einfacher Müllermönch in St. Panteleimon und verfasste Schriften über das unaufhörliche Gebet."
+        ];
+
+        let factIndex = 0;
+        function showNextFact() {
+            const factBox = document.getElementById('factBox');
+            factBox.style.opacity = 0;
+            setTimeout(() => {
+                factBox.innerText = athosFacts[factIndex];
+                factBox.style.opacity = 1;
+                factIndex = (factIndex + 1) % athosFacts.length;
+            }, 200);
+        }
+
+        // Erstes Faktum beim Laden initialisieren
+        showNextFact();
+    </script>
+</body>
+</html>

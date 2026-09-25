@@ -1,0 +1,544 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Berg Athos – Griechischer Einfluss, Baukunst & Malerschulen</title>
+    <style>
+        :root {
+            --bg-primary: #0c1219;
+            --bg-secondary: #141e2a;
+            --bg-card: #1c2b3d;
+            --accent-gold: #d1a838;
+            --accent-gold-light: #f5e7b2;
+            --accent-byzantine-blue: #235789;
+            --accent-terracotta: #c0583e;
+            --text-main: #e8ecf1;
+            --text-muted: #9ab0c7;
+            --border-color: #2a3e56;
+            --font-serif: 'Cinzel', 'Georgia', 'Times New Roman', serif;
+            --font-sans: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            line-height: 1.7;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(180deg, rgba(12,18,25,0.96) 0%, rgba(20,30,42,0.93) 100%),
+                        radial-gradient(circle at 50% 15%, #2a4c73 0%, #0c1219 80%);
+            border-bottom: 2px solid var(--accent-gold);
+            padding: 4rem 1.5rem 3rem;
+            text-align: center;
+        }
+
+        header::after {
+            content: "☦ ☧ ☦";
+            display: block;
+            font-size: 1.8rem;
+            color: var(--accent-gold);
+            margin-top: 1rem;
+            letter-spacing: 0.8rem;
+        }
+
+        h1 {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            color: var(--accent-gold-light);
+            letter-spacing: 1px;
+            margin-bottom: 0.8rem;
+        }
+
+        .subtitle {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 840px;
+            margin: 0 auto;
+        }
+
+        /* Nav */
+        nav {
+            position: sticky;
+            top: 0;
+            background: rgba(12, 18, 25, 0.96);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            padding: 0.8rem 1rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            transition: all 0.25s ease;
+        }
+
+        nav a:hover, nav a.active {
+            background: var(--bg-card);
+            color: var(--accent-gold);
+            border-bottom: 2px solid var(--accent-gold);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem;
+        }
+
+        section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 5rem;
+        }
+
+        h2 {
+            font-family: var(--font-serif);
+            font-size: 1.85rem;
+            color: var(--accent-gold);
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            color: var(--accent-gold-light);
+            margin-bottom: 0.8rem;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            color: #d8e3ed;
+        }
+
+        /* Stat Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.2rem;
+            margin: 2rem 0;
+        }
+
+        .metric-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-top: 3px solid var(--accent-gold);
+            padding: 1.4rem;
+            border-radius: 6px;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .metric-val {
+            font-size: 2.2rem;
+            font-family: var(--font-serif);
+            font-weight: bold;
+            color: var(--accent-gold);
+            display: block;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 0.3rem;
+        }
+
+        /* Interactive Tabs */
+        .tab-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            margin: 1.5rem 0;
+        }
+
+        .tab-nav {
+            display: flex;
+            background: #0f1722;
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .tab-nav button {
+            background: none;
+            border: none;
+            padding: 1rem 1.4rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.98rem;
+            font-weight: 600;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        .tab-nav button.active {
+            color: var(--accent-gold);
+            background: var(--bg-secondary);
+            border-bottom: 3px solid var(--accent-gold);
+        }
+
+        .tab-body {
+            padding: 2rem;
+            display: none;
+        }
+
+        .tab-body.active {
+            display: block;
+            animation: fadeIn 0.35s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-gold);
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(209, 168, 56, 0.15);
+            color: var(--accent-gold-light);
+            border: 1px solid rgba(209, 168, 56, 0.35);
+            font-size: 0.75rem;
+            padding: 0.2rem 0.55rem;
+            border-radius: 4px;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* Architectural Diagram Box */
+        .arch-diagram {
+            background: linear-gradient(135deg, rgba(35, 87, 137, 0.2) 0%, rgba(20, 30, 42, 0.8) 100%);
+            border: 1px solid var(--accent-byzantine-blue);
+            border-left: 4px solid var(--accent-gold);
+            padding: 1.5rem;
+            border-radius: 6px;
+            margin: 1.5rem 0;
+        }
+
+        .arch-diagram h4 {
+            color: var(--accent-gold-light);
+            margin-bottom: 0.6rem;
+            font-size: 1.15rem;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            margin: 2rem 0;
+            padding-left: 2rem;
+            border-left: 2px solid var(--accent-gold);
+        }
+
+        .timeline-step {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .timeline-step::before {
+            content: "";
+            position: absolute;
+            left: -2.45rem;
+            top: 0.25rem;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--accent-gold);
+            border: 3px solid var(--bg-primary);
+        }
+
+        .timeline-title {
+            font-weight: bold;
+            color: var(--accent-gold-light);
+            font-size: 1.15rem;
+            margin-bottom: 0.3rem;
+        }
+
+        /* Interactive Quiz / Facts */
+        .quiz-panel {
+            background: var(--bg-secondary);
+            border: 1px solid var(--accent-gold);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .fact-display {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            border-radius: 6px;
+            min-height: 110px;
+            margin: 1.2rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: var(--accent-gold-light);
+        }
+
+        .btn-gold {
+            background: var(--accent-gold);
+            color: #0c1219;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-gold:hover {
+            background: #e5bd49;
+            box-shadow: 0 0 14px rgba(209, 168, 56, 0.4);
+        }
+
+        footer {
+            background: #080c11;
+            text-align: center;
+            padding: 2.5rem 1rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.88rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 1.95rem; }
+            .tab-nav { flex-direction: column; }
+        }
+    </style>
+    <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
+    <script src="../js/nav-injector.js" defer></script>
+</head>
+<body>
+
+    <header>
+        <h1>Das Griechisch-Byzantinische Fundament des Athos</h1>
+        <p class="subtitle">Von Athanasios dem Athoniten bis zur Makedonischen und Kretischen Malerschule: Die architektonische und theologische Urform des Heiligen Berges.</p>
+    </header>
+
+    <nav>
+        <a href="#ueberblick">Überblick</a>
+        <a href="#athanasios">Hl. Athanasios & Megisti Lavra</a>
+        <a href="#architektur">Der Athonitische Bautyp</a>
+        <a href="#kunst">Fresken & Malerschulen</a>
+        <a href="#klosterbauten">Kühne Felsklöster</a>
+        <a href="#wissensbox">Interaktive Wissens-Box</a>
+    </nav>
+
+    <div class="container">
+
+        <!-- Stat Highlights -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <span class="metric-val">963 n. Chr.</span>
+                <span class="metric-label">Gründung der Großen Lavra durch Athanasios den Athoniten</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-val">17 von 20</span>
+                <span class="metric-label">Klöster auf Athos sind griechischer Tradition</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-val">972 n. Chr.</span>
+                <span class="metric-label">Der „Tragos“: Erste geschriebene Verfassung auf Ziegenhaut</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-val">1. Rang</span>
+                <span class="metric-label">Megisti Lavra als oberstes Oberhaupt der 20 Klöster</span>
+            </div>
+        </div>
+
+        <!-- Sektion 1: Überblick -->
+        <section id="ueberblick">
+            <h2>Die Wiege der athonitischen Mönchsrepublik</h2>
+            <p>Die griechisch-byzantinische Tradition bildet das historische, theologische und rechtliche Fundament des gesamten Berges Athos. 17 der 20 regierenden Klöster sind griechischer Nationalität. Die geistliche Oberhoheit liegt seit dem Mittelalter beim Ökumenischen Patriarchat von Konstantinopel.</p>
+            <p>Hier entstand das <em>Koinobion</em> (klösterliche Lebensgemeinschaft) in seiner reinsten Form: Eine Synthese aus strenger monastischer Disziplin, byzantinischem Staatsrecht und kühner Baukunst, die Vorbild für die gesamte orthodoxe Welt wurde.</p>
+        </section>
+
+        <!-- Sektion 2: Athanasios und die Große Lavra -->
+        <section id="athanasios">
+            <h2>Der Heilige Athanasios & Megisti Lavra</h2>
+            
+            <div class="tab-box">
+                <div class="tab-nav">
+                    <button class="tab-btn active" onclick="openTab(event, 'lavra-gruendung')">Athanasios & Kaiser Nikephoros II.</button>
+                    <button class="tab-btn" onclick="openTab(event, 'lavra-tragos')">Der Tragos (Erste Verfassung 972)</button>
+                    <button class="tab-btn" onclick="openTab(event, 'lavra-tod')">Das Vermächtnis & Kuppelsturz</button>
+                </div>
+
+                <div id="lavra-gruendung" class="tab-body active">
+                    <span class="badge">Beginn des organisierten Mönchtums (963)</span>
+                    <h3>Die Stiftung der Großen Lavra</h3>
+                    <p>Der Gelehrte und Mönch Athanasios von Trapezunt begründete 963 an der Südostspitze das Großkloster <em>Megisti Lavra</em>. Finanziert wurde das Projekt durch seinen engen Vertrauten, den byzantinischen Feldherrn und späteren Kaiser <strong>Nikephoros II. Phokas</strong>, nach dessen siegreichem Kreta-Feldzug.</p>
+                    <p>Athanasios ersetzte das bis dahin vorherrschende regellose Eremitentum durch eine straff organisierte Gemeinschaft (<em>Koinobion</em>) mit gemeinsamer Speise, gemeinsamen Gütern und festen Gebetszeiten.</p>
+                </div>
+
+                <div id="lavra-tragos" class="tab-body">
+                    <span class="badge">Rechtsgeschichte</span>
+                    <h3>Der Tragos von Kaiser Johannes Tzimiskes</h3>
+                    <p>Die Umwandlung in Großklöster stieß anfangs auf Widerstand alteingesessener Einsiedler. Kaiser Johannes I. Tzimiskes erließ 972 das erste Grundgesetz des Athos, geschrieben auf Ziegenpergament (daher <em>Tragos</em>, griechisch für Bock).</p>
+                    <p>Es garantierte den Klöstern kaiserliche Immunität, regelte die Selbstverwaltung in der Hauptstadt Karyes unter dem <em>Protos</em> und legte das bis heute gültige Verbot weiblicher Wesen (<em>Avaton</em>) fest.</p>
+                </div>
+
+                <div id="lavra-tod" class="tab-body">
+                    <span class="badge">Opfergang</span>
+                    <h3>Der Tod beim Dombau (ca. 1000)</h3>
+                    <p>Athanasios war nicht nur spiritueller Führer, sondern selbst Baumeister. Beim Bau der Hauptkuppel des Katholikons stürzte das Gewölbe ein. Athanasios und sechs Bauleute kamen unter den Trümmern ums Leben. Sein Grab in der Lavra ist bis heute eines der heiligsten Ziele für Pilger.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sektion 3: Der Athonitische Bautyp -->
+        <section id="architektur">
+            <h2>Der Athonitische Bautyp (Das Katholikon)</h2>
+            <p>Die von Athanasios entwickelte Kirchenform revolutionierte die orthodoxe Sakralarchitektur und verbreitete sich von Athos über den gesamten Balkan:</p>
+
+            <div class="arch-diagram">
+                <h4>🏛️ Die Drei-Konchen-Kreuzkuppelkirche (Trikonchos)</h4>
+                <p><strong>1. Der Trikonchos-Grundriss:</strong> Neben der Altarapsis im Osten ragen zwei halbrunde Seitenapsiden (<em>Choroi</em>) nach Norden und Süden. Sie bieten den Mönchschören Platz und erzeugen eine unvergleichliche Akustik für den byzantinischen Choralgesang.</p>
+                <p><strong>2. Der Narthex & Lite:</strong> Ein großzügiger Vorraum im Westen für Vigilien, Bußriten und Prozessionen.</p>
+                <p><strong>3. Der Zentrale Phiale-Brunnen:</strong> Im Innenhof vor dem Kircheneingang steht ein überdachter Marmorbrunnen (<em>Phiale</em>) für die monatliche Wasserweihe, flankiert von uralten Zypressen.</p>
+            </div>
+        </section>
+
+        <!-- Sektion 4: Malerschulen und Freskenkunst -->
+        <section id="kunst">
+            <h2>Die großen Malerschulen: Makedonisch vs. Kretisch</h2>
+            <div class="cards-grid">
+                <div class="card">
+                    <span class="badge">13./14. Jahrhundert</span>
+                    <h3>Manuel Panselinos & Die Makedonische Schule</h3>
+                    <p>Der „Giotto der byzantinischen Welt“ schuf um 1290 in der Protaton-Kirche in Karyes und im Kloster Vatopedi unübertroffene Meisterwerke: Kraftvolle Gestalten, ausdrucksstarke Gesichter, leuchtende Farben und dramatische Bewegung prägen diesen palaiologischen Stil.</p>
+                </div>
+
+                <div class="card">
+                    <span class="badge">16. Jahrhundert</span>
+                    <h3>Theophanes der Kreter & Die Kretische Schule</h3>
+                    <p>Theophanes Strelitzas malte 1535 das Katholikon der Großen Lavra sowie Stavronikita aus. Sein Stil ist asketischer, vornehmer und disziplinierter: Dunklere Ockertöne, präzise geometrische Linienführung und tiefe spirituelle Innerlichkeit.</p>
+                </div>
+
+                <div class="card">
+                    <span class="badge">Buchmalerei & Schatzkammern</span>
+                    <h3>Kaiserliche Chrysobullen & Kodizes</h3>
+                    <p>Die Bibliotheken von Vatopedi, Iviron und Dionysiou bewahren tausende purpurfarbene Kaiserurkunden, illuminierte Evangeliare und mikrofeine Holzschnitz-Kruzifixe auf, die von byzantinischen Kaisern gestiftet wurden.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sektion 5: Kühne Felsklöster -->
+        <section id="klosterbauten">
+            <h2>Kühne Wehrbauten: Simonopetra & Dionysiou</h2>
+            <div class="cards-grid">
+                <div class="card">
+                    <span class="badge">Wunder der Statik</span>
+                    <h3>Kloster Simonopetra</h3>
+                    <p>Wie ein Adlernest klammert sich das Kloster 330 Meter senkrecht über dem Meer an einen isolierten Granitfelsen. Gegründet im 13. Jh. vom Hl. Simon nach einer Lichtvision, ragen seine siebengeschossigen Holzbalkone atemberaubend über den Abgrund.</p>
+                </div>
+
+                <div class="card">
+                    <span class="badge">Mächtige Seefestung</span>
+                    <h3>Kloster Dionysiou & Vatopedi</h3>
+                    <p>Dionysiou erhebt sich auf einer 80 Meter hohen Klippe direkt aus den Wellen mit gewaltigen Wehrtürmen gegen Piraten. Vatopedi hingegen bildet mit seinen zehn Palasttrakten und roten Kuppeln die reichste Klosterstadt der Halbinsel.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sektion 6: Interaktive Wissens-Box -->
+        <section id="wissensbox">
+            <h2>Interaktives Athos-Wissen</h2>
+            <div class="quiz-panel">
+                <p>Entdecken Sie überraschende historische Fakten zur griechisch-byzantinischen Geschichte des Athos:</p>
+                <div id="factBox" class="fact-display">
+                    Klicken Sie auf den Button, um ein Faktum zu laden!
+                </div>
+                <button class="btn-gold" onclick="loadNextFact()">Nächstes Faktum anzeigen ➔</button>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>Interaktives Bildungsmodul zum griechisch-byzantinischen Erbe & der Sakralkunst auf dem Berg Athos.</p>
+        <p style="margin-top: 0.5rem; font-size: 0.8rem; color: #5f7591;">Erstellt mit modernem HTML5, CSS3 & JavaScript • Stand: 2026</p>
+    </footer>
+
+    <script>
+        function openTab(evt, tabId) {
+            const bodies = document.querySelectorAll('.tab-body');
+            bodies.forEach(b => b.classList.remove('active'));
+
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(tabId).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        const greekAthosFacts = [
+            "📜 Der 'Tragos' auf Ziegenhaut: Das 972 erlassene Grundgesetz des Athos von Kaiser Tzimiskes wird bis heute im Archiv der Hauptstadt Karyes streng gehütet.",
+            "🌲 Die Zypressen des Hl. Athanasios: Vor der Phiale der Großen Lavra stehen zwei riesige Zypressen, die der Hl. Athanasios vor über 1.000 Jahren eigenhändig gepflanzt haben soll.",
+            "🏰 Simonopetras Holzbalkone: Das auf einem 330m hohen Felssporn errichtete Kloster Simonopetra gilt wegen seiner waghalsigen Hängegalerien als Meisterwerk mittelalterlicher Ingenieurskunst.",
+            "🎨 Meister Manuel Panselinos: Seine um 1290 in Karyes geschaffenen Fresken gelten als unerreichte Krönung der palaiologischen Renaissance.",
+            "👑 Nikephoros Phokas: Der byzantinische Kaiser wollte nach dem Sieg über Kreta selbst Mönch in der Lavra werden, wurde jedoch vor seiner Abdankung 969 in Konstantinopel ermordet.",
+            "🌊 Koinobion vs. Idiorhythmie: Erst Ende des 20. Jahrhunderts kehrten alle 20 Klöster vollständig zum ursprünglichen koinobitischen Ideal des gemeinsamen Lebens zurück."
+        ];
+
+        let curIdx = 0;
+        function loadNextFact() {
+            const el = document.getElementById('factBox');
+            el.style.opacity = 0;
+            setTimeout(() => {
+                el.innerText = greekAthosFacts[curIdx];
+                el.style.opacity = 1;
+                curIdx = (curIdx + 1) % greekAthosFacts.length;
+            }, 180);
+        }
+
+        loadNextFact();
+    </script>
+</body>
+</html>

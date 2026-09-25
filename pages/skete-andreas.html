@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Die Skite des Heiligen Andreas – Ein Juwel des Athos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: { 400: '#C5A059', 600: '#8B6B30' },
+                        slate: { 900: '#0F172A', 800: '#1E293B', 700: '#334155' }
+                    },
+                    fontFamily: {
+                        display: ['Outfit', 'sans-serif'],
+                        body: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #f8fafc 0%, #a1a1aa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+    <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
+    <script src="../js/nav-injector.js" defer></script>
+</head>
+<body class="bg-slate-900 text-slate-200 font-body antialiased selection:bg-gold-600 selection:text-white">
+
+    <main class="max-w-7xl mx-auto px-6 py-12 md:py-20">
+        <!-- Hero Section -->
+        <header class="mb-20">
+            <h1 class="font-display text-5xl md:text-7xl font-bold gradient-text mb-6">Skite des hl. Andreas & hl. Antonius</h1>
+            <p class="text-xl text-slate-400 max-w-2xl font-light leading-relaxed">
+                Ein architektonisches Meisterwerk und spirituelles Zentrum auf dem Berg Athos, tief verwurzelt in byzantinischer Geschichte und russischem Glanz.
+            </p>
+        </header>
+
+        <!-- Bento Grid Layout -->
+        <section class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            
+            <!-- Hero Image Card -->
+            <div class="md:col-span-8 rounded-3xl overflow-hidden glass group relative min-h-[400px]">
+                <img src="https://opal.google/board/blobs/2d6854ac-843c-4fd2-bb95-f6415ffdba00" alt="Skite des Heiligen Andreas" class="w-full h-full object-cover opacity-80 transition-transform duration-700 group-hover:scale-105">
+                <div class="absolute bottom-0 left-0 p-8 bg-gradient-to-t from-black/80 to-transparent w-full">
+                    <span class="text-gold-400 font-semibold tracking-widest text-sm uppercase">Monumentale Architektur</span>
+                    <h2 class="text-3xl font-display font-bold mt-2">Das "Sarai" des Athos</h2>
+                </div>
+            </div>
+
+            <!-- Quick Facts -->
+            <div class="md:col-span-4 grid grid-rows-2 gap-6">
+                <div class="glass rounded-3xl p-8 flex flex-col justify-center transition-all hover:border-gold-600/50">
+                    <h3 class="font-display text-gold-400 font-bold mb-2">Standort</h3>
+                    <p class="text-lg">Karyes, Autonome Mönchsrepublik Berg Athos</p>
+                </div>
+                <div class="glass rounded-3xl p-8 flex flex-col justify-center transition-all hover:border-gold-600/50">
+                    <h3 class="font-display text-gold-400 font-bold mb-2">Katholikon</h3>
+                    <p class="text-lg">Größtes Sakralgebäude auf dem Athos</p>
+                </div>
+            </div>
+
+            <!-- Historical Content -->
+            <div class="md:col-span-12 glass rounded-3xl p-8 md:p-12">
+                <h2 class="text-4xl font-display font-bold mb-8 gradient-text">Historische Evolution</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="border-l border-slate-700 pl-6">
+                        <h4 class="font-bold text-gold-400 mb-2">Ursprünge (15. Jhd.)</h4>
+                        <p class="text-slate-400">Begann als einfache Zelle des hl. Antonius, später Rückzugsort für den Ökumenischen Patriarchen Athanasios II.</p>
+                    </div>
+                    <div class="border-l border-slate-700 pl-6">
+                        <h4 class="font-bold text-gold-400 mb-2">Russische Ära (19. Jhd.)</h4>
+                        <p class="text-slate-400">Massive Expansion durch russische Zaren. Aufstieg zur Skite 1849; bis zu 800 Mönche lebten hier.</p>
+                    </div>
+                    <div class="border-l border-slate-700 pl-6">
+                        <h4 class="font-bold text-gold-400 mb-2">Revitalisierung</h4>
+                        <p class="text-slate-400">Nach dem Niedergang seit 1917, beherbergt die Skite heute unter Archimandrit Ephraim wieder eine griechische Bruderschaft.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Academic & Relics -->
+            <div class="md:col-span-7 glass rounded-3xl p-8">
+                <h3 class="text-2xl font-display font-bold mb-6">Wissenschaft & Erbe</h3>
+                <div class="space-y-6">
+                    <div class="flex gap-4">
+                        <div class="bg-gold-600/20 p-3 rounded-xl h-fit">🎓</div>
+                        <div>
+                            <h4 class="font-bold">Athonias-Akademie</h4>
+                            <p class="text-slate-400">Historisches Zentrum der "Neugriechischen Aufklärung", heute theologische Schule für Mönche.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <div class="bg-gold-600/20 p-3 rounded-xl h-fit">📜</div>
+                        <div>
+                            <h4 class="font-bold">Bibliothek & Ikonen</h4>
+                            <p class="text-slate-400">360 Handschriftenbände und die berühmte 3D-Trompe-l’œil Ikone der Jungfrau Maria.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Relic Card -->
+            <div class="md:col-span-5 glass rounded-3xl p-8 flex flex-col justify-center items-center text-center">
+                <div class="w-16 h-16 bg-gold-400 rounded-full flex items-center justify-center text-slate-900 mb-4 text-2xl font-bold">✝</div>
+                <h3 class="text-2xl font-display font-bold mb-2">Heilige Reliquien</h3>
+                <p class="text-slate-400">Die Skite bewahrt einen Teil des Schädels (die Stirn) des Apostels Andreas, ihrem Namenspatron.</p>
+            </div>
+        </section>
+
+        <!-- Attribution -->
+        <section class="mt-20 pt-10 border-t border-slate-800 text-center">
+            <p class="text-sm text-slate-500 italic">Quellen: Orthodox Wiki, Mount Athos Guide, Vatopedi Archives.</p>
+        </section>
+    </main>
+
+</body>
+</html>

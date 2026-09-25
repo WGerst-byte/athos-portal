@@ -1,0 +1,563 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Berg Athos – Serbischer Einfluss & Kloster Hilandar</title>
+    <style>
+        :root {
+            --bg-primary: #0d131a;
+            --bg-secondary: #16202c;
+            --bg-card: #1f2c3d;
+            --accent-gold: #c99e32;
+            --accent-gold-light: #ebd68a;
+            --accent-terracotta: #b84c37;
+            --text-main: #e6ecf2;
+            --text-muted: #9aa9bc;
+            --border-color: #2b3d54;
+            --font-serif: 'Cinzel', 'Georgia', 'Times New Roman', serif;
+            --font-sans: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --shadow: 0 10px 28px rgba(0,0,0,0.45);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            line-height: 1.7;
+        }
+
+        /* Header / Banner */
+        header {
+            background: linear-gradient(180deg, rgba(13,19,26,0.95) 0%, rgba(22,32,44,0.92) 100%),
+                        radial-gradient(circle at 50% 10%, #30445d 0%, #0d131a 80%);
+            border-bottom: 2px solid var(--accent-gold);
+            padding: 4rem 1.5rem 3rem;
+            text-align: center;
+            position: relative;
+        }
+
+        header::after {
+            content: "⚜ ☦ ⚜";
+            display: block;
+            font-size: 1.6rem;
+            color: var(--accent-gold);
+            margin-top: 1rem;
+            letter-spacing: 0.8rem;
+        }
+
+        h1 {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            color: var(--accent-gold-light);
+            letter-spacing: 1.5px;
+            margin-bottom: 0.8rem;
+        }
+
+        .subtitle {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 820px;
+            margin: 0 auto;
+        }
+
+        /* Nav */
+        nav {
+            position: sticky;
+            top: 0;
+            background: rgba(13, 19, 26, 0.96);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            padding: 0.8rem 1rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            transition: all 0.25s ease;
+        }
+
+        nav a:hover, nav a.active {
+            background: var(--bg-card);
+            color: var(--accent-gold);
+            border-bottom: 2px solid var(--accent-gold);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem;
+        }
+
+        section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 5rem;
+        }
+
+        h2 {
+            font-family: var(--font-serif);
+            font-size: 1.85rem;
+            color: var(--accent-gold);
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            color: var(--accent-gold-light);
+            margin-bottom: 0.8rem;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            color: #d9e3ed;
+        }
+
+        /* Fact Numbers Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.2rem;
+            margin: 2rem 0;
+        }
+
+        .metric-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-top: 3px solid var(--accent-gold);
+            padding: 1.4rem;
+            border-radius: 6px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .metric-val {
+            font-size: 2.2rem;
+            font-family: var(--font-serif);
+            font-weight: bold;
+            color: var(--accent-gold);
+            display: block;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 0.3rem;
+        }
+
+        /* Interactive Tabs */
+        .tab-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin: 1.5rem 0;
+        }
+
+        .tab-nav {
+            display: flex;
+            background: #101721;
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .tab-nav button {
+            background: none;
+            border: none;
+            padding: 1rem 1.4rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.98rem;
+            font-weight: 600;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        .tab-nav button.active {
+            color: var(--accent-gold);
+            background: var(--bg-secondary);
+            border-bottom: 3px solid var(--accent-gold);
+        }
+
+        .tab-body {
+            padding: 2rem;
+            display: none;
+        }
+
+        .tab-body.active {
+            display: block;
+            animation: fadeIn 0.35s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            margin: 2rem 0;
+            padding-left: 2rem;
+            border-left: 2px solid var(--accent-gold);
+        }
+
+        .timeline-step {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .timeline-step::before {
+            content: "";
+            position: absolute;
+            left: -2.45rem;
+            top: 0.25rem;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--accent-terracotta);
+            border: 3px solid var(--bg-primary);
+        }
+
+        .timeline-title {
+            font-weight: bold;
+            color: var(--accent-gold-light);
+            font-size: 1.15rem;
+            margin-bottom: 0.3rem;
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-gold);
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(201, 158, 50, 0.15);
+            color: var(--accent-gold-light);
+            border: 1px solid rgba(201, 158, 50, 0.35);
+            font-size: 0.75rem;
+            padding: 0.2rem 0.55rem;
+            border-radius: 4px;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* Legend / Story Box */
+        .story-box {
+            background: linear-gradient(135deg, rgba(184, 76, 55, 0.12) 0%, rgba(22, 32, 44, 0.7) 100%);
+            border-left: 4px solid var(--accent-terracotta);
+            padding: 1.5rem;
+            border-radius: 4px;
+            margin: 1.5rem 0;
+        }
+
+        .story-box h4 {
+            color: #f0a28f;
+            margin-bottom: 0.5rem;
+            font-size: 1.15rem;
+        }
+
+        /* Interactive Quiz / Facts */
+        .quiz-panel {
+            background: var(--bg-secondary);
+            border: 1px solid var(--accent-gold);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .fact-display {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            border-radius: 6px;
+            min-height: 110px;
+            margin: 1.2rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: var(--accent-gold-light);
+        }
+
+        .btn-gold {
+            background: var(--accent-gold);
+            color: #0b1016;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-gold:hover {
+            background: #e2b747;
+            box-shadow: 0 0 14px rgba(201, 158, 50, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            background: #080c10;
+            text-align: center;
+            padding: 2.5rem 1rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.88rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 1.95rem; }
+            .tab-nav { flex-direction: column; }
+        }
+    </style>
+    <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
+    <script src="../js/nav-injector.js" defer></script>
+</head>
+<body>
+
+    <header>
+        <h1>Das Serbische Erbe auf dem Berg Athos</h1>
+        <p class="subtitle">Das Kloster Hilandar: Wie Fürst Stefan Nemanja und der Heilige Sava ein mittelalterliches Königreich mit dem Heiligen Berg verbanden.</p>
+    </header>
+
+    <nav>
+        <a href="#ueberblick">Überblick</a>
+        <a href="#gruender">Sava & Simeon</a>
+        <a href="#geschichte">Zeittafel</a>
+        <a href="#reliquien">Legenden & Ikonen</a>
+        <a href="#baukunst">Architektur & Fresken</a>
+        <a href="#wissensbox">Interaktives Wissen</a>
+    </nav>
+
+    <div class="container">
+
+        <!-- Stat Highlights -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <span class="metric-val">1198</span>
+                <span class="metric-label">Gründungsurkunde (Chrysobull) durch Kaiser Alexios III.</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-val">4. Rang</span>
+                <span class="metric-label">Feste Hierarchiestufe Hilandars unter den 20 Klöstern</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-val">800+ Jahre</span>
+                <span class="metric-label">Wundersame Weinrebe des Hl. Simeon (Fruchtbarkeit)</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-val">20.000 m²</span>
+                <span class="metric-label">Festungsartiger Klosterbezirk mit Wehrtürmen</span>
+            </div>
+        </div>
+
+        <!-- Sektion 1: Überblick -->
+        <section id="ueberblick">
+            <h2>Die geistige Wiege der serbischen Nation</h2>
+            <p>Unter den 20 souveränen Klöstern der Mönchsrepublik Athos nimmt das <strong>Kloster Hilandar</strong> (serbisch: <em>Манастир Хиландар</em>, griechisch: <em>Chilandariou</em>) eine herausragende Sonderstellung ein. Es belegt den vierten Rang in der strengen athonitischen Hierarchie und gilt als das bedeutendste Kultur- und Glaubenszentrum des serbischen Volkes außerhalb seines Mutterlandes.</p>
+            <p>Anders als viele andere Athos-Gründungen entstand Hilandar nicht bloß als Zuflucht für Einsiedler, sondern als staats- und kirchenstiftende Institution der mittelalterlichen <strong>Nemanjić-Dynastie</strong>. Hier wurden die Grundlagen der serbischen Literatur, des Kirchenrechts und der selbstständigen (autokephalen) serbisch-orthodoxen Kirche gelegt.</p>
+        </section>
+
+        <!-- Sektion 2: Gründergestalten -->
+        <section id="gruender">
+            <h2>Stefan Nemanja & der Heilige Sava</h2>
+            
+            <div class="tab-box">
+                <div class="tab-nav">
+                    <button class="tab-btn active" onclick="switchTab(event, 'sava')">Der Heilige Sava (Rastko Nemanjić)</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'simeon')">Der Heilige Simeon (Stefan Nemanja)</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'typikon')">Das Hilandar-Typikon & Gesetz</button>
+                </div>
+
+                <div id="sava" class="tab-body active">
+                    <span class="badge">Erster Erzbischof & Aufklärer</span>
+                    <h3>Prinz, Mönch und Nationalheiliger</h3>
+                    <p>Rastko Nemanjić (ca. 1174–1236), der jüngste Sohn des Großžupans, floh heimlich 1191 an den Berg Athos, um Mönch zu werden. Er trat zunächst in das russische Kloster Rossikon ein und wechselte dann nach Vatopedi.</p>
+                    <p>Sava war Diplomat, Gesetzgeber und Schriftsteller in Personalunion. 1219 erwirkte er in Nicäa die Autokephalie der serbischen Kirche und verfasste das <em>Zakonopravilo</em> (Nomokanon), das erste geschriebene Zivil- und Kirchengesetzbuch Serbiens.</p>
+                </div>
+
+                <div id="simeon" class="tab-body">
+                    <span class="badge">Herrscher & Myron-Spender</span>
+                    <h3>Großžupan Stefan Nemanja</h3>
+                    <p>Im hohen Alter dankte Stefan Nemanja 1196 als Herrscher ab, übergab den Thron an seinen Sohn Stefan den Erstgekrönten und folgte seinem Sohn Sava auf den Athos. Er nahm den Mönchsnamen <strong>Simeon</strong> an.</p>
+                    <p>Gemeinsam baten sie den byzantinischen Kaiser Alexios III. Angelos um die Überlassung der verfallenen Klosterruine Hilandar. Simeon starb 1200 in Hilandar. Aus seinem leeren Grab soll kurz nach der Überführung seiner Gebeine nach Studenica eine heilkräftige Weinrebe gewachsen sein.</p>
+                </div>
+
+                <div id="typikon" class="tab-body">
+                    <span class="badge">Klosterordnung</span>
+                    <h3>Das Karyes- & Hilandar-Typikon</h3>
+                    <p>Sava verfasste um 1199 das sogenannte <em>Hilandar-Typikon</em> (basierend auf der Ordnung des Theotokos-Evergetis-Klosters in Konstantinopel). Es garantierte Hilandar völlige Unabhängigkeit sowohl vom obersten Rat (Protaton) des Athos als auch von weltlichen Herrschern.</p>
+                    <p>Zudem gründete Sava die Einsiedlerzelle (Kellia) von Karyes (<em>Posnica</em>), wo bis heute ein Mönch in ununterbrochenem Gebet die Psalmen liest.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sektion 3: Historische Zeittafel -->
+        <section id="geschichte">
+            <h2>Wichtige Meilensteine des serbischen Einflusses</h2>
+            <div class="timeline">
+                <div class="timeline-step">
+                    <div class="timeline-title">1198 – Kaiserliches Chrysobull</div>
+                    <p>Kaiser Alexios III. erklärt Hilandar zum ewigen Geschenk an das serbische Volk, frei von Abgaben und kaiserlicher Einmischung.</p>
+                </div>
+                <div class="timeline-step">
+                    <div class="timeline-title">1207–1320 – Die goldene Bauphase unter König Milutin</div>
+                    <p>König Stefan Uroš II. Milutin lässt das baufällige Katholikon abreißen und 1303 eine prächtige dreikonchige Kathedrale im serbisch-byzantinischen Stil errichten, ergänzt um Wehrtürme und ein neues Speisehaus (Trapeza).</p>
+                </div>
+                <div class="timeline-step">
+                    <div class="timeline-title">1347–1348 – Zar Stefan Dušan und das Frauenverbot</div>
+                    <p>Vor der Pest (Schwarzer Tod) flieht der serbische Zar Stefan Dušan mit seiner Gemahlin Kaiserin Jelena auf den Athos. Da das <em>Avaton</em> (Betretungsverbot für Frauen) streng galt, wurde Jelena der Legende nach ausschließlich auf Tragen getragen oder hielt sich nur auf königlichen Teppichen im Außenbereich auf.</p>
+                </div>
+                <div class="timeline-step">
+                    <div class="timeline-title">19./20. Jahrhundert – Osmanische Zeit & Brandkatastrophe 2004</div>
+                    <p>Hilandar überstand schwere osmanische Abgaben und zeitweise bulgarische Mönchsmehrheiten. Im März 2004 zerstörte ein verheerender Großbrand mehr als die Hälfte der historischen Klosterflügel, woraufhin ein weltweites, akribisches Restaurierungsprogramm begann.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sektion 4: Legenden, Ikonen & die Weinrebe -->
+        <section id="reliquien">
+            <h2>Heiligtümer & Wundergeschichten</h2>
+            
+            <div class="story-box">
+                <h4>🌿 Die wundersame Rebe des Hl. Simeon (Loza Svetog Simeona)</h4>
+                <p>An der Südwand des Katholikon wächst eine über 800 Jahre alte Weinrebe direkt aus der Steinmauer, wo einst das Grab des heiligen Simeon lag. Getrocknete Trauben und Rebenabschnitte werden bis heute von unfruchtbaren Ehepaaren aus aller Welt erbeten. Zahllose Berichte bezeugen Geburten nach strengem Fasten und Verzehr dieser Früchte.</p>
+            </div>
+
+            <div class="cards-grid">
+                <div class="card">
+                    <span class="badge">Wundertätige Ikone</span>
+                    <h3>Bogorodica Trojeručica (Die Dreihändige)</h3>
+                    <p>Das berühmteste Heiligtum Hilandars: Die Muttergottesikone des Kirchenvaters Johannes von Damaskus. Als ihm im 8. Jh. die Hand abgehackt wurde, betete er vor der Ikone – seine Hand wuchs an, woraufhin er aus Dankbarkeit eine dritte Hand aus Silber anbringen ließ. Im Kloster sitzt die Ikone symbolisch auf dem Thron des Abtes (<em>Igumen</em>).</p>
+                </div>
+
+                <div class="card">
+                    <span class="badge">Kostbare Schatzkammer</span>
+                    <h3>Handschriften & Schätze</h3>
+                    <p>Hilandar besitzt das zweitgrößte slawische Handschriftenarchiv der Welt mit über 800 Manuskripten und 350 Pergamenten (u. a. das <em>Miroslav-Evangelium</em>, das älteste kyrillische Denkmal). Hinzu kommen Diademe, Goldkreuze und kaiserliche Gewänder der Nemanjić-Dynastie.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sektion 5: Architektur und Freskenkunst -->
+        <section id="baukunst">
+            <h2>Architektur & Freskengestaltung</h2>
+            <div class="cards-grid">
+                <div class="card">
+                    <span class="badge">Festungsarchitektur</span>
+                    <h3>Wehrtürme & Burgcharakter</h3>
+                    <p>Aufgrund ständiger Überfälle von Franken, Katalanen und Piraten im 13. Jahrhundert gleicht Hilandar einer Trutzburg. Der <strong>Sava-Turm (Pirg)</strong> und der <strong>Georgs-Turm</strong> dienten als letzte Rückzugsorte mit Schießscharten und Pechnasen.</p>
+                </div>
+
+                <div class="card">
+                    <span class="badge">Kirchenarchitektur</span>
+                    <h3>Das Trikonchos-Katholikon</h3>
+                    <p>Die 1303 von König Milutin vollendete Hauptkirche (<em>Mariä Opferung</em>) kombiniert den athonitischen Trikonchos-Grundriss (drei Apsiden für den Chor) mit meisterhafter serbisch-byzantinischer Ziegel- und Hausteinverblendung (Cloisonné-Mauerwerk).</p>
+                </div>
+
+                <div class="card">
+                    <span class="badge">Palaeologische Kunst</span>
+                    <h3>Monumentale Freskenmalerei</h3>
+                    <p>Die Wandmalereien von 1321/22 im Katholikon (zugeschrieben Meistern aus dem Umkreis von Michael Astrapas und Eutychios) repräsentieren den Höhepunkt der Palaiologischen Renaissance: Lebendige Farbkontraste, dramatische Raumtiefe und anatomische Eleganz.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sektion 6: Interaktive Wissens-Box -->
+        <section id="wissensbox">
+            <h2>Interaktives Hilandar-Wissen</h2>
+            <div class="quiz-panel">
+                <p>Entdecken Sie überraschende historische Fakten und Hintergründe zum serbischen Mönchtum auf Athos:</p>
+                <div id="factBox" class="fact-display">
+                    Klicken Sie auf den Button, um ein Faktum zu laden!
+                </div>
+                <button class="btn-gold" onclick="loadNextFact()">Nächstes Faktum aufrufen ➔</button>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>Interaktives Wissensmodul über den Berg Athos & das serbisch-orthodoxe Kulturerbe.</p>
+        <p style="margin-top: 0.5rem; font-size: 0.8rem; color: #5f738b;">Erstellt mit HTML5 & CSS3 • Stand: 2026</p>
+    </footer>
+
+    <script>
+        function switchTab(evt, tabId) {
+            const contents = document.querySelectorAll('.tab-body');
+            contents.forEach(item => item.classList.remove('active'));
+
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(tabId).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        const hilandarFacts = [
+            "🍇 Die 800 Jahre alte Rebe: Aus der Mauer des leeren Grabes von Stefan Nemanja wächst eine Rebe, deren Trauben unfruchtbaren Paaren per Post mit speziellem Fastenplan zugesandt werden.",
+            "👑 Die Kaiserin auf Athos: Kaiserin Jelena (1347) betrat den heiligen Boden formal nie – sie wurde auf Sänften getragen oder lief auf ausgelegten Teppichen, um das 'Avaton' nicht zu brechen.",
+            "🖼️ Das Wunder der Dreihändigen (Trojeručica): Die Ikone verließ nach einer Legende im Mittelalter Serbien auf dem Rücken eines Esels, der ohne Führung selbstständig den Weg nach Hilandar fand.",
+            "📜 Zweitgrößtes slawisches Archiv: Hilandar bewahrt über 800 handschriftliche Kodizes und mittelalterliche Herrscherurkunden in kirchenslawischer, griechischer und osmanischer Sprache auf.",
+            "🛡️ Katalanischer Sturm (1307–1309): Söldner der Katalanischen Kompanie belagerten Hilandar über drei Jahre lang vergeblich – der Erzbischof Danilo II. verteidigte die Festung heldenhaft von den Türmen.",
+            "⚖️ Autonomie per Gesetz: Das 1199 von Sava verfasste Typikon machte Hilandar unabhängig von byzantinischen Statthaltern und unterstellte es allein Gott und dem eigenen Konvent."
+        ];
+
+        let factIdx = 0;
+        function loadNextFact() {
+            const el = document.getElementById('factBox');
+            el.style.opacity = 0;
+            setTimeout(() => {
+                el.innerText = hilandarFacts[factIdx];
+                el.style.opacity = 1;
+                factIdx = (factIdx + 1) % hilandarFacts.length;
+            }, 180);
+        }
+
+        // Erstes Faktum anzeigen
+        loadNextFact();
+    </script>
+</body>
+</html>

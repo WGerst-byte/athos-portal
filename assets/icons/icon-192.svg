@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#080c14" />
+      <stop offset="60%" stop-color="#111c2e" />
+      <stop offset="100%" stop-color="#1e3250" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff2a8" />
+      <stop offset="40%" stop-color="#d4af37" />
+      <stop offset="100%" stop-color="#916c16" />
+    </linearGradient>
+    <linearGradient id="seaGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0d1b2a" />
+      <stop offset="50%" stop-color="#1b2a47" />
+      <stop offset="100%" stop-color="#0d1b2a" />
+    </linearGradient>
+    <radialGradient id="haloGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#d4af37" stop-opacity="0.35"/>
+      <stop offset="70%" stop-color="#d4af37" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#d4af37" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Abgerundetes Canvas / App-Icon Hintergrund -->
+  <rect width="512" height="512" rx="116" fill="url(#skyGrad)"/>
+  <rect width="504" height="504" x="4" y="4" rx="112" fill="none" stroke="url(#goldGrad)" stroke-width="3" opacity="0.6"/>
+
+  <!-- Ägäisches Meer / Wellen am Sockel -->
+  <path d="M0 425 C140 395 200 455 310 420 C400 390 450 435 512 420 L512 512 L0 512 Z" fill="url(#seaGrad)"/>
+
+  <!-- Monumentale Athos-Gipfelsilhouette -->
+  <polygon points="256,125 435,440 77,440" fill="#151e2c" stroke="#2a3b54" stroke-width="3"/>
+  <!-- Schattierte Ostwand des Berges -->
+  <polygon points="256,125 435,440 256,440" fill="#0c121b" opacity="0.6"/>
+
+  <!-- Goldenes Kloster mit Zinnen & Rundbogen am Steilhang -->
+  <path d="M220 375 L220 335 Q256 305 292 335 L292 375 Z" fill="#222b38" stroke="url(#goldGrad)" stroke-width="3"/>
+  <circle cx="256" cy="328" r="14" fill="url(#goldGrad)"/>
+  <rect x="238" y="348" width="12" height="18" rx="6" fill="url(#goldGrad)" opacity="0.85"/>
+  <rect x="262" y="348" width="12" height="18" rx="6" fill="url(#goldGrad)" opacity="0.85"/>
+
+  <!-- Heiligenschein / Strahlenkranz um den Berggipfel -->
+  <circle cx="256" cy="115" r="95" fill="url(#haloGrad)"/>
+  <circle cx="256" cy="115" r="68" fill="none" stroke="url(#goldGrad)" stroke-width="2" stroke-dasharray="6,8" opacity="0.8"/>
+
+  <!-- Byzantinisches / Orthodoxes Kreuz -->
+  <g stroke="url(#goldGrad)" stroke-linecap="round">
+    <!-- Vertikaler Hauptbalken -->
+    <line x1="256" y1="55" x2="256" y2="155" stroke-width="12" />
+    <!-- Oberer kleiner Querbalken (Titulus) -->
+    <line x1="238" y1="78" x2="274" y2="78" stroke-width="8" />
+    <!-- Zentraler Hauptquerbalken -->
+    <line x1="216" y1="102" x2="296" y2="102" stroke-width="12" />
+    <!-- Schräger unterer Fußbalken (Suppedaneum) -->
+    <line x1="236" y1="138" x2="276" y2="126" stroke-width="9" />
+  </g>
+
+  <!-- Alpha & Omega Monogramm -->
+  <text x="188" y="112" font-family="'Times New Roman', serif" font-size="28" font-weight="bold" fill="url(#goldGrad)" opacity="0.85">Α</text>
+  <text x="306" y="112" font-family="'Times New Roman', serif" font-size="28" font-weight="bold" fill="url(#goldGrad)" opacity="0.85">Ω</text>
+</svg>

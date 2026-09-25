@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dossier: Archimandrit Parthenios Mourelatos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom Theme Configuration */
+        @layer base {
+            body {
+                background-color: #0f172a;
+                color: #e2e8f0;
+            }
+            h1, h2, h3 {
+                font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+            }
+            p, li, span {
+                font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            }
+        }
+        
+        .accent-border {
+            border-left: 4px solid #fbbf24;
+        }
+
+        .glass {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Scroll margin for sticky header offsets */
+        section {
+            scroll-margin-top: 5rem;
+        }
+    </style>
+    <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
+    <script src="../js/nav-injector.js" defer></script>
+</head>
+<body class="leading-relaxed">
+
+    <!-- Sidebar Navigation (Desktop) / Top Nav (Mobile) -->
+    <nav class="fixed w-full z-50 glass text-slate-200">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <span class="font-bold text-lg tracking-widest text-amber-400 uppercase">Parthenios Dossier</span>
+            <ul class="hidden md:flex gap-8 text-sm uppercase tracking-wider font-medium">
+                <li><a href="#biografie" class="hover:text-amber-400 transition-colors">Biografie</a></li>
+                <li><a href="#karriere" class="hover:text-amber-400 transition-colors">Karriere</a></li>
+                <li><a href="#einfluss" class="hover:text-amber-400 transition-colors">Einfluss</a></li>
+                <li><a href="#persoenlichkeit" class="hover:text-amber-400 transition-colors">Persönlichkeit</a></li>
+                <li><a href="#zitate" class="hover:text-amber-400 transition-colors">Zitate</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="h-[60vh] flex items-center justify-center relative overflow-hidden bg-slate-950">
+        <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at center, #fbbf24 1px, transparent 1px); background-size: 40px 40px;"></div>
+        <div class="text-center px-4 relative z-10">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 text-slate-50">Archimandrit Parthenios</h1>
+            <p class="text-xl md:text-2xl text-amber-400 italic">Ein Leben der asketischen Strenge & spiritueller Hingabe</p>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-6 py-16 space-y-24">
+
+        <!-- Biography -->
+        <section id="biografie" class="space-y-6">
+            <h2 class="text-3xl border-b border-slate-700 pb-4 text-amber-400">Biografie</h2>
+            <div class="bg-slate-900/50 p-8 rounded-xl border border-slate-800 shadow-xl">
+                <p class="text-lg leading-loose text-slate-300">
+                    Archimandrit Parthenios Mourelatos wurde im Jahr 1931 in Poros auf der griechischen Insel Kefalonia geboren. Er wuchs in einem religiösen Umfeld auf und verspürte schon früh den Wunsch, sein Leben Gott zu weihen. Im Jahr 1954 trat er in das Kloster Agiou Pavlou (Heiliger Paulus) auf dem Berg Athos ein. Seit sieben Jahrzehnten führt er nun ein Leben in asketischer Strenge und spiritueller Hingabe, wobei er seine gesamte Laufbahn diesem einen Kloster und der Gemeinschaft der mönchischen Väter auf dem Athos verschrieben hat.
+                </p>
+            </div>
+        </section>
+
+        <!-- Career -->
+        <section id="karriere" class="space-y-6">
+            <h2 class="text-3xl border-b border-slate-700 pb-4 text-amber-400">Karriere</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="p-6 bg-slate-900/50 rounded-lg border border-slate-800 hover:border-amber-400/50 transition-all">
+                    <h3 class="text-xl font-bold mb-2">Abtwahl 1974</h3>
+                    <p class="text-slate-400">Nach dem Tod seines Vorgängers wurde Parthenios zum Hegumen gewählt und leitete eine beispiellose Ära der Erneuerung ein.</p>
+                </div>
+                <div class="p-6 bg-slate-900/50 rounded-lg border border-slate-800 hover:border-amber-400/50 transition-all">
+                    <h3 class="text-xl font-bold mb-2">50 Jahre Führung</h3>
+                    <p class="text-slate-400">Heute gilt er als der am längsten amtierende Abt der gesamten Mönchsrepublik Athos.</p>
+                </div>
+                <div class="p-6 bg-slate-900/50 rounded-lg border border-slate-800 hover:border-amber-400/50 transition-all col-span-1 md:col-span-2">
+                    <h3 class="text-xl font-bold mb-2">Wiederaufbau</h3>
+                    <p class="text-slate-400">Unter seiner Leitung wurden historische Bauten saniert, Reliquien gesichert und die Bruderschaft sowie die Sketen (Nea Sketi, Lakkoskiti) maßgeblich gestärkt.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Influence -->
+        <section id="einfluss" class="space-y-6">
+            <h2 class="text-3xl border-b border-slate-700 pb-4 text-amber-400">Einfluss</h2>
+            <div class="prose prose-invert max-w-none">
+                <p class="text-lg leading-loose text-slate-300">
+                    Als „Doyen“ des Heiligen Berges genießt Parthenios eine Autorität, die weltweit respektiert wird. Sein Rat in der Heiligen Gemeinschaft (Iera Kinotita) ist richtungsweisend für die orthodoxe Welt. Er gilt als standhafte Säule gegenüber kirchlichen Neuerungen und als geachteter geistlicher Vater über nationale Grenzen hinweg (Griechenland, Russland, Serbien, Rumänien).
+                </p>
+            </div>
+        </section>
+
+        <!-- Personality -->
+        <section id="persoenlichkeit" class="space-y-6">
+            <h2 class="text-3xl border-b border-slate-700 pb-4 text-amber-400">Persönlichkeit</h2>
+            <div class="flex flex-col md:flex-row gap-8 items-center bg-slate-900 p-8 rounded-2xl">
+                <div class="flex-1 space-y-4">
+                    <p class="text-lg text-slate-300">
+                        Pilger und Mönche beschreiben ihn als eine Persönlichkeit voller Milde, Freude und tiefem Humor. Trotz seines Alters strahlt er Vitalität aus. Sein Charakter vereint kompromisslose Treue zu monastischen Regeln mit väterlicher Liebe und Gastfreundschaft. Er sieht sich und seine Gemeinschaft in steter Hingabe an die Gottesmutter (Panagia).
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quotes -->
+        <section id="zitate" class="space-y-8">
+            <h2 class="text-3xl border-b border-slate-700 pb-4 text-amber-400">Zitate</h2>
+            <div class="space-y-6">
+                <blockquote class="accent-border pl-6 py-2 italic text-slate-300">
+                    <p class="text-xl">„Wir besitzen hier nichts. Dieses Kloster und der ganze Berg gehören der Allheiligen Gottesgebärerin. Wir sind nur ihre Diener, die ihren Garten pflegen.“</p>
+                </blockquote>
+                <blockquote class="accent-border pl-6 py-2 italic text-slate-300">
+                    <p class="text-xl">„Wer den Gehorsam lernt, lernt die Demut. Und wer die Demut besitzt, findet den Frieden, den die Welt nicht geben kann.“</p>
+                </blockquote>
+                <blockquote class="accent-border pl-6 py-2 italic text-slate-300">
+                    <p class="text-xl">„Die Krisen der Menschheit sind keine wirtschaftlichen oder politischen Krisen; es sind Krisen des Geistes. Nur die Rückkehr zum Gebet und zur Buße kann die Welt heilen.“</p>
+                </blockquote>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-12 border-t border-slate-800 text-slate-600">
+        <a href="#" class="hover:text-amber-400 transition-colors">↑ Zum Seitenanfang</a>
+    </footer>
+
+</body>
+</html>

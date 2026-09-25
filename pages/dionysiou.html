@@ -1,0 +1,384 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interaktives Dossier: Kloster Dionysiou</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 300px;
+    max-height: 400px;
+}
+@media (min-width: 768px) {
+    .chart-container {
+        height: 350px;
+    }
+}
+body {
+    scroll-behavior: smooth;
+}
+.tab-active {
+    background-color: #78350f;
+    color: #f5f5f4;
+}
+.tab-inactive {
+    background-color: #d6d3d1;
+    color: #44403c;
+}
+</style>
+<!-- Chosen Palette: Monastic Warmth (Stone 50-800, Amber/Brown 700 for accents, Slate for borders) -->
+<!-- Application Structure Plan: The SPA is designed as a structured, interactive dossier to facilitate easy exploration of the monastery's rich history and facts. It uses a single-page scrolling architecture with a sticky navigation bar. The sections are logically grouped: Overview (context), Interactive Timeline (history), Visualized Data (library/facts), Cultural Highlights (interactive grid), and an expandable FAQ. This layout allows users to either read linearly or jump directly to their area of interest, enhancing knowledge retention. -->
+<!-- Visualization & Content Choices: 1. Overview -> Contextualize the place -> Semantic HTML text block -> Uses schema.org Place. 2. History -> Understand chronological evolution -> Interactive Timeline (JS-driven tabs) -> Prevents text overload and encourages active discovery. 3. Facts/Library -> Grasp the scale of historical artifacts -> Doughnut Chart (Chart.js) -> Visually separates manuscripts from printed books, demonstrating the vastness of the collection. 4. FAQ -> Quick answers -> Accordion (JS) -> Saves space while offering immediate answers. NO SVG/Mermaid used; unicode characters act as icons. -->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
+    <script src="../js/nav-injector.js" defer></script>
+</head>
+<body class="bg-stone-50 text-stone-800 font-sans leading-relaxed">
+
+<nav class="sticky top-0 z-50 bg-stone-100 border-b border-stone-300 shadow-sm">
+    <div class="container mx-auto px-4 py-3 flex flex-wrap justify-between items-center">
+        <div class="text-xl font-bold text-amber-900 tracking-wide">&#9762; Dionysiou Dossier</div>
+        <div class="flex space-x-4 text-sm font-semibold">
+            <a href="#ueberblick" class="hover:text-amber-700 transition">Überblick</a>
+            <a href="#historie" class="hover:text-amber-700 transition">Historie</a>
+            <a href="#daten" class="hover:text-amber-700 transition">Daten & Fakten</a>
+            <a href="#kultur" class="hover:text-amber-700 transition">Kultur</a>
+            <a href="#faq" class="hover:text-amber-700 transition">FAQ</a>
+        </div>
+    </div>
+</nav>
+
+<header class="bg-stone-800 text-stone-100 py-20 px-4 border-b-4 border-amber-700">
+    <div class="container mx-auto max-w-4xl text-center" itemscope itemtype="https://schema.org/Place">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-4 font-serif" itemprop="name">Kloster Dionysiou</h1>
+        <p class="text-xl md:text-2xl text-stone-300 mb-6">Ein architektonisches Meisterwerk auf den Klippen des Athos</p>
+        <div class="inline-block bg-stone-700 rounded-lg px-4 py-2 text-sm">
+            <span itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
+                <span itemprop="addressLocality">Mönchsrepublik Athos</span>, 
+                <span itemprop="addressCountry">Griechenland</span>
+            </span>
+        </div>
+    </div>
+</header>
+
+<main class="container mx-auto max-w-5xl px-4 py-12 space-y-24">
+
+    <section id="ueberblick" class="scroll-mt-20">
+        <div class="mb-8 border-l-4 border-amber-700 pl-4">
+            <h2 class="text-3xl font-bold text-stone-900 mb-2">Begriffserklärung & Einleitung</h2>
+            <p class="text-stone-600 text-lg">Dieser Bereich definiert das Kloster Dionysiou und ordnet es geografisch sowie spirituell in die Welt der orthodoxen Christenheit ein.</p>
+        </div>
+        <article class="bg-white p-6 md:p-8 rounded-xl shadow-sm border border-stone-200 text-lg">
+            <p class="mb-4">Das <strong>Kloster Dionysiou</strong> (griechisch Μονή Διονυσίου) ist ein orthodoxes Kloster auf der Halbinsel Athos in Griechenland. Es ist dem Heiligen Johannes dem Täufer geweiht. In der traditionellen Hierarchie der 20 dominierenden Athos-Klöster nimmt es den <strong>fünften Rang</strong> ein.</p>
+            <p>Geografisch besticht das Kloster durch seine spektakuläre Lage: Es wurde auf einem schmalen, steil abfallenden Felsen direkt an der Südwestküste der Halbinsel errichtet, etwa 80 Meter über dem Ägäischen Meer. Aufgrund dieser exponierten und wehrhaften Bauweise wird es oft als architektonisches Wunder und "Festung des Glaubens" beschrieben.</p>
+        </article>
+    </section>
+
+    <section id="historie" class="scroll-mt-20">
+        <div class="mb-8 border-l-4 border-amber-700 pl-4">
+            <h2 class="text-3xl font-bold text-stone-900 mb-2">Geschichtliche Zeitreise</h2>
+            <p class="text-stone-600 text-lg">Erkunden Sie die wichtigsten Epochen des Klosters. Klicken Sie auf die Epochen-Tabs, um die historischen Wendepunkte und Entwicklungen dynamisch zu laden.</p>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-sm border border-stone-200 overflow-hidden">
+            <div class="flex flex-wrap border-b border-stone-200" id="timeline-tabs">
+            </div>
+            <div class="p-6 md:p-8 bg-stone-50 min-h-[200px]" id="timeline-content">
+            </div>
+        </div>
+    </section>
+
+    <section id="daten" class="scroll-mt-20">
+        <div class="mb-8 border-l-4 border-amber-700 pl-4">
+            <h2 class="text-3xl font-bold text-stone-900 mb-2">Wichtige Daten, Fakten & Bibliothek</h2>
+            <p class="text-stone-600 text-lg">Diese Sektion visualisiert die Bestände der berühmten Klosterbibliothek und listet die administrativen Eckdaten übersichtlich auf.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                <h3 class="text-xl font-bold mb-4 text-center">Zusammensetzung der Bibliothek</h3>
+                <p class="text-sm text-stone-500 mb-4 text-center">Interaktives Diagramm: Bewegen Sie die Maus über die Segmente, um genaue Zahlen zu den historischen Schriften zu erhalten.</p>
+                <div class="chart-container">
+                    <canvas id="libraryChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200 overflow-x-auto">
+                <h3 class="text-xl font-bold mb-4">Eckdaten im Überblick</h3>
+                <table class="w-full text-left border-collapse">
+                    <tbody>
+                        <tr class="border-b border-stone-100">
+                            <th class="py-3 pr-4 font-semibold text-stone-700">Gegründet</th>
+                            <td class="py-3 text-stone-600">14. Jahrhundert (ca. 1389)</td>
+                        </tr>
+                        <tr class="border-b border-stone-100">
+                            <th class="py-3 pr-4 font-semibold text-stone-700">Gründer</th>
+                            <td class="py-3 text-stone-600">Hl. Dionysios von Korisos</td>
+                        </tr>
+                        <tr class="border-b border-stone-100">
+                            <th class="py-3 pr-4 font-semibold text-stone-700">Hierarchischer Rang</th>
+                            <td class="py-3 text-stone-600">Platz 5 von 20</td>
+                        </tr>
+                        <tr class="border-b border-stone-100">
+                            <th class="py-3 pr-4 font-semibold text-stone-700">Patronat</th>
+                            <td class="py-3 text-stone-600">Johannes der Täufer (24. Juni)</td>
+                        </tr>
+                        <tr class="border-b border-stone-100">
+                            <th class="py-3 pr-4 font-semibold text-stone-700">Mönchsanzahl</th>
+                            <td class="py-3 text-stone-600">ca. 50 (heutiger Stand)</td>
+                        </tr>
+                        <tr>
+                            <th class="py-3 pr-4 font-semibold text-stone-700">Architektur-Stil</th>
+                            <td class="py-3 text-stone-600">Wehrkloster, byzantinisch</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section id="kultur" class="scroll-mt-20">
+        <div class="mb-8 border-l-4 border-amber-700 pl-4">
+            <h2 class="text-3xl font-bold text-stone-900 mb-2">Besonderheiten & Kontext</h2>
+            <p class="text-stone-600 text-lg">Klicken Sie auf die untenstehenden Karten, um mehr über die architektonischen Highlights und kulturellen Schätze des Klosters zu erfahren.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200 cursor-pointer hover:shadow-md transition card-interactive" onclick="toggleCard(this)">
+                <div class="text-3xl mb-3 text-amber-700">&#9819;</div>
+                <h3 class="text-lg font-bold mb-2">Die Fresken des Zorzi</h3>
+                <div class="card-content text-stone-600 text-sm hidden">
+                    <p>Im Jahr 1547 bemalte der kretische Maler Zorzi (Tzortzis) das Katholikon (Hauptkirche) mit beeindruckenden Fresken. Besonders berühmt sind seine detailreichen und furchteinflößenden Darstellungen der Apokalypse, die zu den bedeutendsten Werken postbyzantinischer Kunst zählen.</p>
+                </div>
+                <div class="text-xs text-amber-600 mt-4 font-semibold card-hint">Klicken zum Lesen &#9660;</div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200 cursor-pointer hover:shadow-md transition card-interactive" onclick="toggleCard(this)">
+                <div class="text-3xl mb-3 text-amber-700">&#10026;</div>
+                <h3 class="text-lg font-bold mb-2">Das Chrysobull</h3>
+                <div class="card-content text-stone-600 text-sm hidden">
+                    <p>Das wichtigste Gründungsdokument des Klosters ist ein "Chrysobull" (eine mit einem Goldsiegel versehene Urkunde) des Kaisers Alexios III. Komnenos von Trapezunt aus dem Jahr 1374, welches dem Kloster finanzielle Unabhängigkeit und Ländereien zusicherte.</p>
+                </div>
+                <div class="text-xs text-amber-600 mt-4 font-semibold card-hint">Klicken zum Lesen &#9660;</div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200 cursor-pointer hover:shadow-md transition card-interactive" onclick="toggleCard(this)">
+                <div class="text-3xl mb-3 text-amber-700">&#9875;</div>
+                <h3 class="text-lg font-bold mb-2">Die "Festung" am Meer</h3>
+                <div class="card-content text-stone-600 text-sm hidden">
+                    <p>Da das Kloster direkt an der Küste liegt, war es historisch stark von Piratenangriffen bedroht. Die Architektur ist daher extrem wehrhaft: hohe, fensterlose Grundmauern, hölzerne Balkone (Oksia), die über den Abgrund ragen, und ein zentraler Wehrturm charakterisieren das Bild.</p>
+                </div>
+                <div class="text-xs text-amber-600 mt-4 font-semibold card-hint">Klicken zum Lesen &#9660;</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="scroll-mt-20 mb-20">
+        <div class="mb-8 border-l-4 border-amber-700 pl-4">
+            <h2 class="text-3xl font-bold text-stone-900 mb-2">Häufig gestellte Fragen (FAQ)</h2>
+            <p class="text-stone-600 text-lg">Klicken Sie auf eine Frage, um die Antwort auszuklappen. Dieser Bereich klärt die wichtigsten praktischen und organisatorischen Fragen rund um Dionysiou.</p>
+        </div>
+
+        <div class="space-y-4" id="faq-container">
+        </div>
+    </section>
+
+</main>
+
+<footer class="bg-stone-900 text-stone-400 py-8 text-center text-sm">
+    <div class="container mx-auto">
+        <p>&copy; 2023 Interaktives Dossier: Kloster Dionysiou. Erstellt zur historischen Analyse.</p>
+        <p class="mt-2">Basierend auf öffentlichen archäologischen und historischen Daten.</p>
+    </div>
+</footer>
+
+<script>
+const timelineData = [
+    {
+        year: "1374 - 1389",
+        title: "Gründung und kaiserliche Förderung",
+        content: "Der Mönch Dionysios sammelte auf dem Athos Anhänger. Mit Hilfe seines Bruders, des Metropoliten von Trapezunt, erwirkte er bei Kaiser Alexios III. Komnenos finanzielle Mittel zur Errichtung des Klosters, besiegelt durch das berühmte Chrysobull von 1374. Die eigentliche Fertigstellung der Kernanlage wird auf 1389 datiert."
+    },
+    {
+        year: "1537",
+        title: "Bau des Wachturms",
+        content: "Zur Verteidigung gegen die ständigen Überfälle von Piraten, die das Ägäische Meer unsicher machten, wurde 1537 der markante, massive Wachturm des Klosters fertiggestellt. Er diente als letzter Zufluchtsort für die Mönche und zur Sicherung der wertvollen Reliquien."
+    },
+    {
+        year: "1547",
+        title: "Künstlerische Blütezeit",
+        content: "Der kretische Meister Zorzi (Tzortzis) vollendete die Fresken im Katholikon (Hauptkirche). Seine Darstellungen, insbesondere die der Apokalypse und des Jüngsten Gerichts, gelten als Meisterwerke der postbyzantinischen Kunst und prägen das Innere der Kirche bis heute."
+    },
+    {
+        year: "Heute",
+        title: "Modernes monastisches Leben",
+        content: "Heute leben etwa 50 Mönche im Kloster Dionysiou. Sie widmen sich dem Gebet, dem Erhalt der historischen Gebäude und der Pflege der unschätzbar wertvollen Bibliothek. Das Kloster ist ein lebendiges Zentrum orthodoxer Spiritualität und zieht Pilger aus aller Welt an (unter Beachtung des Avaton-Gesetzes)."
+    }
+];
+
+function initTimeline() {
+    const tabsContainer = document.getElementById('timeline-tabs');
+    const contentContainer = document.getElementById('timeline-content');
+    
+    timelineData.forEach((item, index) => {
+        const btn = document.createElement('button');
+        btn.className = `flex-1 py-4 px-2 text-center font-bold text-sm md:text-base transition ${index === 0 ? 'tab-active' : 'tab-inactive hover:bg-stone-300'}`;
+        btn.innerText = item.year;
+        btn.onclick = () => {
+            document.querySelectorAll('#timeline-tabs button').forEach(b => {
+                b.classList.remove('tab-active');
+                b.classList.add('tab-inactive', 'hover:bg-stone-300');
+            });
+            btn.classList.add('tab-active');
+            btn.classList.remove('tab-inactive', 'hover:bg-stone-300');
+            
+            contentContainer.style.opacity = 0;
+            setTimeout(() => {
+                contentContainer.innerHTML = `
+                    <h3 class="text-2xl font-bold text-amber-900 mb-4">${item.title}</h3>
+                    <p class="text-stone-700 leading-relaxed text-lg">${item.content}</p>
+                `;
+                contentContainer.style.transition = "opacity 0.3s ease-in-out";
+                contentContainer.style.opacity = 1;
+            }, 150);
+        };
+        tabsContainer.appendChild(btn);
+    });
+
+    contentContainer.innerHTML = `
+        <h3 class="text-2xl font-bold text-amber-900 mb-4">${timelineData[0].title}</h3>
+        <p class="text-stone-700 leading-relaxed text-lg">${timelineData[0].content}</p>
+    `;
+}
+
+const faqData = [
+    {
+        q: "Können Frauen das Kloster Dionysiou besuchen?",
+        a: "Nein. Wie auf der gesamten Halbinsel Athos gilt auch im Kloster Dionysiou das sogenannte 'Avaton'-Gesetz. Dieses verbietet Frauen strikt den Zutritt zur Mönchsrepublik. Weibliche Besucher können die Klöster nur aus der Ferne bei Bootsausflügen entlang der Küste betrachten."
+    },
+    {
+        q: "Wie erreicht man das Kloster als männlicher Pilger?",
+        a: "Der Zugang erfolgt ausschließlich über das Meer. Nach Beantragung und Erhalt des Pilgervisums (Diamonitirion) in Ouranoupolis nimmt man die Fähre, die entlang der Westküste fährt und an den Docks (Arsanas) der jeweiligen Klöster, so auch bei Dionysiou, anlegt. Von dort führt ein steiler Weg hinauf zum Kloster."
+    },
+    {
+        q: "Was sind die wertvollsten Schätze in der Bibliothek?",
+        a: "Die Bibliothek umfasst 804 Handschriften und über 4000 alte gedruckte Bücher. Das berühmteste Werk ist der 'Kodex Dionysiou', ein reich illuminiertes Evangeliar aus dem 11. Jahrhundert. Ebenso bewahrt das Kloster wertvolle Reliquien, darunter ein Stück des Wahren Kreuzes und Gebeine von Heiligen."
+    }
+];
+
+function initFAQ() {
+    const container = document.getElementById('faq-container');
+    faqData.forEach((faq, index) => {
+        const item = document.createElement('div');
+        item.className = 'bg-white rounded-lg shadow-sm border border-stone-200 overflow-hidden';
+        
+        const btn = document.createElement('button');
+        btn.className = 'w-full text-left px-6 py-4 font-bold text-stone-800 flex justify-between items-center hover:bg-stone-50 focus:outline-none';
+        btn.innerHTML = `<span>${faq.q}</span><span class="text-amber-700 transition-transform duration-300">&#9660;</span>`;
+        
+        const content = document.createElement('div');
+        content.className = 'px-6 py-4 text-stone-600 border-t border-stone-100 hidden bg-stone-50 leading-relaxed';
+        content.innerText = faq.a;
+        
+        btn.onclick = () => {
+            const isHidden = content.classList.contains('hidden');
+            const icon = btn.querySelector('.text-amber-700');
+            if (isHidden) {
+                content.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+                btn.classList.add('bg-stone-50');
+            } else {
+                content.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+                btn.classList.remove('bg-stone-50');
+            }
+        };
+        
+        item.appendChild(btn);
+        item.appendChild(content);
+        container.appendChild(item);
+    });
+}
+
+function toggleCard(element) {
+    const content = element.querySelector('.card-content');
+    const hint = element.querySelector('.card-hint');
+    if (content.classList.contains('hidden')) {
+        content.classList.remove('hidden');
+        hint.innerHTML = 'Schließen &#9650;';
+        element.classList.add('ring-2', 'ring-amber-500');
+    } else {
+        content.classList.add('hidden');
+        hint.innerHTML = 'Klicken zum Lesen &#9660;';
+        element.classList.remove('ring-2', 'ring-amber-500');
+    }
+}
+
+function initChart() {
+    const ctx = document.getElementById('libraryChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Manuskripte & Handschriften', 'Gedruckte Bücher (ab 16. Jh.)', 'Inkunabeln (Frühdrucke)'],
+            datasets: [{
+                data: [804, 4000, 27],
+                backgroundColor: [
+                    '#b45309', 
+                    '#a8a29e', 
+                    '#44403c'  
+                ],
+                borderWidth: 2,
+                borderColor: '#ffffff'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: '#44403c',
+                        font: {
+                            family: 'sans-serif',
+                            size: 12
+                        }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(28, 25, 23, 0.9)',
+                    padding: 12,
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed !== null) {
+                                label += context.parsed + ' Exemplare';
+                            }
+                            return label;
+                        }
+                    }
+                }
+            },
+            cutout: '65%'
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initTimeline();
+    initFAQ();
+    initChart();
+});
+</script>
+</body>
+</html>

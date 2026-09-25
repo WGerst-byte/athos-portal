@@ -1,0 +1,528 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Berg Athos – Bulgarischer & Moldauischer Einfluss</title>
+    <style>
+        :root {
+            --bg-primary: #0e141d;
+            --bg-secondary: #172230;
+            --bg-card: #1f2f45;
+            --accent-gold: #cfa83b;
+            --accent-gold-light: #f2e29f;
+            --accent-crimson: #a63a3a;
+            --accent-teal: #368585;
+            --text-main: #e8edf3;
+            --text-muted: #9bb0c9;
+            --border-color: #2c415c;
+            --font-serif: 'Cinzel', 'Georgia', 'Times New Roman', serif;
+            --font-sans: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.45);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            line-height: 1.7;
+        }
+
+        /* Header / Banner */
+        header {
+            background: linear-gradient(180deg, rgba(14,20,29,0.95) 0%, rgba(23,34,48,0.93) 100%),
+                        radial-gradient(circle at 50% 15%, #344c6c 0%, #0e141d 80%);
+            border-bottom: 2px solid var(--accent-gold);
+            padding: 4rem 1.5rem 3rem;
+            text-align: center;
+        }
+
+        header::after {
+            content: "⚜ ☦ ⚜";
+            display: block;
+            font-size: 1.6rem;
+            color: var(--accent-gold);
+            margin-top: 1rem;
+            letter-spacing: 0.6rem;
+        }
+
+        h1 {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            color: var(--accent-gold-light);
+            letter-spacing: 1px;
+            margin-bottom: 0.8rem;
+        }
+
+        .subtitle {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 840px;
+            margin: 0 auto;
+        }
+
+        /* Nav */
+        nav {
+            position: sticky;
+            top: 0;
+            background: rgba(14, 20, 29, 0.96);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            padding: 0.8rem 1rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            transition: all 0.25s ease;
+        }
+
+        nav a:hover, nav a.active {
+            background: var(--bg-card);
+            color: var(--accent-gold);
+            border-bottom: 2px solid var(--accent-gold);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem;
+        }
+
+        section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 5rem;
+        }
+
+        h2 {
+            font-family: var(--font-serif);
+            font-size: 1.85rem;
+            color: var(--accent-gold);
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            color: var(--accent-gold-light);
+            margin-bottom: 0.8rem;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            color: #d8e3ed;
+        }
+
+        /* Metrics / Facts Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.2rem;
+            margin: 2rem 0;
+        }
+
+        .metric-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-top: 3px solid var(--accent-gold);
+            padding: 1.4rem;
+            border-radius: 6px;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .metric-val {
+            font-size: 2.2rem;
+            font-family: var(--font-serif);
+            font-weight: bold;
+            color: var(--accent-gold);
+            display: block;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 0.3rem;
+        }
+
+        /* Interactive Tabs */
+        .tab-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            margin: 1.5rem 0;
+        }
+
+        .tab-nav {
+            display: flex;
+            background: #101824;
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .tab-nav button {
+            background: none;
+            border: none;
+            padding: 1rem 1.4rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.98rem;
+            font-weight: 600;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        .tab-nav button.active {
+            color: var(--accent-gold);
+            background: var(--bg-secondary);
+            border-bottom: 3px solid var(--accent-gold);
+        }
+
+        .tab-body {
+            padding: 2rem;
+            display: none;
+        }
+
+        .tab-body.active {
+            display: block;
+            animation: fadeIn 0.35s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Split Comparison Grid */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .comp-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .comp-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-gold);
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(207, 168, 59, 0.15);
+            color: var(--accent-gold-light);
+            border: 1px solid rgba(207, 168, 59, 0.35);
+            font-size: 0.75rem;
+            padding: 0.2rem 0.55rem;
+            border-radius: 4px;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* Story & Legend Callouts */
+        .story-callout {
+            background: linear-gradient(135deg, rgba(166, 58, 58, 0.12) 0%, rgba(23, 34, 48, 0.7) 100%);
+            border-left: 4px solid var(--accent-crimson);
+            padding: 1.5rem;
+            border-radius: 4px;
+            margin: 1.5rem 0;
+        }
+
+        .story-callout h4 {
+            color: #f09595;
+            margin-bottom: 0.5rem;
+            font-size: 1.15rem;
+        }
+
+        .story-callout.teal {
+            background: linear-gradient(135deg, rgba(54, 133, 133, 0.12) 0%, rgba(23, 34, 48, 0.7) 100%);
+            border-left: 4px solid var(--accent-teal);
+        }
+
+        .story-callout.teal h4 {
+            color: #79dede;
+        }
+
+        /* Interactive Quiz / Facts */
+        .quiz-panel {
+            background: var(--bg-secondary);
+            border: 1px solid var(--accent-gold);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .fact-display {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            border-radius: 6px;
+            min-height: 110px;
+            margin: 1.2rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: var(--accent-gold-light);
+        }
+
+        .btn-gold {
+            background: var(--accent-gold);
+            color: #0b1016;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-gold:hover {
+            background: #e2b747;
+            box-shadow: 0 0 14px rgba(207, 168, 59, 0.4);
+        }
+
+        footer {
+            background: #090d14;
+            text-align: center;
+            padding: 2.5rem 1rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.88rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 1.95rem; }
+            .tab-nav { flex-direction: column; }
+        }
+    </style>
+    <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
+    <script src="../js/nav-injector.js" defer></script>
+</head>
+<body>
+
+    <header>
+        <h1>Bulgarisches & Moldauisches Erbe auf Athos</h1>
+        <p class="subtitle">Das bulgarische Großkloster Zografou, die moldauisch-rumänische Skite Prodromou und das Vermächtnis der Donaufürstentümer auf dem Heiligen Berg.</p>
+    </header>
+
+    <nav>
+        <a href="#ueberblick">Überblick</a>
+        <a href="#zografou">Kloster Zografou</a>
+        <a href="#prodromou">Skite Prodromou & Moldau</a>
+        <a href="#fuersten">Die Donaufürsten</a>
+        <a href="#architektur">Baukunst & Ikonen</a>
+        <a href="#wissensbox">Interaktive Wissens-Box</a>
+    </nav>
+
+    <div class="container">
+
+        <!-- Stat Highlights -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <span class="metric-val">9. Rang</span>
+                <span class="metric-label">Hierarchieplatz von Zografou unter den 20 Klöstern</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-val">1275</span>
+                <span class="metric-label">Märtyrertod der 26 bulgarischen Mönche im Wehrturm</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-val">1857</span>
+                <span class="metric-label">Gründung der moldauischen Großskite Prodromou</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-val">1762</span>
+                <span class="metric-label">Paisij von Chilandar schreibt die slawobulgarische Geschichte</span>
+            </div>
+        </div>
+
+        <!-- Sektion 1: Überblick -->
+        <section id="ueberblick">
+            <h2>Die slawische und rumänische Dimension des Athos</h2>
+            <p>Neben den Griechen, Russen und Serben haben insbesondere bulgarische Mönche und die Herrscher der <strong>Donaufürstentümer Moldau und Walachei</strong> die Geschichte des Heiligen Berges über Jahrhunderte entscheidend mitgeprägt.</p>
+            <p>Während Bulgarien mit dem <strong>Kloster Zografou</strong> eines der 20 souveränen Hauptklöster besitzt, fungierten die moldauischen Woiwoden und Bojaren nach dem Fall Konstantinopels (1453) als die wichtigsten finanziellen Schutzherren und Retter fast aller Athos-Klöster vor dem osmanischen Ruin.</p>
+        </section>
+
+        <!-- Sektion 2: Kloster Zografou -->
+        <section id="zografou">
+            <h2>Das bulgarische Kloster Zografou (Der Maler)</h2>
+            
+            <div class="tab-box">
+                <div class="tab-nav">
+                    <button class="tab-btn active" onclick="openTab(event, 'zog-legende')">Gründung & Namenslegende</button>
+                    <button class="tab-btn" onclick="openTab(event, 'zog-martyr')">Die 26 Märtyrer (1275)</button>
+                    <button class="tab-btn" onclick="openTab(event, 'zog-paisij')">Paisij & Bulgarische Wiedergeburt</button>
+                </div>
+
+                <div id="zog-legende" class="tab-body active">
+                    <span class="badge">9./10. Jahrhundert</span>
+                    <h3>Die drei Brüder aus Ohrid & das Georgswunder</h3>
+                    <p>Nach alter Überlieferung wurde das Kloster im frühen 10. Jahrhundert (ca. 919) von den drei bulgarischen Brüdern Moses, Aaron und Johannes aus Ohrid gegründet. Als sie uneins waren, welchem Patron das Gotteshaus geweiht werden sollte, ließen sie eine leere Holztafel im Altarraum zurück und beteten die Nacht hindurch.</p>
+                    <p>Am Morgen war auf der Tafel auf wunderbare Weise das Abbild des <strong>Heiligen Georg</strong> erschienen (<em>Acheiropoieton</em> – nicht von Menschenhand gemacht). Seither trägt der Ort den Namen <em>Zografou</em> („des Malers“).</p>
+                </div>
+
+                <div id="zog-martyr" class="tab-body">
+                    <span class="badge">Tragisches Kapitel</span>
+                    <h3>Widerstand gegen die Kirchenunion von Lyon</h3>
+                    <p>Im Jahr 1275 weigerten sich die Mönche von Zografou, die vom byzantinischen Kaiser Michael VIII. Palaiologos und Papst Gregor X. geschlossene Union von Lyon anzuerkennen. Söldner und kaiserliche Truppen belagerten das Kloster.</p>
+                    <p>22 Mönche und 4 Laienbrüder verschanzten sich im Wehrturm (<em>Pirgos</em>) und weigerten sich zu kapitulieren. Die Angreifer steckten den Turm in Brand – alle 26 Insassen starben den Feuertod und werden bis heute als heilige Märtyrer verehrt.</p>
+                </div>
+
+                <div id="zog-paisij" class="tab-body">
+                    <span class="badge">Nationale Wiedergeburt</span>
+                    <h3>Der Mönch Paisij von Chilandar</h3>
+                    <p>Der Heilige Paisij von Chilandar (1722–1773) vollendete 1762 im Kloster Zografou sein epochales Werk: die <em>Istorija Slawjanobolgarskaja</em> (Slawobulgarische Geschichte). Dieses Manuskript gilt als Zündfunke der bulgarischen nationalen Wiedergeburt und Befreiungsbewegung.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sektion 3: Moldauische Skite Prodromou -->
+        <section id="prodromou">
+            <h2>Moldauische Spiritualität: Skite Prodromou</h2>
+            
+            <div class="story-callout teal">
+                <h4>✨ Die Ikone Prodromița (Die Nicht-von-Menschenhand-Gemalte)</h4>
+                <p>Das größte Heiligtum der rumänisch-moldauischen Mönche: 1863 beauftragte Abt Nifon den greisen Ikonenmaler Iordache Nicolau in Iași mit einem Marienbild. Nach tagelangem Ringen mit den Gesichtern fand der Maler am nächsten Morgen die Ikonentafel vollendet vor – in überirdischem Glanz und vollkommener Schönheit. Bis heute gilt sie als wundertätig.</p>
+            </div>
+
+            <div class="comparison-grid">
+                <div class="comp-card">
+                    <span class="badge">Geistiges Zentrum</span>
+                    <h3>Skite des Hl. Johannes des Täufers</h3>
+                    <p>Am östlichsten, wildesten Kap der Halbinsel (Vigla) nahe der Großen Lavra gelegen, entstand 1857 die koinobitische Großskite <em>Prodromou</em>. Sie wurde von den moldauischen Altvätern Nifon Ionescu und Nectarie Crețu gegründet und von Fürst Grigore Alexandru Ghica gefördert.</p>
+                </div>
+
+                <div class="comp-card">
+                    <span class="badge">Wiederbelebung des Hesychasmus</span>
+                    <h3>Der Heilige Paisij Welitschkowskij</h3>
+                    <p>Der berühmte geistliche Vater wirkte im 18. Jahrhundert auf dem Athos und später im moldauischen Großkloster Neamț. Seine Übersetzung der <em>Philokalie</em> ins Kirchenslawische löste eine europaweite Wiederbelebung des Jesusgebets (Hesychasmus) aus.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sektion 4: Die Donaufürsten als Retter des Athos -->
+        <section id="fuersten">
+            <h2>Die moldauischen & walachischen Fürsten</h2>
+            <p>Zwischen dem 15. und 18. Jahrhundert waren fast alle 20 Großklöster des Athos wirtschaftlich von den Fürsten der Moldau und Walachei abhängig. Da die Fürstentümer unter osmanischer Oberhoheit eine innere Autonomie bewahrten, flossen riesige Geld- und Landspenden nach Griechenland.</p>
+
+            <div class="comparison-grid">
+                <div class="comp-card">
+                    <span class="badge">Moldauischer Fürst</span>
+                    <h3>Stephan der Große (Ștefan cel Mare)</h3>
+                    <p>Der moldauische Nationalheld ließ nach 1466 das Kloster Zografou vor dem Ruin retten: Er finanzierte den Bau des Katholikons, der Wehrmauern, des Hafens (Arsanas) und schenkte dem Kloster reiche Ländereien in der Moldau (u. a. Dobrovăț).</p>
+                </div>
+
+                <div class="comp-card">
+                    <span class="badge">Großzügige Schutzpatrone</span>
+                    <h3>Rettung von Dionysiou & Gregoriou</h3>
+                    <p>Fürsten wie Neagoe Basarab, Petru Rareș und Alexandru Lăpușneanu bauten die durch Brände zerstörten Klöster Dionysiou, Gregoriou, Xenophontos und Konstamonitou wieder vollständig auf.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sektion 5: Architektur und Ikonen -->
+        <section id="architektur">
+            <h2>Architektur, Bauweise & Kunstschätze</h2>
+            <div class="comparison-grid">
+                <div class="comp-card">
+                    <span class="badge">Baukunst</span>
+                    <h3>Massive Bergfestungen</h3>
+                    <p>Zografou liegt versteckt in einem tiefen, dicht bewaldeten Tal und wirkt wie eine uneinnehmbare Burg mit fünfstöckigen Trakten und markantem rot-weißem Schichtmauerwerk. Prodromou hingegen thront auf den schroffen Klippen über dem Ägäischen Meer.</p>
+                </div>
+
+                <div class="comp-card">
+                    <span class="badge">Bibliothek & Schätze</span>
+                    <h3>Unschätzbare Handschriften</h3>
+                    <p>Zografou bewahrt den berühmten <em>Codex Zographensis</em> (glagolitische Handschrift des 10./11. Jh.), 388 slawische und 126 griechische Kodizes sowie die Originalhandschrift von Paisijs bulgarischer Chronik auf.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sektion 6: Interaktive Wissens-Box -->
+        <section id="wissensbox">
+            <h2>Interaktives Athos-Wissen</h2>
+            <div class="quiz-panel">
+                <p>Entdecken Sie überraschende historische Fakten zum bulgarischen und moldauischen Athos-Erbe:</p>
+                <div id="factBox" class="fact-display">
+                    Klicken Sie auf den Button, um ein Faktum zu laden!
+                </div>
+                <button class="btn-gold" onclick="loadNextFact()">Nächstes Faktum anzeigen ➔</button>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>Interaktives Bildungsmodul über den Berg Athos & das bulgarisch-moldauische Sakralerbe.</p>
+        <p style="margin-top: 0.5rem; font-size: 0.8rem; color: #5f7591;">Erstellt mit modernem HTML5, CSS3 & JS • Stand: 2026</p>
+    </footer>
+
+    <script>
+        function openTab(evt, tabId) {
+            const bodies = document.querySelectorAll('.tab-body');
+            bodies.forEach(b => b.classList.remove('active'));
+
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(tabId).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        const athosFacts = [
+            "🎨 Die wunderbare Georgs-Ikone: Die Ikone in Zografou soll sich der Legende nach selbst auf das Holz gemalt haben, nachdem die Mönche in der Gründungsnacht um ein Zeichen gebetet hatten.",
+            "🔥 Das Martyrium von 1275: Die 26 Mönche von Zografou, die im Wehrturm gegen die Kirchenunion verbrannten, werden alljährlich am 10. Oktober feierlich kommemoriert.",
+            "👑 Stephan der Große von Moldau: Der moldauische Fürst galt als 'zweiter Stifter' von Zografou – sein Kriegsbanner mit dem Hl. Georg wurde jahrhundertelang im Kloster aufbewahrt.",
+            "📖 Codex Zographensis: Das in Zografou entdeckte Evangeliar aus dem 10./11. Jahrhundert ist eines der bedeutendsten glagolitischen Sprachdenkmäler des Altkirchenslawischen.",
+            "✨ Ikone Prodromița: Das Marienbild in der Skite Prodromou wurde 1863 in Iași gemalt – die Gesichter vollendeten sich nach Zeugenaussagen über Nacht ohne Pinselstriche.",
+            "🌲 Einsiedelei Vigla: Die rumänische Skite Prodromou liegt an der kargen 'Wüste' des Athos, wo Mönche in extrem asketischer Abgeschiedenheit leben."
+        ];
+
+        let curIdx = 0;
+        function loadNextFact() {
+            const el = document.getElementById('factBox');
+            el.style.opacity = 0;
+            setTimeout(() => {
+                el.innerText = athosFacts[curIdx];
+                el.style.opacity = 1;
+                curIdx = (curIdx + 1) % athosFacts.length;
+            }, 180);
+        }
+
+        // Erstes Faktum laden
+        loadNextFact();
+    </script>
+</body>
+</html>

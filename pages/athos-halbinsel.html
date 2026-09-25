@@ -1,0 +1,367 @@
+﻿<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Berg Athos - Die Mönchsrepublik: Ein interaktives Dossier</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Noto+Sans:wght@300;400;600&display=swap');
+        body { font-family: 'Noto Sans', sans-serif; }
+        h1, h2, h3, h4, h5, h6, .serif { font-family: 'Noto Serif', serif; }
+        
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+    <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
+    <script src="../js/nav-injector.js" defer></script>
+</head>
+<body class="bg-stone-50 text-stone-800 antialiased selection:bg-amber-200 selection:text-stone-900">
+
+    <!-- Chosen Palette: Monastic Calm (Stone 50 bg, Stone 800 text, Amber 700/800 accents to represent Byzantine history and earthiness) -->
+    <!-- Application Structure Plan: The SPA uses a linear, scrollable narrative structure to guide the user from basic definition through history, statistical facts, cultural context, and finally FAQs. A sticky navigation aids exploration. Interactivity includes scroll-spy navigation, dynamic tabs for historical epochs to avoid text overload, an interactive pie chart for demographic data, and an accordion for FAQs to keep the UI clean. This structure was chosen to fulfill the dossier requirement while providing an engaging, modern user experience. -->
+    <!-- Visualization & Content Choices: 
+         1. Definition: Semantic HTML/Text -> Inform -> Schema.org Place markup used.
+         2. History: Interactive Tabs -> Change/Timeline -> Prevents scrolling fatigue, organizes epochs.
+         3. Facts/Demographics: Chart.js Doughnut Chart -> Proportions -> Visualizes the Pan-Orthodox makeup of the 20 monasteries (Greek vs. others).
+         4. Context: CSS Grid Cards -> Organize -> Breaks down cultural aspects (Avaton, Calendar, Art) into digestible chunks.
+         5. FAQ: JS Accordion -> Organize -> Standard, recognizable pattern for Q&A.
+         Library: Chart.js for data. Vanilla JS for tabs/accordion.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <nav class="fixed top-0 w-full bg-stone-900 text-stone-100 z-50 shadow-md">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <span class="font-bold text-xl tracking-wider serif text-amber-500">Agion Oros</span>
+                <div class="hidden md:block">
+                    <ul class="flex space-x-6 text-sm font-semibold" id="nav-links">
+                        <li><a href="#definition" class="hover:text-amber-400 transition-colors">Definition</a></li>
+                        <li><a href="#geschichte" class="hover:text-amber-400 transition-colors">Geschichte</a></li>
+                        <li><a href="#fakten" class="hover:text-amber-400 transition-colors">Daten & Fakten</a></li>
+                        <li><a href="#kultur" class="hover:text-amber-400 transition-colors">Kultur & Leben</a></li>
+                        <li><a href="#faq" class="hover:text-amber-400 transition-colors">FAQ</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="pt-32 pb-20 bg-stone-800 text-stone-50 border-b-8 border-amber-700">
+        <div class="container mx-auto px-4 lg:px-8 text-center max-w-4xl">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6 text-amber-500 drop-shadow-lg">Berg Athos</h1>
+            <p class="text-xl md:text-2xl font-light text-stone-300 serif">Die autonome Mönchsrepublik auf der Halbinsel Chalkidiki</p>
+        </div>
+    </header>
+
+    <main itemscope itemtype="https://schema.org/Place">
+        <meta itemprop="name" content="Berg Athos">
+        
+        <section id="definition" class="py-16 bg-white shadow-sm scroll-mt-16">
+            <div class="container mx-auto px-4 lg:px-8 max-w-5xl">
+                <h2 class="text-3xl font-bold mb-6 text-stone-900 border-l-4 border-amber-600 pl-4">Begriffsklärung & Einleitung</h2>
+                <p class="text-lg text-stone-600 mb-6 font-light leading-relaxed">
+                    Dieser Abschnitt definiert die geografischen und politischen Grundzüge des Berges Athos. Er dient als Basiswissen für das weitere Verständnis der historischen und kulturellen Bedeutung dieser einzigartigen Region.
+                </p>
+                <article class="prose max-w-none text-stone-700 text-lg leading-relaxed">
+                    <p itemprop="description">
+                        Der <strong>Berg Athos</strong> (griechisch Άγιον Όρος Agion Oros, „Heiliger Berg“) ist eine orthodoxe Mönchsrepublik mit autonomem Status unter griechischer Souveränität. Er befindet sich auf dem östlichen Finger der Halbinsel Chalkidiki in der griechischen Region Makedonien. Die Republik umfasst 20 Großklöster sowie zahlreiche kleinere klösterliche Niederlassungen (Skiten und Kellien) und gilt als das spirituelle Zentrum der orthodoxen Christenheit. Der Begriff "Athos" bezeichnet dabei sowohl die gesamte Halbinsel als auch den markanten, 2.033 Meter hohen Berg an deren Südspitze.
+                    </p>
+                </article>
+            </div>
+        </section>
+
+        <section id="geschichte" class="py-16 bg-stone-100 scroll-mt-16">
+            <div class="container mx-auto px-4 lg:px-8 max-w-5xl">
+                <h2 class="text-3xl font-bold mb-6 text-stone-900 border-l-4 border-amber-600 pl-4">Geschichtlicher Hintergrund</h2>
+                <p class="text-lg text-stone-600 mb-8 font-light leading-relaxed">
+                    Entdecken Sie die Entwicklung der Mönchsrepublik über die Jahrhunderte. Dieser interaktive Zeitstrahl gliedert die komplexe Geschichte in übersichtliche Epochen, um die Transformation von frühen Eremitensiedlungen zur heutigen autonomen Republik nachzuvollziehen.
+                </p>
+                
+                <div class="flex flex-col md:flex-row gap-6">
+                    <div class="md:w-1/3 flex flex-col space-y-2" id="history-tabs" role="tablist">
+                        <button class="tab-btn w-full text-left px-6 py-4 bg-white border-l-4 border-amber-600 shadow-sm font-bold text-amber-700 hover:bg-stone-50 transition-all" data-target="epoche-1" role="tab">Frühes Christentum & Byzanz</button>
+                        <button class="tab-btn w-full text-left px-6 py-4 bg-white border-l-4 border-transparent shadow-sm font-semibold text-stone-600 hover:bg-stone-50 hover:border-stone-300 transition-all" data-target="epoche-2" role="tab">Osmanische Herrschaft</button>
+                        <button class="tab-btn w-full text-left px-6 py-4 bg-white border-l-4 border-transparent shadow-sm font-semibold text-stone-600 hover:bg-stone-50 hover:border-stone-300 transition-all" data-target="epoche-3" role="tab">Moderne Ära</button>
+                    </div>
+                    
+                    <div class="md:w-2/3 bg-white p-8 shadow-sm rounded-r-lg border-t-4 border-amber-600">
+                        <div id="epoche-1" class="tab-content active" role="tabpanel">
+                            <h3 class="text-2xl font-bold mb-4 text-stone-800">Die Gründung (8. bis 15. Jahrhundert)</h3>
+                            <p class="mb-4">Bereits im 8. Jahrhundert siedelten sich die ersten Eremiten auf der schwer zugänglichen Halbinsel an. Die formelle Organisation des klösterlichen Lebens begann im Jahr <strong>963</strong> mit der Gründung des Klosters <em>Megisti Lavra</em> durch den Mönch Athanasios Athonites, stark unterstützt vom byzantinischen Kaiser Nikephoros II. Phokas.</p>
+                            <p>In den folgenden Jahrhunderten erlebte der Berg Athos seine Blütezeit. Es entstanden die meisten der heutigen 20 Großklöster. Der byzantinische Kaiser Alexios I. Komnenos bestätigte 1060 die Autonomie der Halbinsel und formalisierte das bis heute gültige <em>Avaton</em> (Zutrittsverbot für Frauen).</p>
+                        </div>
+                        <div id="epoche-2" class="tab-content" role="tabpanel">
+                            <h3 class="text-2xl font-bold mb-4 text-stone-800">Die Osmanische Zeit (15. bis 19. Jahrhundert)</h3>
+                            <p class="mb-4">Nach dem Fall Konstantinopels (1453) und der Eingliederung in das Osmanische Reich gelang es den Mönchen, ihren autonomen Status und ihren Grundbesitz durch geschickte Verhandlungen und Tributzahlungen (Haraç) weitgehend zu erhalten.</p>
+                            <p>Während dieser Zeit schwand jedoch der byzantinische Reichtum. Die Klöster verschuldeten sich oft schwer und mussten eine idiorhythmische (eigenständige, weniger gemeinschaftliche) Lebensweise annehmen, um wirtschaftlich zu überleben. Erst im 18. und 19. Jahrhundert führte ein erneutes Erstarken der Orthodoxie (insbesondere durch russischen Einfluss) zu einer wirtschaftlichen und spirituellen Wiederbelebung.</p>
+                        </div>
+                        <div id="epoche-3" class="tab-content" role="tabpanel">
+                            <h3 class="text-2xl font-bold mb-4 text-stone-800">Souveränität und Gegenwart (ab 1912)</h3>
+                            <p class="mb-4">Während des Ersten Balkankrieges 1912 wurde der Berg Athos von der griechischen Marine besetzt. In den internationalen Verträgen von London (1913) und Sèvres (1920) sowie im Vertrag von Lausanne (1923) wurde die griechische Souveränität über die Halbinsel völkerrechtlich verankert.</p>
+                            <p>Die griechische Verfassung garantiert seit 1926 die Autonomie der Mönchsrepublik. Heute erlebt der Berg Athos eine neue Blütezeit; die Zahl der Mönche ist seit den 1970er Jahren wieder deutlich gestiegen, und die Klöster ziehen Pilger aus aller Welt an.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="fakten" class="py-16 bg-white scroll-mt-16">
+            <div class="container mx-auto px-4 lg:px-8 max-w-6xl">
+                <h2 class="text-3xl font-bold mb-6 text-stone-900 border-l-4 border-amber-600 pl-4">Wichtige Daten & Fakten</h2>
+                <p class="text-lg text-stone-600 mb-8 font-light leading-relaxed">
+                    Dieser Abschnitt präsentiert die quantitativen und demografischen Eckdaten der Republik. Die Tabelle bietet eine schnelle Übersicht, während das interaktive Diagramm die pan-orthodoxe Zusammensetzung der herrschenden Großklöster visualisiert.
+                </p>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <div class="overflow-x-auto shadow-sm rounded-lg border border-stone-200">
+                            <table class="min-w-full bg-white text-left text-sm text-stone-600">
+                                <thead class="bg-stone-800 text-stone-100">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-4 font-semibold uppercase">Kategorie</th>
+                                        <th scope="col" class="px-6 py-4 font-semibold uppercase">Daten</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-stone-200">
+                                    <tr class="hover:bg-stone-50">
+                                        <td class="px-6 py-4 font-medium text-stone-900">Fläche</td>
+                                        <td class="px-6 py-4">335,63 km²</td>
+                                    </tr>
+                                    <tr class="hover:bg-stone-50">
+                                        <td class="px-6 py-4 font-medium text-stone-900">Höchster Punkt</td>
+                                        <td class="px-6 py-4">Berg Athos (2.033 m)</td>
+                                    </tr>
+                                    <tr class="hover:bg-stone-50">
+                                        <td class="px-6 py-4 font-medium text-stone-900">Einwohner (Mönche)</td>
+                                        <td class="px-6 py-4">ca. 2.146 (Stand 2021)</td>
+                                    </tr>
+                                    <tr class="hover:bg-stone-50">
+                                        <td class="px-6 py-4 font-medium text-stone-900">Hauptstadt</td>
+                                        <td class="px-6 py-4">Karyes</td>
+                                    </tr>
+                                    <tr class="hover:bg-stone-50">
+                                        <td class="px-6 py-4 font-medium text-stone-900">Politischer Status</td>
+                                        <td class="px-6 py-4">Autonome Republik unter griechischer Souveränität</td>
+                                    </tr>
+                                    <tr class="hover:bg-stone-50">
+                                        <td class="px-6 py-4 font-medium text-stone-900">Anzahl der Großklöster</td>
+                                        <td class="px-6 py-4">20 (festgelegt, keine Neugründungen erlaubt)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="bg-stone-50 p-6 rounded-lg shadow-inner border border-stone-200">
+                        <h4 class="text-xl font-bold mb-2 text-center text-stone-800">Kulturelle Wurzeln der 20 Großklöster</h4>
+                        <p class="text-sm text-center text-stone-500 mb-6">Obwohl sich alle Klöster auf griechischem Staatsgebiet befinden, spiegeln sie die internationale Natur der Orthodoxie wider.</p>
+                        <div class="chart-container">
+                            <canvas id="monasteryChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="kultur" class="py-16 bg-stone-800 text-stone-100 scroll-mt-16">
+            <div class="container mx-auto px-4 lg:px-8 max-w-6xl">
+                <h2 class="text-3xl font-bold mb-6 text-white border-l-4 border-amber-500 pl-4">Besonderheiten, Kultur & Kontext</h2>
+                <p class="text-lg text-stone-300 mb-10 font-light leading-relaxed">
+                    Das Leben auf dem Berg Athos folgt Regeln, die sich seit Jahrhunderten kaum verändert haben. Dieser Bereich beleuchtet die einzigartigen Traditionen, den Rhythmus des Alltags und das kulturelle Erbe, die die Identität der Halbinsel prägen.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-stone-900 p-8 rounded-lg shadow-lg border-t-4 border-amber-600 hover:-translate-y-1 transition-transform">
+                        <div class="text-amber-500 text-4xl mb-4" aria-hidden="true">&#9768;</div>
+                        <h3 class="text-xl font-bold mb-3 text-amber-500">Das Avaton</h3>
+                        <p class="text-stone-300 text-sm leading-relaxed">
+                            Das berühmteste Gesetz des Athos verbietet Frauen (sowie weiblichen Haustieren) strikt den Zutritt zur Halbinsel. Die theologische Begründung besagt, dass die Jungfrau Maria die Insel bei einem Sturm betrat, woraufhin Christus sie ihr zum Geschenk machte. Der Athos gilt somit als "Garten der Gottesmutter", in dem keine andere Frau geduldet wird.
+                        </p>
+                    </div>
+
+                    <div class="bg-stone-900 p-8 rounded-lg shadow-lg border-t-4 border-stone-600 hover:-translate-y-1 transition-transform">
+                        <div class="text-amber-500 text-4xl mb-4" aria-hidden="true">&#8986;</div>
+                        <h3 class="text-xl font-bold mb-3">Byzantinische Zeit & Kalender</h3>
+                        <p class="text-stone-300 text-sm leading-relaxed">
+                            Der Tagesrhythmus richtet sich nach der Byzantinischen Zeit: Der Tag beginnt mit dem Sonnenuntergang (0 Uhr). Zudem wird ausschließlich der alte Julianische Kalender verwendet, der dem bürgerlichen (gregorianischen) Kalender derzeit um 13 Tage hinterherhinkt. Dies unterstreicht die Abkehr der Mönche von der weltlichen Moderne.
+                        </p>
+                    </div>
+
+                    <div class="bg-stone-900 p-8 rounded-lg shadow-lg border-t-4 border-stone-600 hover:-translate-y-1 transition-transform">
+                        <div class="text-amber-500 text-4xl mb-4" aria-hidden="true">&#10032;</div>
+                        <h3 class="text-xl font-bold mb-3">Weltkulturerbe</h3>
+                        <p class="text-stone-300 text-sm leading-relaxed">
+                            Seit 1988 ist der Berg Athos UNESCO-Welterbe, sowohl als Kultur- als auch als Naturdenkmal. Die Klöster beherbergen unschätzbare Schätze byzantinischer Kunst: Ikonen, Fresken, Mosaike und Bibliotheken mit zehntausenden mittelalterlichen Manuskripten, die vom ununterbrochenen spirituellen Leben zeugen.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq" class="py-16 bg-stone-100 scroll-mt-16">
+            <div class="container mx-auto px-4 lg:px-8 max-w-4xl">
+                <h2 class="text-3xl font-bold mb-6 text-stone-900 border-l-4 border-amber-600 pl-4">Häufig gestellte Fragen (FAQ)</h2>
+                <p class="text-lg text-stone-600 mb-8 font-light leading-relaxed">
+                    Hier finden Sie Antworten auf die häufigsten rechtlichen, administrativen und touristischen Fragen im Zusammenhang mit dem Besuch und der Struktur der Mönchsrepublik.
+                </p>
+
+                <div class="space-y-4" id="accordion-container">
+                    
+                    <div class="bg-white border border-stone-200 rounded-lg shadow-sm">
+                        <button class="w-full text-left px-6 py-4 font-bold text-stone-800 flex justify-between items-center focus:outline-none faq-toggle" aria-expanded="false">
+                            <span>Warum dürfen Frauen den Berg Athos nicht betreten?</span>
+                            <span class="text-amber-600 transform transition-transform duration-300 text-xl" aria-hidden="true">&#9660;</span>
+                        </button>
+                        <div class="px-6 pb-4 hidden faq-content text-stone-600">
+                            <p>Dieses Gesetz, das <em>Avaton</em>, besteht seit fast 1000 Jahren. Theologisch wird der Athos als "Garten der Gottesmutter" (Panagia) betrachtet und ist ausschließlich ihr geweiht. Aus Respekt vor ihr und um die Mönche vor weltlichen Versuchungen zu bewahren, wurde der Zutritt für alle anderen Frauen gesetzlich untersagt. Selbst weibliche Nutztiere (mit Ausnahme von Katzen) sind verboten.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border border-stone-200 rounded-lg shadow-sm">
+                        <button class="w-full text-left px-6 py-4 font-bold text-stone-800 flex justify-between items-center focus:outline-none faq-toggle" aria-expanded="false">
+                            <span>Wie wird der Berg Athos politisch verwaltet?</span>
+                            <span class="text-amber-600 transform transition-transform duration-300 text-xl" aria-hidden="true">&#9660;</span>
+                        </button>
+                        <div class="px-6 pb-4 hidden faq-content text-stone-600">
+                            <p>Die Mönchsrepublik ist Teil des griechischen Staates, genießt aber nach Artikel 105 der griechischen Verfassung weitreichende Autonomie. Die Verwaltung liegt in Karyes bei der "Heiligen Epistasia" (Exekutive) und der "Heiligen Zusammenkunft" (Legislative), gebildet aus Vertretern der 20 Großklöster. Der griechische Staat wird durch einen zivilen Gouverneur vertreten, der die Einhaltung der Gesetze und die öffentliche Ordnung überwacht. Geistlich untersteht der Athos direkt dem Ökumenischen Patriarchen von Konstantinopel.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border border-stone-200 rounded-lg shadow-sm">
+                        <button class="w-full text-left px-6 py-4 font-bold text-stone-800 flex justify-between items-center focus:outline-none faq-toggle" aria-expanded="false">
+                            <span>Kann man als Tourist den Berg Athos besuchen?</span>
+                            <span class="text-amber-600 transform transition-transform duration-300 text-xl" aria-hidden="true">&#9660;</span>
+                        </button>
+                        <div class="px-6 pb-4 hidden faq-content text-stone-600">
+                            <p>Der Zugang ist streng reguliert. Es gibt keinen normalen "Tourismus". Männliche Besucher können als Pilger einreisen, benötigen jedoch ein spezielles Visum, das <em>Diamonitirion</em>. Dieses muss im Voraus beim Pilgerbüro in Thessaloniki oder Ouranoupoli beantragt werden. Es berechtigt in der Regel zu einem viertägigen Aufenthalt. Tägliche Besucherzahlen sind stark kontingentiert (meist ca. 100 orthodoxe und 10 nicht-orthodoxe Pilger pro Tag).</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-stone-900 text-stone-400 py-8 border-t border-stone-800">
+        <div class="container mx-auto px-4 text-center text-sm">
+            <p>&copy; 2026 Interaktives Informationsdossier. Generiert für demonstrative Zwecke.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const targetId = btn.getAttribute('data-target');
+                    
+                    tabBtns.forEach(b => {
+                        b.classList.remove('border-amber-600', 'text-amber-700');
+                        b.classList.add('border-transparent', 'text-stone-600');
+                    });
+                    
+                    btn.classList.remove('border-transparent', 'text-stone-600');
+                    btn.classList.add('border-amber-600', 'text-amber-700');
+
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                    });
+
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
+
+            const faqToggles = document.querySelectorAll('.faq-toggle');
+            
+            faqToggles.forEach(toggle => {
+                toggle.addEventListener('click', () => {
+                    const content = toggle.nextElementSibling;
+                    const icon = toggle.querySelector('span:last-child');
+                    const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+
+                    if (isExpanded) {
+                        content.classList.add('hidden');
+                        toggle.setAttribute('aria-expanded', 'false');
+                        icon.style.transform = 'rotate(0deg)';
+                    } else {
+                        content.classList.remove('hidden');
+                        toggle.setAttribute('aria-expanded', 'true');
+                        icon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+
+            const ctx = document.getElementById('monasteryChart').getContext('2d');
+            const monasteryChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Griechisch', 'Russisch', 'Serbisch', 'Bulgarisch'],
+                    datasets: [{
+                        label: 'Anzahl der Klöster',
+                        data: [17, 1, 1, 1],
+                        backgroundColor: [
+                            '#b45309', 
+                            '#44403c', 
+                            '#a8a29e', 
+                            '#78716c'  
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#f5f5f4'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    family: "'Noto Sans', sans-serif"
+                                },
+                                color: '#44403c'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed + ' Kloster/Klöster';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    cutout: '60%'
+                }
+            });
+        });
+    </script>
+</body>
+</html>
