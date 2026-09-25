@@ -486,3 +486,187 @@ footer {
   .filter-tabs { justify-content: flex-start; overflow-x: auto; padding-bottom: 0.5rem; }
   .cards-grid { grid-template-columns: 1fr; }
 }
+
+/* Share & QR Modal */
+.share-btn {
+  background: rgba(20, 30, 46, 0.85);
+  border: 1px solid var(--border-gold-strong);
+  color: var(--gold-light);
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  font-family: var(--font-serif-title);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.2s ease;
+}
+
+.share-btn:hover {
+  background: rgba(197, 160, 89, 0.2);
+  border-color: var(--gold-accent);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(4, 7, 12, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 100000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal-backdrop.active {
+  display: flex;
+}
+
+.modal-card {
+  background: #0f1724;
+  border: 2px solid var(--border-gold-strong);
+  border-radius: var(--radius-lg);
+  max-width: 460px;
+  width: 100%;
+  padding: 2rem 1.8rem;
+  position: relative;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 25px var(--gold-glow);
+  animation: modalFadeIn 0.25s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.4rem;
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  transition: color 0.2s;
+}
+
+.modal-close:hover {
+  color: #fff;
+}
+
+.modal-header .modal-icon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 0.75rem;
+}
+
+.modal-header h3 {
+  font-family: var(--font-serif-title);
+  font-size: 1.4rem;
+  color: var(--gold-light);
+  margin-bottom: 0.5rem;
+}
+
+.modal-header p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+}
+
+.qr-wrapper {
+  background: #090d14;
+  border: 2px solid var(--border-gold);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  display: inline-block;
+  margin-bottom: 1.5rem;
+}
+
+.qr-image {
+  width: 190px;
+  height: 190px;
+  display: block;
+}
+
+.modal-url-box {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.modal-url-box input {
+  flex: 1;
+  background: rgba(9, 13, 20, 0.8);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.8rem;
+  color: var(--gold-light);
+  font-size: 0.85rem;
+  outline: none;
+}
+
+.copy-btn {
+  background: linear-gradient(135deg, var(--gold-accent), var(--gold-primary));
+  border: none;
+  color: #0b0f17;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-serif-title);
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.copy-btn:hover {
+  opacity: 0.9;
+}
+
+.copy-toast {
+  font-size: 0.82rem;
+  color: #4ade80;
+  margin-bottom: 1rem;
+  display: none;
+  animation: modalFadeIn 0.2s;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.native-share-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.2rem;
+  border-radius: var(--radius-md);
+  font-family: var(--font-serif-title);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.native-share-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+}
+

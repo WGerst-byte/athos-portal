@@ -140,4 +140,80 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initial filter run
   filterCards();
+
+  // 4. Share & QR-Code Modal Controller
+  const shareBtn = document.getElementById('shareBtn');
+  const shareModal = document.getElementById('shareModal');
+  const modalClose = document.getElementById('modalClose');
+  const copyUrlBtn = document.getElementById('copyUrlBtn');
+  const shareUrlInput = document.getElementById('shareUrlInput');
+  const copyToast = document.getElementById('copyToast');
+  const nativeShareBtn = document.getElementById('nativeShareBtn');
+
+  const shareData = {
+    title: 'Berg Athos – Die 20 Klöster & Pilgerportal (PWA)',
+    text: 'Entdecke die kostenlose, offline-fähige Web-App zu allen 20 Klöstern des Heiligen Berges Athos:',
+    url: 'https://wgerst-byte.github.io/athos-portal/'
+  };
+
+  if (shareBtn && shareModal) {
+    shareBtn.addEventListener('click', () => {
+      shareModal.classList.add('active');
+    });
+
+    if (modalClose) {
+      modalClose.addEventListener('click', () => {
+        shareModal.classList.remove('active');
+      });
+    }
+
+    shareModal.addEventListener('click', (e) => {
+      if (e.target === shareModal) {
+        shareModal.classList.remove('active');
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && shareModal.classList.contains('active')) {
+        shareModal.classList.remove('active');
+      }
+    });
+  }
+
+  // Copy URL with clipboard API & fallback
+  if (copyUrlBtn && shareUrlInput) {
+    copyUrlBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(shareUrlInput.value);
+      } catch {
+        shareUrlInput.select();
+        document.execCommand('copy');
+      }
+
+      if (copyToast) {
+        copyToast.style.display = 'block';
+        setTimeout(() => {
+          copyToast.style.display = 'none';
+        }, 2500);
+      }
+    });
+  }
+
+  // Native Web Share / WhatsApp Fallback
+  if (nativeShareBtn) {
+    nativeShareBtn.addEventListener('click', async () => {
+      if (navigator.share) {
+        try {
+          await navigator.share(shareData);
+        } catch (err) {
+          console.log('[Athos PWA] Share abgebrochen oder Fehler:', err);
+        }
+      } else {
+        // Fallback: Open WhatsApp directly
+        const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareData.text + ' ' + shareData.url)}`;
+        window.open(whatsappUrl, '_blank');
+      }
+    });
+  }
 });
+
