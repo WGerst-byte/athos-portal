@@ -1,16 +1,13 @@
 /* ==========================================================================
-   Athos Subpage Bar Injector & PWA Connector
+   Athos Subpage Bar Injector & Universal Monastery Switcher
    ========================================================================== */
 
 (function () {
-  // 1. Register Service Worker on subpages as well
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('../sw.js').catch(() => {});
   }
 
-  // 2. Inject Top Navigation Bar when DOM is loaded
   document.addEventListener('DOMContentLoaded', () => {
-    // Avoid double injection
     if (document.getElementById('athosPortalBar')) return;
 
     const nav = document.createElement('aside');
@@ -67,6 +64,7 @@
           font-size: 0.85rem;
           outline: none;
           cursor: pointer;
+          max-width: 280px;
         }
         #athosPortalBar .pwa-indicator {
           font-size: 0.75rem;
@@ -90,21 +88,48 @@
       </a>
       <div class="nav-controls">
         <select class="monastery-selector" id="monasteryQuickNav" onchange="if(this.value) window.location.href=this.value;">
-          <option value="">Schnellnavigation Klöster...</option>
-          <option value="simonos-petras.html">Kloster Simonos Petras (#13)</option>
-          <option value="dionysiou.html">Kloster Dionysiou (#5)</option>
-          <option value="grigoriu.html">Kloster Grigoriu (#17)</option>
-          <option value="hilandar.html">Kloster Hilandar (#4)</option>
-          <option value="rossikon.html">Kloster Rossikon / St. Panteleimon (#19)</option>
-          <option value="agios-pavlos.html">Kloster Agios Pavlos (#18)</option>
-          <option value="skete-andreas.html">Skete des Hl. Andreas</option>
-          <option value="kloester-kompendium.html">Großes Kompendium aller Klöster</option>
-          <option value="athos-halbinsel.html">Geografie & Landschaft</option>
-          <option value="interaktiver-leitfaden.html">Interaktiver Pilgerleitfaden</option>
-          <option value="byzanz-griechischer-einfluss.html">Byzanz & Griechischer Einfluss</option>
-          <option value="rossikon-russischer-einfluss.html">Russischer Einfluss</option>
-          <option value="zografou-bulgarisch-moldawisch.html">Bulgarischer & Moldawischer Einfluss</option>
-          <option value="podcast-athos.html">Pilger-Podcast & Meditation</option>
+          <option value="">Kloster / Skete wechseln...</option>
+          
+          <optgroup label="Die 20 Hauptklöster (Rangfolge)">
+            <option value="megisti-lavra.html">#1 Megisti Lavra (Große Lavra)</option>
+            <option value="vatopedi.html">#2 Vatopedi</option>
+            <option value="iviron.html">#3 Iviron</option>
+            <option value="hilandar.html">#4 Hilandar (Serbisch)</option>
+            <option value="dionysiou.html">#5 Dionysiou</option>
+            <option value="koutloumousiou.html">#6 Koutloumousiou</option>
+            <option value="pantokratoros.html">#7 Pantokratoros</option>
+            <option value="xiropotamou.html">#8 Xiropotamou</option>
+            <option value="zografou.html">#9 Zografou (Bulgarisch)</option>
+            <option value="dochiariou.html">#10 Dochiariou</option>
+            <option value="karakallou.html">#11 Karakallou</option>
+            <option value="philotheou.html">#12 Philotheou</option>
+            <option value="simonos-petras.html">#13 Simonos Petras</option>
+            <option value="agios-pavlos.html">#14 Agios Pavlos</option>
+            <option value="stavronikita.html">#15 Stavronikita</option>
+            <option value="xenophontos.html">#16 Xenophontos</option>
+            <option value="grigoriu.html">#17 Grigoriu</option>
+            <option value="esphigmenou.html">#18 Esphigmenou</option>
+            <option value="rossikon.html">#19 St. Panteleimon (Rossikon)</option>
+            <option value="konstamonitou.html">#20 Konstamonitou</option>
+          </optgroup>
+
+          <optgroup label="Berühmte Sketen">
+            <option value="skete-agia-anna.html">Skete Agia Anna (Große Skete)</option>
+            <option value="skete-andreas.html">Skete des Hl. Andreas (Serai)</option>
+            <option value="skete-prodromou.html">Skete Timiou Prodromou (Rumänisch)</option>
+            <option value="skete-kapsokalyvia.html">Skete Kapsokalyvia (Hesychasten)</option>
+            <option value="nea-skiti.html">Nea Skiti (Hl. Joseph d. Hesychast)</option>
+          </optgroup>
+
+          <optgroup label="Leitfäden & Kultur">
+            <option value="kloester-kompendium.html">Das Klöster-Kompendium (20 Klöster)</option>
+            <option value="athos-halbinsel.html">Geografie & Landschaft</option>
+            <option value="interaktiver-leitfaden.html">Pilgerführer & Diamonitirion</option>
+            <option value="byzanz-griechischer-einfluss.html">Byzantinisches Erbe</option>
+            <option value="rossikon-russischer-einfluss.html">Russischer Einfluss</option>
+            <option value="zografou-bulgarisch-moldawisch.html">Bulgarien & Moldawien</option>
+            <option value="podcast-athos.html">Podcast & Meditation</option>
+          </optgroup>
         </select>
         <span class="pwa-indicator">● Offline-gesichert</span>
       </div>
