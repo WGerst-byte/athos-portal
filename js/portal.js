@@ -208,12 +208,105 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
           console.log('[Athos PWA] Share abgebrochen oder Fehler:', err);
         }
+  // 5. Language Switcher & Instant Multilingual Controller
+  const langSwitcher = document.getElementById('langSwitcher');
+  const langBtn = document.getElementById('langBtn');
+  const langDropdown = document.getElementById('langDropdown');
+  const langOpts = document.querySelectorAll('.lang-opt');
+  const currentLangFlag = document.getElementById('currentLangFlag');
+  const currentLangLabel = document.getElementById('currentLangLabel');
+
+  const langMap = {
+    de: { flag: '🇩🇪', label: 'DE' },
+    es: { flag: '🇪🇸', label: 'ES' },
+    en: { flag: '🇬🇧', label: 'EN' },
+    el: { flag: '🇬🇷', label: 'EL' },
+    ro: { flag: '🇷🇴', label: 'RO' },
+    sr: { flag: '🇷🇸', label: 'SR' },
+    ru: { flag: '🇷🇺', label: 'RU' }
+  };
+
+  function updateLangUI(lang) {
+    if (langMap[lang]) {
+      if (currentLangFlag) currentLangFlag.textContent = langMap[lang].flag;
+      if (currentLangLabel) currentLangLabel.textContent = langMap[lang].label;
+    }
+    langOpts.forEach((opt) => {
+      if (opt.getAttribute('data-lang') === lang) {
+        opt.classList.add('active');
       } else {
-        // Fallback: Open WhatsApp directly
-        const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareData.text + ' ' + shareData.url)}`;
-        window.open(whatsappUrl, '_blank');
+        opt.classList.remove('active');
       }
     });
   }
+
+  function applyLanguage(lang) {
+    localStorage.setItem('athos_user_lang', lang);
+
+    // Set cookie for Google Translate
+    const domain = window.location.hostname;
+    document.cookie = `googtrans=/de/${lang}; path=/;`;
+    if (domain && domain !== 'localhost') {
+      document.cookie = `googtrans=/de/${lang}; path=/; domain=${domain};`;
+      document.cookie = `googtrans=/de/${lang}; path=/; domain=.${domain};`;
+    }
+
+    // Trigger select element if already loaded
+    const select = document.querySelector('.goog-te-combo');
+    if (select) {
+      select.value = lang;
+      select.dispatchEvent(new Event('change'));
+    } else {
+      // If translate widget not initialized yet, reload to apply cookie
+      setTimeout(() => {
+        location.reload();
+      }, 100);
+    }
+
+    updateLangUI(lang);
+  }
+
+  if (langBtn && langDropdown) {
+    langBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      langDropdown.classList.toggle('active');
+      langSwitcher.classList.toggle('open');
+    });
+
+    document.addEventListener('click', () => {
+      langDropdown.classList.remove('active');
+      if (langSwitcher) langSwitcher.classList.remove('open');
+    });
+
+    langOpts.forEach((opt) => {
+      opt.addEventListener('click', () => {
+        const lang = opt.getAttribute('data-lang') || 'de';
+        applyLanguage(lang);
+        langDropdown.classList.remove('active');
+        if (langSwitcher) langSwitcher.classList.remove('open');
+      });
+    });
+  }
+
+  // Restore saved language on load
+  const savedLang = localStorage.getItem('athos_user_lang');
+  if (savedLang && savedLang !== 'de') {
+    updateLangUI(savedLang);
+    let attempts = 0;
+    const interval = setInterval(() => {
+      attempts++;
+      const select = document.querySelector('.goog-te-combo');
+      if (select) {
+        clearInterval(interval);
+        if (select.value !== savedLang) {
+          select.value = savedLang;
+          select.dispatchEvent(new Event('change'));
+        }
+      } else if (attempts > 30) {
+        clearInterval(interval);
+      }
+    }, 200);
+  }
 });
+
 

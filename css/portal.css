@@ -670,3 +670,119 @@ footer {
   box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
 }
 
+/* ==========================================================================
+   Language Switcher & Translation Engine Styles
+   ========================================================================== */
+.lang-switcher {
+  position: relative;
+  display: inline-block;
+}
+
+.lang-btn {
+  background: rgba(20, 30, 46, 0.85);
+  border: 1px solid var(--border-gold-strong);
+  color: var(--gold-light);
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  font-family: var(--font-serif-title);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.2s ease;
+}
+
+.lang-btn:hover {
+  background: rgba(197, 160, 89, 0.2);
+  border-color: var(--gold-accent);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.lang-arrow {
+  font-size: 0.75rem;
+  transition: transform 0.2s ease;
+  color: var(--gold-accent);
+}
+
+.lang-switcher.open .lang-arrow {
+  transform: rotate(180deg);
+}
+
+.lang-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: #0f1724;
+  border: 1px solid var(--border-gold-strong);
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 15px var(--gold-glow);
+  display: none;
+  min-width: 190px;
+  z-index: 10000;
+  padding: 0.4rem 0;
+  overflow: hidden;
+}
+
+.lang-dropdown.active {
+  display: block;
+  animation: modalFadeIn 0.2s ease-out;
+}
+
+.lang-opt {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.65rem 1rem;
+  background: none;
+  border: none;
+  color: var(--text-main);
+  font-family: var(--font-serif-body);
+  font-size: 0.95rem;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.lang-opt:hover {
+  background: rgba(197, 160, 89, 0.2);
+  color: var(--gold-light);
+}
+
+.lang-opt.active {
+  background: rgba(197, 160, 89, 0.25);
+  color: var(--gold-accent);
+  font-weight: 700;
+}
+
+.opt-flag {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+/* Google Translate Bar Cleanup */
+.goog-te-banner-frame.skiptranslate,
+.goog-te-gadget-icon,
+.goog-te-gadget-simple {
+  display: none !important;
+}
+
+body {
+  top: 0px !important;
+  position: static !important;
+}
+
+#goog-gt-tt,
+.goog-te-balloon-frame {
+  display: none !important;
+}
+
+.goog-text-highlight {
+  background: none !important;
+  box-shadow: none !important;
+}
+
+

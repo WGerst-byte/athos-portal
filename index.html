@@ -53,6 +53,24 @@
         <span id="statusText">Offline-bereit</span>
       </div>
       
+      <!-- Sprachwechsler / Language Selector -->
+      <div class="lang-switcher" id="langSwitcher">
+        <button class="lang-btn" id="langBtn" aria-label="Sprache wählen / Select Language">
+          <span class="lang-flag" id="currentLangFlag">🌐</span>
+          <span class="lang-label" id="currentLangLabel">Sprache</span>
+          <span class="lang-arrow">▾</span>
+        </button>
+        <div class="lang-dropdown" id="langDropdown">
+          <button class="lang-opt active" data-lang="de"><span class="opt-flag">🇩🇪</span> Deutsch</button>
+          <button class="lang-opt" data-lang="es"><span class="opt-flag">🇪🇸</span> Español</button>
+          <button class="lang-opt" data-lang="en"><span class="opt-flag">🇬🇧</span> English</button>
+          <button class="lang-opt" data-lang="el"><span class="opt-flag">🇬🇷</span> Ελληνικά</button>
+          <button class="lang-opt" data-lang="ro"><span class="opt-flag">🇷🇴</span> Română</button>
+          <button class="lang-opt" data-lang="sr"><span class="opt-flag">🇷🇸</span> Српски</button>
+          <button class="lang-opt" data-lang="ru"><span class="opt-flag">🇷🇺</span> Русский</button>
+        </div>
+      </div>
+
       <!-- QR-Code & Teilen Button -->
       <button class="share-btn" id="shareBtn" aria-label="App teilen und QR-Code anzeigen">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
@@ -1092,6 +1110,19 @@
       </div>
     </div>
   </div>
+
+  <!-- Google Translate Element & Loader -->
+  <div id="google_translate_element" style="display:none;"></div>
+  <script>
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'de',
+        includedLanguages: 'de,es,en,el,ro,sr,ru',
+        autoDisplay: false
+      }, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
 
   <!-- Controller Script -->
   <script src="./js/portal.js"></script>

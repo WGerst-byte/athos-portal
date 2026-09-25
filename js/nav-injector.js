@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Athos Subpage Bar Injector & Universal Monastery Switcher
+   Athos Subpage Bar Injector, Universal Switcher & Multilingual Engine
    ========================================================================== */
 
 (function () {
@@ -7,8 +7,32 @@
     navigator.serviceWorker.register('../sw.js').catch(() => {});
   }
 
+  // Inject Google Translate script if not loaded
+  if (!window.googleTranslateElementInit) {
+    window.googleTranslateElementInit = function () {
+      new google.translate.TranslateElement({
+        pageLanguage: 'de',
+        includedLanguages: 'de,es,en,el,ro,sr,ru',
+        autoDisplay: false
+      }, 'google_translate_subpage');
+    };
+
+    const gtScript = document.createElement('script');
+    gtScript.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    gtScript.async = true;
+    document.head.appendChild(gtScript);
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('athosPortalBar')) return;
+
+    // Create hidden translate container
+    if (!document.getElementById('google_translate_subpage')) {
+      const gtDiv = document.createElement('div');
+      gtDiv.id = 'google_translate_subpage';
+      gtDiv.style.display = 'none';
+      document.body.appendChild(gtDiv);
+    }
 
     const nav = document.createElement('aside');
     nav.id = 'athosPortalBar';
@@ -52,7 +76,7 @@
         #athosPortalBar .nav-controls {
           display: flex;
           align-items: center;
-          gap: 1rem;
+          gap: 0.8rem;
         }
         #athosPortalBar select.monastery-selector {
           background: #141e2e;
@@ -64,7 +88,18 @@
           font-size: 0.85rem;
           outline: none;
           cursor: pointer;
-          max-width: 280px;
+          max-width: 250px;
+        }
+        #athosPortalBar select.sub-lang-select {
+          background: #141e2e;
+          color: #f5efe1;
+          border: 1px solid rgba(197, 160, 89, 0.4);
+          border-radius: 6px;
+          padding: 0.35rem 0.5rem;
+          font-family: inherit;
+          font-size: 0.85rem;
+          outline: none;
+          cursor: pointer;
         }
         #athosPortalBar .pwa-indicator {
           font-size: 0.75rem;
@@ -73,12 +108,25 @@
           align-items: center;
           gap: 0.3rem;
         }
-        @media (max-width: 640px) {
+        /* Hide Google Translate top banner */
+        .goog-te-banner-frame.skiptranslate,
+        .goog-te-gadget-icon,
+        .goog-te-gadget-simple {
+          display: none !important;
+        }
+        body {
+          top: 0px !important;
+          position: static !important;
+        }
+        @media (max-width: 680px) {
           #athosPortalBar {
             padding: 0.5rem 0.8rem;
           }
           #athosPortalBar .pwa-indicator {
             display: none;
+          }
+          #athosPortalBar select.monastery-selector {
+            max-width: 170px;
           }
         }
       </style>
@@ -131,10 +179,67 @@
             <option value="podcast-athos.html">Podcast & Meditation</option>
           </optgroup>
         </select>
-        <span class="pwa-indicator">● Offline-gesichert</span>
+
+        <!-- Sprachauswahl auf Unterseiten -->
+        <select class="sub-lang-select" id="subLangSelect" aria-label="Sprache wählen">
+          <option value="de">🇩🇪 DE</option>
+          <option value="es">🇪🇸 ES</option>
+          <option value="en">🇬🇧 EN</option>
+          <option value="el">🇬🇷 EL</option>
+          <option value="ro">🇷🇴 RO</option>
+          <option value="sr">🇷🇸 SR</option>
+          <option value="ru">🇷🇺 RU</option>
+        </select>
+
+        <span class="pwa-indicator">● Offline</span>
       </div>
     `;
 
     document.body.insertBefore(nav, document.body.firstChild);
+
+    // Language handling on subpages
+    const subLangSelect = document.getElementById('subLangSelect');
+    if (subLangSelect) {
+      const saved = localStorage.getItem('athos_user_lang') || 'de';
+      subLangSelect.value = saved;
+
+      subLangSelect.addEventListener('change', () => {
+        const lang = subLangSelect.value;
+        localStorage.setItem('athos_user_lang', lang);
+
+        const domain = window.location.hostname;
+        document.cookie = `googtrans=/de/${lang}; path=/;`;
+        if (domain && domain !== 'localhost') {
+          document.cookie = `googtrans=/de/${lang}; path=/; domain=${domain};`;
+          document.cookie = `googtrans=/de/${lang}; path=/; domain=.${domain};`;
+        }
+
+        const select = document.querySelector('.goog-te-combo');
+        if (select) {
+          select.value = lang;
+          select.dispatchEvent(new Event('change'));
+        } else {
+          location.reload();
+        }
+      });
+
+      // Auto-trigger if saved language is not German
+      if (saved !== 'de') {
+        let attempts = 0;
+        const interval = setInterval(() => {
+          attempts++;
+          const select = document.querySelector('.goog-te-combo');
+          if (select) {
+            clearInterval(interval);
+            if (select.value !== saved) {
+              select.value = saved;
+              select.dispatchEvent(new Event('change'));
+            }
+          } else if (attempts > 30) {
+            clearInterval(interval);
+          }
+        }, 200);
+      }
+    }
   });
 })();
