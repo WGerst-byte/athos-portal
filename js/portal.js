@@ -208,6 +208,12 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
           console.log('[Athos PWA] Share abgebrochen oder Fehler:', err);
         }
+      } else {
+        const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareData.text + ' ' + shareData.url)}`;
+        window.open(whatsappUrl, '_blank');
+      }
+    });
+  }
   // 5. Language Switcher & Instant Multilingual Controller
   const langSwitcher = document.getElementById('langSwitcher');
   const langBtn = document.getElementById('langBtn');
